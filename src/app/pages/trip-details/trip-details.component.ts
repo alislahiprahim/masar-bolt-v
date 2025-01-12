@@ -23,7 +23,6 @@ import { SeoService } from '../../services/seo.service';
 
 @Component({
   selector: "app-trip-details",
-  standalone: true,
   imports: [CommonModule, RouterLink, FontAwesomeModule, BookingFormComponent],
   template: `
     @if (trip) {
@@ -48,15 +47,15 @@ import { SeoService } from '../../services/seo.service';
             <h1 class="text-5xl font-bold text-white mb-4">{{ trip.title }}</h1>
             <div class="flex flex-wrap gap-4 text-white/90">
               <div class="flex items-center">
-                <fa-icon [icon]="faMapMarkerAlt" class="mr-2"></fa-icon>
+                <fa-icon [icon]="faMapMarkerAlt" class="mx-2"></fa-icon>
                 {{ trip.destination }}
               </div>
               <div class="flex items-center">
-                <fa-icon [icon]="faClock" class="mr-2"></fa-icon>
+                <fa-icon [icon]="faClock" class="mx-2"></fa-icon>
                 {{ trip.duration }} days
               </div>
               <div class="flex items-center">
-                <fa-icon [icon]="faCalendar" class="mr-2"></fa-icon>
+                <fa-icon [icon]="faCalendar" class="mx-2"></fa-icon>
                 {{ trip.startDate | date }}
               </div>
             </div>
@@ -86,42 +85,42 @@ import { SeoService } from '../../services/seo.service';
                   <div class="flex items-center p-3 bg-primary-50 rounded-lg">
                     <fa-icon
                       [icon]="faHotel"
-                      class="text-primary-600 mr-3"
+                      class="text-primary-600 mx-3"
                     ></fa-icon>
                     <span class="text-sm text-gray-700">Luxury Hotels</span>
                   </div>
                   <div class="flex items-center p-3 bg-primary-50 rounded-lg">
                     <fa-icon
                       [icon]="faUtensils"
-                      class="text-primary-600 mr-3"
+                      class="text-primary-600 mx-3"
                     ></fa-icon>
                     <span class="text-sm text-gray-700">Gourmet Meals</span>
                   </div>
                   <div class="flex items-center p-3 bg-primary-50 rounded-lg">
                     <fa-icon
                       [icon]="faCar"
-                      class="text-primary-600 mr-3"
+                      class="text-primary-600 mx-3"
                     ></fa-icon>
                     <span class="text-sm text-gray-700">Private Transport</span>
                   </div>
                   <div class="flex items-center p-3 bg-primary-50 rounded-lg">
                     <fa-icon
                       [icon]="faCamera"
-                      class="text-primary-600 mr-3"
+                      class="text-primary-600 mx-3"
                     ></fa-icon>
                     <span class="text-sm text-gray-700">Photo Spots</span>
                   </div>
                   <div class="flex items-center p-3 bg-primary-50 rounded-lg">
                     <fa-icon
                       [icon]="faWifi"
-                      class="text-primary-600 mr-3"
+                      class="text-primary-600 mx-3"
                     ></fa-icon>
                     <span class="text-sm text-gray-700">Free Wi-Fi</span>
                   </div>
                   <div class="flex items-center p-3 bg-primary-50 rounded-lg">
                     <fa-icon
                       [icon]="faUmbrellaBeach"
-                      class="text-primary-600 mr-3"
+                      class="text-primary-600 mx-3"
                     ></fa-icon>
                     <span class="text-sm text-gray-700">Beach Access</span>
                   </div>
@@ -135,7 +134,7 @@ import { SeoService } from '../../services/seo.service';
                 <h3 class="text-xl font-semibold text-gray-900 mb-4">
                   <fa-icon
                     [icon]="faCheck"
-                    class="mr-2 text-primary-600"
+                    class="mx-2 text-primary-600"
                   ></fa-icon>
                   What's Included
                 </h3>
@@ -250,7 +249,11 @@ export class TripDetailsComponent implements OnInit {
   faCamera = faCamera;
   faWifi = faWifi;
 
-  constructor(private route: ActivatedRoute, public authService: AuthService,private seoService:SeoService) {}
+  constructor(
+    private route: ActivatedRoute,
+    public authService: AuthService,
+    private seoService: SeoService
+  ) {}
 
   ngOnInit() {
     // Mock data loading
@@ -321,16 +324,16 @@ export class TripDetailsComponent implements OnInit {
         title: this.trip.title,
         description: this.trip.description,
         keywords: [
-          'travel',
-          'vacation',
+          "travel",
+          "vacation",
           this.trip.destination,
-          'tour package',
-          'holiday',
-          this.trip.title.toLowerCase()
+          "tour package",
+          "holiday",
+          this.trip.title.toLowerCase(),
         ],
         ogImage: this.trip.imageUrl,
-        ogType: 'product',
-        twitterCard: 'summary_large_image'
+        ogType: "product",
+        twitterCard: "summary_large_image",
       });
 
       // Set canonical URL

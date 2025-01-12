@@ -3,10 +3,9 @@ import { CommonModule } from "@angular/common";
 import { LanguageService } from "../../services/language.service";
 
 @Component({
-  selector: "app-language-switcher",
-  standalone: true,
-  imports: [],
-  template: `
+    selector: "app-language-switcher",
+    imports: [],
+    template: `
     <div class="relative">
       <select
         [value]="languageService.getCurrentLang()"
@@ -34,7 +33,7 @@ import { LanguageService } from "../../services/language.service";
         </svg>
       </div>
     </div>
-  `,
+  `
 })
 export class LanguageSwitcherComponent {
   constructor(public languageService: LanguageService) {}

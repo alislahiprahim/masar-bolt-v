@@ -10,10 +10,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
-  selector: "app-search-filter",
-  standalone: true,
-  imports: [FormsModule, FontAwesomeModule],
-  template: `<div class="glass-container mb-8 p-6">
+    selector: "app-search-filter",
+    imports: [FormsModule, FontAwesomeModule],
+    template: `<div class="glass-container mb-8 p-6">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <!-- Search -->
       <div class="relative">
@@ -59,7 +58,7 @@ import {
       </div>
     </div>
   </div>`,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchFilterComponent {
   faMapMarkerAlt = faMapMarkerAlt;

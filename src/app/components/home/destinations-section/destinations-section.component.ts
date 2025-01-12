@@ -3,10 +3,9 @@ import { CommonModule } from "@angular/common";
 import { TranslateModule } from "@ngx-translate/core";
 
 @Component({
-  selector: "app-destinations-section",
-  standalone: true,
-  imports: [CommonModule, TranslateModule],
-  template: `
+    selector: "app-destinations-section",
+    imports: [CommonModule, TranslateModule],
+    template: `
     <section class="py-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-4xl font-bold text-center mb-12 section-header">
@@ -41,7 +40,7 @@ import { TranslateModule } from "@ngx-translate/core";
         </div>
       </div>
     </section>
-  `,
+  `
 })
 export class DestinationsSectionComponent {
   destinations = [

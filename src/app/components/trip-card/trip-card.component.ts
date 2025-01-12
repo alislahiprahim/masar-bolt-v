@@ -11,10 +11,9 @@ import { TranslateModule } from "@ngx-translate/core";
 import { Trip } from "../../models/trip.model";
 
 @Component({
-  selector: "app-trip-card",
-  standalone: true,
-  imports: [CommonModule, RouterLink, FontAwesomeModule, TranslateModule],
-  template: `
+    selector: "app-trip-card",
+    imports: [CommonModule, RouterLink, FontAwesomeModule, TranslateModule],
+    template: `
     <a [routerLink]="['/trips', trip.id]" class="group">
       <div class="card overflow-hidden">
         <!-- Image -->
@@ -74,7 +73,7 @@ import { Trip } from "../../models/trip.model";
         </div>
       </div>
     </a>
-  `,
+  `
 })
 export class TripCardComponent {
   @Input({ required: true }) trip!: Trip;

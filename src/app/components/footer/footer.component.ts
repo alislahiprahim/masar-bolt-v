@@ -17,7 +17,6 @@ import {
 
 @Component({
   selector: "app-footer",
-  standalone: true,
   imports: [RouterLink, FontAwesomeModule],
   template: `
     <footer class="bg-gradient-to-br from-gray-900 to-gray-800 text-white">
@@ -68,10 +67,10 @@ import {
               Your trusted travel partner for unforgettable adventures around
               the world.
             </p>
-            <div class="flex space-x-4">
+            <div class="flex space-x-4 rtl:space-x-reverse">
               <a
                 href="#"
-                class="text-gray-400 hover:text-primary-500 transition-colors"
+                class="text-gray-400 hover:text-primary-500 transition-colors "
               >
                 <fa-icon [icon]="faFacebook" size="lg"></fa-icon>
                 <span class="sr-only">Facebook</span>
@@ -208,7 +207,7 @@ import {
               <li class="flex items-center text-gray-400">
                 <fa-icon
                   [icon]="faMapMarker"
-                  class="mr-3 text-primary-500"
+                  class="mx-2 text-primary-500"
                 ></fa-icon>
                 123 Travel Street, City, Country
               </li>
@@ -219,7 +218,7 @@ import {
                 >
                   <fa-icon
                     [icon]="faPhone"
-                    class="mr-3 text-primary-500"
+                    class="mx-2 text-primary-500"
                   ></fa-icon>
                   +1 (555) 123-4567
                 </a>
@@ -231,7 +230,7 @@ import {
                 >
                   <fa-icon
                     [icon]="faEnvelope"
-                    class="mr-3 text-primary-500"
+                    class="mx-2 text-primary-500"
                   ></fa-icon>
                   contactmasar.com
                 </a>

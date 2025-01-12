@@ -9,7 +9,6 @@ import { LanguageSwitcherComponent } from "../language-switcher/language-switche
 
 @Component({
   selector: "app-navbar",
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,
@@ -61,7 +60,7 @@ import { LanguageSwitcherComponent } from "../language-switcher/language-switche
             <div class="relative">
               <a
                 routerLink="/profile"
-                class="flex items-center space-x-2 text-gray-700 hover:text-primary-600 transition-colors"
+                class="flex items-center gap-2 text-gray-700 hover:text-primary-600 transition-colors"
               >
                 <fa-icon [icon]="faUser"></fa-icon>
                 <span>{{ "nav.profile" | translate }}</span>
@@ -70,7 +69,7 @@ import { LanguageSwitcherComponent } from "../language-switcher/language-switche
             <!-- Logout Button -->
             <button
               (click)="authService.logout()"
-              class="flex items-center space-x-2 text-gray-700 hover:text-primary-600 transition-colors"
+              class="flex items-center gap-2  text-gray-700 hover:text-primary-600 transition-colors"
             >
               <fa-icon
                 [classList]="['rtl:rotate-180']"
@@ -82,7 +81,7 @@ import { LanguageSwitcherComponent } from "../language-switcher/language-switche
             <!-- Login/Register Buttons -->
             <a
               routerLink="/auth/login"
-              class="flex items-center space-x-2 text-gray-700 hover:text-primary-600 transition-colors rtl:gap-2"
+              class="flex items-center gap-2 text-gray-700 hover:text-primary-600 transition-colors rtl:gap-2"
             >
               <fa-icon
                 [classList]="['rtl:rotate-180']"

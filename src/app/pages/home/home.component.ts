@@ -23,20 +23,19 @@ import { ServicesSectionComponent } from "../../components/home/service-section/
 import { TranslateModule } from "@ngx-translate/core";
 
 @Component({
-  selector: "app-home",
-  standalone: true,
-  imports: [
-    CommonModule,
-    FontAwesomeModule,
-    ServicesSectionComponent,
-    DestinationsSectionComponent,
-    PopularTripsSectionComponent,
-    GallerySectionComponent,
-    TestimonialsSectionComponent,
-    HeroSectionComponent,
-    TranslateModule,
-  ],
-  template: ` <app-hero-section />
+    selector: "app-home",
+    imports: [
+        CommonModule,
+        FontAwesomeModule,
+        ServicesSectionComponent,
+        DestinationsSectionComponent,
+        PopularTripsSectionComponent,
+        GallerySectionComponent,
+        TestimonialsSectionComponent,
+        HeroSectionComponent,
+        TranslateModule,
+    ],
+    template: ` <app-hero-section />
 
     @defer (on viewport) {
     <app-services-section />
@@ -68,7 +67,7 @@ import { TranslateModule } from "@ngx-translate/core";
     <div class="h-20 flex items-center justify-center">
       <p>{{ "common.loading" | translate }}</p>
     </div>
-    }`,
+    }`
 })
 export class HomeComponent {
   faSearch = faSearch;

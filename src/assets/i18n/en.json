@@ -98,5 +98,104 @@
     "address": "123 Travel Street, City, Country",
     "phone": "+1 (555) 123-4567",
     "email": "contact@masar.com"
+  },
+  "profile": {
+    "welcome": "Welcome back, {{name}}!",
+    "subtitle": "Manage your profile and explore your travel journey",
+    "tabs": {
+      "details": "Personal Details",
+      "trips": "My Trips",
+      "invoices": "Invoices",
+      "notifications": "Notifications"
+    },
+    "details": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone number",
+      "preferences": {
+        "title": "Travel Preferences",
+        "destinations": "Preferred destinations",
+        "travelStyle": "Travel style",
+        "dietary": "Dietary restrictions"
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "save": "Save changes"
+      }
+    },
+    "trips": {
+      "viewDetails": "View Details",
+      "download": "Download Confirmation",
+      "status": {
+        "upcoming": "Upcoming",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      }
+    },
+    "invoices": {
+      "invoice": "Invoice",
+      "travelers": "Number of Travelers",
+      "status": "Payment Status",
+      "view": "View Invoice",
+      "download": "Download",
+      "empty": "No invoices found",
+      "statuses": {
+        "paid": "Paid",
+        "pending": "Pending",
+        "cancelled": "Cancelled",
+        "upcoming": "Upcoming",
+        "completed": "Completed"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "markAllRead": "Mark all as read",
+      "markRead": "Mark as read",
+      "markUnread": "Mark as unread",
+      "empty": "No notifications"
+    }
+  },
+  "booking": {
+    "form": {
+      "title": "Book Your Trip",
+      "whatsapp": {
+        "label": "WhatsApp Number",
+        "placeholder": "Enter your WhatsApp number",
+        "error": {
+          "required": "WhatsApp number is required",
+          "pattern": "Please enter a valid Egyptian phone number"
+        }
+      },
+      "nationalId": {
+        "label": "National ID Image",
+        "dropzone": {
+          "title": "Upload National ID",
+          "text": "Drag and drop your ID image here or click to select",
+          "hint": "PNG, JPG, GIF up to 10MB"
+        },
+        "error": {
+          "required": "National ID image is required",
+          "size": "File size should not exceed 10MB"
+        }
+      },
+      "travelers": {
+        "label": "Number of Travelers",
+        "error": {
+          "required": "Number of travelers is required",
+          "min": "At least one traveler is required"
+        }
+      },
+      "specialRequests": {
+        "label": "Special Requests",
+        "placeholder": "Any dietary requirements, accessibility needs, or special preferences?"
+      },
+      "totalPrice": "Total Price",
+      "perPerson": "per person",
+      "submit": {
+        "button": "Confirm Booking",
+        "processing": "Processing..."
+      }
+    }
   }
 }

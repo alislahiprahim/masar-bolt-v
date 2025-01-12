@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
 @Component({
-  selector: "app-custom-hero-section",
-  standalone: true,
-  imports: [],
-  template: `
+    selector: "app-custom-hero-section",
+    imports: [],
+    template: `
     <div class="relative h-[60vh] min-h-[400px] overflow-hidden">
       <!-- Background Image -->
       <div class="absolute inset-0">
@@ -34,7 +33,7 @@ import { ChangeDetectionStrategy, Component, input } from "@angular/core";
       </div>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomHeroSectionComponent {
   bannerImg = input(

@@ -10,10 +10,9 @@ import {
 import { TranslateModule } from "@ngx-translate/core";
 
 @Component({
-  selector: "app-services-section",
-  standalone: true,
-  imports: [CommonModule, FontAwesomeModule, TranslateModule],
-  template: `
+    selector: "app-services-section",
+    imports: [CommonModule, FontAwesomeModule, TranslateModule],
+    template: `
     <section class="py-20 bg-gradient-to-br from-gray-50 to-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-4xl font-bold text-center mb-12 section-header">
@@ -35,7 +34,7 @@ import { TranslateModule } from "@ngx-translate/core";
         </div>
       </div>
     </section>
-  `,
+  `
 })
 export class ServicesSectionComponent {
   faPlane = faPlane;

@@ -7,10 +7,9 @@ import { faSignInAlt, faEnvelope, faLock } from '@fortawesome/free-solid-svg-ico
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FontAwesomeModule],
-  template: `
+    selector: 'app-login',
+    imports: [CommonModule, RouterLink, ReactiveFormsModule, FontAwesomeModule],
+    template: `
     <div class="min-h-screen relative bg-gradient-to-br from-primary-50 to-secondary-50">
       <!-- Background Image with Overlay -->
       <div class="absolute inset-0 z-0">

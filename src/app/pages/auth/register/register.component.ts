@@ -6,10 +6,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faUser, faEnvelope, faLock, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FontAwesomeModule],
-  template: `
+    selector: 'app-register',
+    imports: [CommonModule, RouterLink, ReactiveFormsModule, FontAwesomeModule],
+    template: `
     <div class="min-h-screen relative bg-gradient-to-br from-primary-50 to-secondary-50">
       <!-- Background Image with Overlay -->
       <div class="absolute inset-0 z-0">

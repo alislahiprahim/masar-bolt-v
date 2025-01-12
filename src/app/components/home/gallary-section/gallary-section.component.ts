@@ -1,14 +1,27 @@
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { faExpand, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faExpand } from "@fortawesome/free-solid-svg-icons";
 import { TranslateModule } from "@ngx-translate/core";
-import { GalleryImage } from "../../../models/gallary.model";
+import {
+  LightboxImage,
+  LightboxComponent,
+} from "../../image-lightbox/image-lightbox.component";
+import { LightboxService } from "../../image-lightbox/image-lightbox.service";
+
+interface GalleryImage extends LightboxImage {
+  location: string;
+}
 
 @Component({
   selector: "app-gallery-section",
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, TranslateModule],
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    TranslateModule,
+    LightboxComponent,
+  ],
   template: `
     <section class="py-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,7 +38,7 @@ import { GalleryImage } from "../../../models/gallary.model";
           @for (image of galleryImages; track image.url) {
           <div
             class="group relative overflow-hidden rounded-lg shadow-lg cursor-pointer"
-            (click)="selectedImage = image"
+            (click)="openLightbox(image)"
           >
             <img
               [loading]="'lazy'"
@@ -54,6 +67,12 @@ import { GalleryImage } from "../../../models/gallary.model";
         </div>
       </div>
     </section>
+
+    <app-lightbox
+      [isOpen]="(lightboxService.isOpen$ | async) || false"
+      [image]="(lightboxService.currentImage$ | async)!"
+      (closeEvent)="lightboxService.close()"
+    />
   `,
 })
 export class GallerySectionComponent {
@@ -65,8 +84,36 @@ export class GallerySectionComponent {
       title: "Tropical Paradise",
       location: "Bali, Indonesia",
     },
-    // ... other images
+    {
+      url: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e",
+      title: "Mountain Retreat",
+      location: "Swiss Alps",
+    },
+    {
+      url: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9",
+      title: "Venice Canals",
+      location: "Venice, Italy",
+    },
+    {
+      url: "https://images.unsplash.com/photo-1533929736458-ca588d08c8be",
+      title: "Desert Adventure",
+      location: "Dubai, UAE",
+    },
+    {
+      url: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
+      title: "Paris Landmarks",
+      location: "Paris, France",
+    },
+    {
+      url: "https://images.unsplash.com/photo-1513581166391-887a96ddeafd",
+      title: "Japanese Gardens",
+      location: "Kyoto, Japan",
+    },
   ];
 
-  selectedImage: GalleryImage | null = null;
+  constructor(public lightboxService: LightboxService) {}
+
+  openLightbox(image: GalleryImage): void {
+    this.lightboxService.open(image);
+  }
 }

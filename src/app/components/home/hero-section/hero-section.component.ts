@@ -6,10 +6,9 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { TranslateModule } from "@ngx-translate/core";
 
 @Component({
-  selector: "app-hero-section",
-  standalone: true,
-  imports: [CommonModule, RouterLink, FontAwesomeModule, TranslateModule],
-  template: `
+    selector: "app-hero-section",
+    imports: [CommonModule, RouterLink, FontAwesomeModule, TranslateModule],
+    template: `
     <div class="relative min-h-screen flex items-center">
       <!-- Video Background -->
       <div class="absolute inset-0 w-full h-full overflow-hidden">
@@ -71,7 +70,7 @@ import { TranslateModule } from "@ngx-translate/core";
         </div>
       </div>
     </div>
-  `,
+  `
 })
 export class HeroSectionComponent {
   faSearch = faSearch;

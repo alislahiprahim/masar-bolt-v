@@ -97,5 +97,102 @@
     "address": "١٢٣ شارع السفر، المدينة، البلد",
     "phone": "‎+١ (٥٥٥) ١٢٣-٤٥٦٧",
     "email": "contact@masar.com"
+  },
+  "profile": {
+    "welcome": "مرحباً بعودتك، {{name}}!",
+    "subtitle": "إدارة ملفك الشخصي واستكشاف رحلاتك",
+    "tabs": {
+      "details": "البيانات الشخصية",
+      "trips": "رحلاتي",
+      "invoices": "الفواتير",
+      "notifications": "الإشعارات"
+    },
+    "details": {
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "preferences": {
+        "title": "تفضيلات السفر",
+        "destinations": "الوجهات المفضلة",
+        "travelStyle": "نمط السفر",
+        "dietary": "القيود الغذائية"
+      },
+      "buttons": {
+        "cancel": "إلغاء",
+        "save": "حفظ التغييرات"
+      }
+    },
+    "trips": {
+      "viewDetails": "عرض التفاصيل",
+      "download": "تحميل التأكيد",
+      "status": {
+        "upcoming": "قادمة",
+        "completed": "مكتملة",
+        "cancelled": "ملغاة"
+      }
+    },
+    "invoices": {
+      "invoice": "فاتورة",
+      "travelers": "عدد المسافرين",
+      "status": "حالة الدفع",
+      "view": "عرض الفاتورة",
+      "download": "تحميل",
+      "empty": "لا توجد فواتير",
+      "statuses": {
+        "paid": "مدفوع",
+        "pending": "قيد الانتظار",
+        "cancelled": "ملغي"
+      }
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "markAllRead": "تحديد الكل كمقروء",
+      "markRead": "تحديد كمقروء",
+      "markUnread": "تحديد كغير مقروء",
+      "empty": "لا توجد إشعارات"
+    }
+  },
+  "booking": {
+    "form": {
+      "title": "احجز رحلتك",
+      "whatsapp": {
+        "label": "رقم الواتساب",
+        "placeholder": "أدخل رقم الواتساب الخاص بك",
+        "error": {
+          "required": "رقم الواتساب مطلوب",
+          "pattern": "الرجاء إدخال رقم هاتف مصري صحيح"
+        }
+      },
+      "nationalId": {
+        "label": "صورة البطاقة الشخصية",
+        "dropzone": {
+          "title": "تحميل البطاقة الشخصية",
+          "text": "اسحب وأفلت صورة البطاقة هنا أو انقر للاختيار",
+          "hint": "PNG، JPG، GIF حتى 10 ميجابايت"
+        },
+        "error": {
+          "required": "صورة البطاقة الشخصية مطلوبة",
+          "size": "يجب ألا يتجاوز حجم الملف 10 ميجابايت"
+        }
+      },
+      "travelers": {
+        "label": "عدد المسافرين",
+        "error": {
+          "required": "عدد المسافرين مطلوب",
+          "min": "مطلوب مسافر واحد على الأقل"
+        }
+      },
+      "specialRequests": {
+        "label": "طلبات خاصة",
+        "placeholder": "أي متطلبات غذائية، احتياجات خاصة، أو تفضيلات؟"
+      },
+      "totalPrice": "السعر الإجمالي",
+      "perPerson": "للشخص",
+      "submit": {
+        "button": "تأكيد الحجز",
+        "processing": "جاري المعالجة..."
+      }
+    }
   }
 }

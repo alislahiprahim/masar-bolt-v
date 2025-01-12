@@ -1,6 +1,13 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  AsyncPipe,
+  CommonModule,
+  NgFor,
+  NgOptimizedImage,
+} from "@angular/common";
 import { CustomHeroSectionComponent } from "../../components/custom-hero-section/custom-hero-section.component";
+import { LightboxService } from "../../components/image-lightbox/image-lightbox.service";
+import { LightboxComponent } from "../../components/image-lightbox/image-lightbox.component";
 
 interface GalleryImage {
   url: string;
@@ -10,8 +17,7 @@ interface GalleryImage {
 
 @Component({
   selector: "app-gallery",
-  standalone: true,
-  imports: [CommonModule, CustomHeroSectionComponent],
+  imports: [CustomHeroSectionComponent, LightboxComponent, AsyncPipe],
   template: `
     <!-- Hero Banner -->
     <app-custom-hero-section
@@ -30,6 +36,7 @@ interface GalleryImage {
         @for (image of galleryImages; track image.url) {
         <div
           class="group relative overflow-hidden rounded-lg shadow-lg transition-transform duration-300 hover:scale-[1.02]"
+          (click)="openLightbox(image)"
         >
           <img
             loading="lazy"
@@ -51,6 +58,12 @@ interface GalleryImage {
         }
       </div>
     </div>
+
+    <app-lightbox
+      [isOpen]="(lightboxService.isOpen$ | async) || false"
+      [image]="(lightboxService.currentImage$ | async)!"
+      (closeEvent)="lightboxService.close()"
+    />
   `,
 })
 export class GalleryComponent {
@@ -86,4 +99,10 @@ export class GalleryComponent {
       location: "Kyoto, Japan",
     },
   ];
+
+  constructor(public lightboxService: LightboxService) {}
+
+  openLightbox(image: GalleryImage): void {
+    this.lightboxService.open(image);
+  }
 }

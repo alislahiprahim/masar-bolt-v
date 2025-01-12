@@ -5,10 +5,9 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { TranslateModule } from "@ngx-translate/core";
 
 @Component({
-  selector: "app-testimonials-section",
-  standalone: true,
-  imports: [CommonModule, FontAwesomeModule, TranslateModule],
-  template: `
+    selector: "app-testimonials-section",
+    imports: [CommonModule, FontAwesomeModule, TranslateModule],
+    template: `
     <section class="py-20 bg-gradient-to-br from-primary-50 to-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-4xl font-bold text-center mb-12 section-header">
@@ -42,7 +41,7 @@ import { TranslateModule } from "@ngx-translate/core";
         </div>
       </div>
     </section>
-  `,
+  `
 })
 export class TestimonialsSectionComponent {
   faStar = faStar;

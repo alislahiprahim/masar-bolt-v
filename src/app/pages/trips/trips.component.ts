@@ -16,17 +16,16 @@ import { SearchFilterComponent } from "../../components/search-filter/search-fil
 import { CustomHeroSectionComponent } from "../../components/custom-hero-section/custom-hero-section.component";
 
 @Component({
-  selector: "app-trips",
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    FontAwesomeModule,
-    TripCardComponent,
-    SearchFilterComponent,
-    CustomHeroSectionComponent,
-  ],
-  template: `
+    selector: "app-trips",
+    imports: [
+        CommonModule,
+        FormsModule,
+        FontAwesomeModule,
+        TripCardComponent,
+        SearchFilterComponent,
+        CustomHeroSectionComponent,
+    ],
+    template: `
     <div class="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50">
       <!-- Header -->
       <app-custom-hero-section
@@ -56,7 +55,7 @@ import { CustomHeroSectionComponent } from "../../components/custom-hero-section
         }
       </div>
     </div>
-  `,
+  `
 })
 export class TripsComponent {
   // Icons
