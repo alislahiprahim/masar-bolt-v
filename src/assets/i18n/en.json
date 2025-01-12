@@ -1,0 +1,102 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "search": "Search",
+    "days": "days",
+    "perPerson": "per person",
+    "subscribe": "Subscribe",
+    "email": "Email",
+    "enterEmail": "Enter your email",
+    "newsletter": {
+      "title": "Subscribe to Our Newsletter",
+      "description": "Stay updated with our latest travel deals and adventures"
+    },
+    "quickLinks": "Quick Links",
+    "support": "Support",
+    "contactUs": "Contact Us",
+    "allRightsReserved": "All rights reserved"
+  },
+  "nav": {
+    "home": "Home",
+    "trips": "Trips",
+    "gallery": "Gallery",
+    "reviews": "Reviews",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "home": {
+    "hero": {
+      "title": "Explore the World with Us",
+      "subtitle": "Discover breathtaking destinations and create unforgettable memories with our curated travel experiences",
+      "searchPlaceholder": "Where would you like to go?",
+      "discoverButton": "Discover Trips"
+    },
+    "services": {
+      "title": "Our Services",
+      "flight": {
+        "title": "Flight Bookings",
+        "description": "Find the best deals on flights to your dream destinations"
+      },
+      "hotel": {
+        "title": "Luxury Hotels",
+        "description": "Stay in hand-picked luxury accommodations worldwide"
+      },
+      "tours": {
+        "title": "Guided Tours",
+        "description": "Experience local culture with our expert guides"
+      },
+      "packages": {
+        "title": "Custom Packages",
+        "description": "Tailor-made travel packages to suit your preferences"
+      }
+    },
+    "destinations": {
+      "title": "Popular Destinations",
+      "bali": {
+        "title": "Bali, Indonesia",
+        "description": "Paradise island with rich culture"
+      },
+      "santorini": {
+        "title": "Santorini, Greece",
+        "description": "Stunning sunsets and white architecture"
+      },
+      "swiss": {
+        "title": "Swiss Alps",
+        "description": "Majestic mountains and scenic views"
+      }
+    },
+    "popularTrips": {
+      "title": "Popular Trips",
+      "subtitle": "Discover our most loved destinations and experiences",
+      "viewAll": "View All Trips"
+    },
+    "gallery": {
+      "title": "Travel Gallery",
+      "subtitle": "Immerse yourself in stunning views of our most captivating destinations"
+    },
+    "testimonials": {
+      "title": "What Our Travelers Say",
+      "sarah": "Amazing experience! The trip was perfectly organized and exceeded all our expectations.",
+      "michael": "Professional service and incredible destinations. Will definitely book again!",
+      "emma": "The attention to detail and personalized service made our trip unforgettable."
+    }
+  },
+  "footer": {
+    "destinations": "Destinations",
+    "reviews": "Reviews",
+    "aboutUs": "About Us",
+    "helpCenter": "Help Center",
+    "faqs": "FAQs",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "cancellationPolicy": "Cancellation Policy",
+    "cookiePolicy": "Cookie Policy",
+    "address": "123 Travel Street, City, Country",
+    "phone": "+1 (555) 123-4567",
+    "email": "contact@masar.com"
+  }
+}
