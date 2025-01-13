@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "start": "node dist/masar-travel/server/server.mjs",
+    "start": "ng serve",
     "build": "ng build",
     "dev:ssr": "ng run masar-travel:serve-ssr",
     "serve:ssr:masar-travel": "node dist/masar-travel/server/server.mjs"
