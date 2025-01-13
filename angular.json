@@ -5,7 +5,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "demo": {
+    "masar-travel": {
       "architect": {
         "build": {
           "builder": "@angular/build:application",
@@ -27,25 +27,34 @@
           },
           "options": {
             "assets": [
-               "src/assets"
+              "src/assets"
             ],
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "outputPath": "dist/demo",
-            "polyfills": ["zone.js"],
+            "outputPath": "dist/masar-travel",
+            "polyfills": [
+              "zone.js"
+            ],
             "scripts": [],
-            "styles": ["src/global_styles.css"],
-            "tsConfig": "tsconfig.app.json"
+            "styles": [
+              "src/global_styles.css"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "server": "src/main.server.ts",
+            "prerender": true,
+            "ssr": {
+              "entry": "src/server.ts"
+            }
           }
         },
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
             "development": {
-              "buildTarget": "demo:build:development"
+              "buildTarget": "masar-travel:build:development"
             },
             "production": {
-              "buildTarget": "demo:build:production"
+              "buildTarget": "masar-travel:build:production"
             }
           },
           "defaultConfiguration": "development"

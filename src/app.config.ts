@@ -5,6 +5,7 @@ import { HttpClient, provideHttpClient } from "@angular/common/http";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { routes } from "./app/app.routes";
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -25,6 +26,6 @@ export const appConfig: ApplicationConfig = {
           deps: [HttpClient],
         },
       })
-    ),
+    ), provideClientHydration(withEventReplay()),
   ],
 };
