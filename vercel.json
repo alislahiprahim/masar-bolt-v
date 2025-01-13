@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "dist/masar-travel/server/main.server.mjs",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "dist/masar-travel/browser/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/masar-travel/server/main.server.mjs"
+    }
+  ]
+}
