@@ -25,15 +25,17 @@ export class LanguageService {
     this.translate.use(lang);
     this.currentLangSubject.next(lang);
 
-    // Set HTML dir attribute for RTL support
-    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-    document.documentElement.lang = lang;
+    if (isPlatformBrowser(this.platformId)) {
+      // Set HTML dir attribute for RTL support
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+      document.documentElement.lang = lang;
 
-    // Add RTL class to body for Tailwind RTL support
-    if (lang === "ar") {
-      document.body.classList.add("rtl");
-    } else {
-      document.body.classList.remove("rtl");
+      // Add RTL class to body for Tailwind RTL support
+      if (lang === "ar") {
+        document.body.classList.add("rtl");
+      } else {
+        document.body.classList.remove("rtl");
+      }
     }
   }
 
