@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/masar-travel/server/server.mjs",
+      "src": "dist/masar-travel/server/server.js",
       "use": "@vercel/node"
     },
     {
@@ -13,7 +13,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/masar-travel/server/server.mjs"
+      "dest": "dist/masar-travel/server/server.js"
     }
   ]
 }
