@@ -2,3 +2,11 @@
 command = "ng build"
 functions = "netlify/functions"
 publish = "dist/masar-travel/browser"
+
+[functions]
+node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/server"
+  status = 200
