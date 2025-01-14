@@ -1,6 +1,7 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
 import { LanguageService } from "./language.service";
+import { isPlatformBrowser } from "@angular/common";
 
 export interface SeoConfig {
   title: string;
@@ -17,7 +18,7 @@ export interface SeoConfig {
 export class SeoService {
   private readonly baseUrl = "https://masar-travel.com"; // Replace with your actual domain
   private readonly defaultImage = "/assets/masar-og-image.jpg";
-
+  platformId = inject(PLATFORM_ID);
   constructor(
     private meta: Meta,
     private title: Title,
@@ -25,6 +26,7 @@ export class SeoService {
   ) {}
 
   updateSeo(config: SeoConfig) {
+    if (!isPlatformBrowser(this.platformId)) return;
     const isRTL = this.languageService.isRTL();
     const lang = this.languageService.getCurrentLang();
 
@@ -93,6 +95,7 @@ export class SeoService {
   }
 
   setCanonicalUrl(url?: string) {
+    if (!isPlatformBrowser(this.platformId)) return;
     let link: HTMLLinkElement =
       document.querySelector('link[rel="canonical"]') ||
       document.createElement("link");

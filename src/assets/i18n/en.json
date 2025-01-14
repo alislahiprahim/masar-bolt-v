@@ -14,7 +14,8 @@
     "quickLinks": "Quick Links",
     "support": "Support",
     "contactUs": "Contact Us",
-    "allRightsReserved": "All rights reserved"
+    "allRightsReserved": "All rights reserved",
+    "close": "Close"
   },
   "nav": {
     "home": "Home",
@@ -195,7 +196,24 @@
       "submit": {
         "button": "Confirm Booking",
         "processing": "Processing..."
-      }
+      },
+      "booked": "You have already booked this trip.",
+      "bookedMessage": " You can view the details in your profile.",
+      "profile": "Profile",
+      "whatsappNumber": "WhatsApp Number",
+      "whatsappNumberRequired": "WhatsApp number is required",
+      "whatsappNumberInvalid": "Please enter a valid Egyptian phone number",
+      "nationalIdImage": "National ID Image",
+      "upload": "Upload",
+      "or": "or drag and drop",
+      "nationalIdRequired": "National ID image is required",
+      "numberOfTravelers": "Number of Travelers",
+      "numberOfTravelersRequired": "Number of travelers is required",
+      "specialRequestsField": "Special Requests",
+      "specialRequestsPlaceholder": "Any dietary requirements, accessibility needs, or special preferences?",
+      "total": "Total",
+      "processing": "Processing...",
+      "book": "Book now"
     }
   }
 }

@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Booking } from '../models/booking.model';
-import { AuthService } from './auth.service';
+import { Injectable, signal } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
+import { Booking } from "../models/booking.model";
+import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class BookingService {
-  private bookings = new BehaviorSubject<Booking[]>([]);
-  bookings$ = this.bookings.asObservable();
+  private bookingsSignal = signal<Booking[]>([]);
+  private bookingStatusSignal = signal<{
+    [tripId: string]: "booked" | "pending" | null;
+  }>({});
 
   constructor(private authService: AuthService) {}
 
@@ -17,12 +19,11 @@ export class BookingService {
     if (!user)
       throw new Error("User must be authenticated to create a booking");
 
-    // In a real application, you would upload the image to a storage service
-    // and get back a URL. Here we're just using the File object as is.
+    const tripId = formData.get("tripId") as string;
     const newBooking: Booking = {
       id: crypto.randomUUID(),
       userId: user.id,
-      tripId: formData.get("tripId") as string,
+      tripId,
       status: "pending",
       bookingDate: new Date().toISOString(),
       whatsappNumber: formData.get("whatsappNumber") as string,
@@ -34,25 +35,41 @@ export class BookingService {
       specialRequests: formData.get("specialRequests") as string,
     };
 
-    const currentBookings = this.bookings.value;
-    this.bookings.next([...currentBookings, newBooking]);
+    // Update bookings
+    this.bookingsSignal.update((bookings) => [...bookings, newBooking]);
+
+    // Update booking status for this trip
+    this.bookingStatusSignal.update((status) => ({
+      ...status,
+      [tripId]: "booked",
+    }));
 
     return newBooking;
   }
 
+  getBookingStatus(tripId: string) {
+    return this.bookingStatusSignal().hasOwnProperty(tripId)
+      ? this.bookingStatusSignal()[tripId]
+      : null;
+  }
+
   getBookingsByUser(userId: string): Booking[] {
-    return this.bookings.value.filter((booking) => booking.userId === userId);
+    return this.bookingsSignal().filter(
+      (booking: Booking) => booking.userId === userId
+    );
   }
 
   getBookingById(bookingId: string): Booking | undefined {
-    return this.bookings.value.find((booking) => booking.id === bookingId);
+    return this.bookingsSignal().find(
+      (booking: Booking) => booking.id === bookingId
+    );
   }
 
   updateBookingStatus(bookingId: string, status: Booking["status"]): void {
-    const currentBookings = this.bookings.value;
-    const updatedBookings = currentBookings.map((booking) =>
-      booking.id === bookingId ? { ...booking, status } : booking
+    this.bookingsSignal.update((bookings: Booking[]) =>
+      bookings.map((booking: Booking) =>
+        booking.id === bookingId ? { ...booking, status } : booking
+      )
     );
-    this.bookings.next(updatedBookings);
   }
 }

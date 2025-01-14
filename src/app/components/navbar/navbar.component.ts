@@ -26,7 +26,7 @@ import { AuthService } from "../../services/auth.service";
     LanguageSwitcherComponent,
   ],
   template: `
-    <nav class="fixed w-full z-50 backdrop-blur-md bg-white/80 shadow-lg">
+    <nav class="fixed w-full z-50 backdrop-blur-md bg-white shadow-lg">
       <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between h-16">
           <!-- Logo and Brand -->
@@ -121,7 +121,7 @@ import { AuthService } from "../../services/auth.service";
 
         <!-- Drawer Content -->
         <div
-          class="relative inset-y-0 rtl:left-0 ltr:right-0 w-64 bg-white shadow-xl"
+          class="relative inset-y-0 rtl:left-0 ltr:right-0 w-64 top-[60px] bg-white shadow-xl"
           (click)="$event.stopPropagation()"
         >
           <div class="p-4 space-y-6">
