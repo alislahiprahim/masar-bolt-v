@@ -14,7 +14,8 @@
     "quickLinks": "روابط سريعة",
     "support": "الدعم",
     "contactUs": "اتصل بنا",
-    "allRightsReserved": "جميع الحقوق محفوظة"
+    "allRightsReserved": "جميع الحقوق محفوظة",
+    "close": "اغلاق"
   },
   "nav": {
     "home": "الرئيسية",
@@ -192,7 +193,24 @@
       "submit": {
         "button": "تأكيد الحجز",
         "processing": "جاري المعالجة..."
-      }
+      },
+      "booked": "تم الحجز",
+      "bookedMessage": "تم حجز الرحلة بنجاح. يمكنك الدفع بالضغط على الزر ادناه.",
+      "profile": "الملف الشخصي",
+      "whatsappNumber": "رقم الواتساب",
+      "whatsappNumberRequired": "رقم الواتساب مطلوب",
+      "whatsappNumberInvalid": "الرجاء ادخال رقم هاتف مصري صحيح",
+      "nationalIdImage": "صورة البطاقة الشخصية",
+      "upload": "تحميل",
+      "or": "او اسحب وافلت صورة البطاقة هنا",
+      "nationalIdRequired": "صورة البطاقة الشخصية مطلوبة",
+      "numberOfTravelers": "عدد المسافرين",
+      "numberOfTravelersRequired": "عدد المسافرين مطلوب",
+      "specialRequestsField": "طلبات خاصة",
+      "specialRequestsPlaceholder": "اي متطلبات غذائية، احتياجات خاصة، او تفضيلات؟",
+      "total": "الاجمالي",
+      "processing": "جاري المعالجة...",
+      "book": "احجز الان"
     }
   }
 }

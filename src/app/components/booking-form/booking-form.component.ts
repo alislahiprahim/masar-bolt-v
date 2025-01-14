@@ -1,23 +1,63 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Component, Input, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
+import { Router, RouterLink } from "@angular/router";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import {
   faUsers,
   faComments,
   faPhone,
   faIdCard,
   faTimes,
+  faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { Trip } from "../../models/trip.model";
 import { BookingService } from "../../services/booking.service";
+import { DialogService } from "../../services/dialog.service";
+import { TranslateModule } from "@ngx-translate/core";
 
 @Component({
   selector: "app-booking-form",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FontAwesomeModule,
+    RouterLink,
+    TranslateModule,
+  ],
   template: `
+    @if (bookingService.getBookingStatus(trip.id) === 'booked') {
+    <div class="bg-white p-6 rounded-xl shadow-sm">
+      <div class="text-center">
+        <div
+          class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+        >
+          <fa-icon
+            [icon]="faCheckCircle"
+            class="text-2xl text-green-600"
+          ></fa-icon>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">
+          {{ "booking.form.booked" | translate }}
+        </h3>
+        <p class="text-gray-600 mb-6">
+          {{ "booking.form.bookedMessage" | translate }}
+        </p>
+        <a
+          routerLink="/profile"
+          class="btn-primary inline-block w-full cursor-pointer"
+        >
+          {{ "booking.form.profile" | translate }}
+        </a>
+      </div>
+    </div>
+    } @else {
     <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
       @if (error) {
       <div
@@ -32,7 +72,7 @@ import { BookingService } from "../../services/booking.service";
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
             <fa-icon [icon]="faPhone" class="mx-2 rtl:rotate-180"></fa-icon>
-            WhatsApp Number
+            {{ "booking.form.whatsappNumber" | translate }}
           </label>
           <div class="flex">
             <span
@@ -43,16 +83,18 @@ import { BookingService } from "../../services/booking.service";
             <input
               type="tel"
               formControlName="whatsappNumber"
-              class="input-field ltr:rounded-l-none rtl:rounded-r-none"
+              class="input-field ltr:rounded-l-none rtl:rounded-r-none "
               placeholder="1234567890"
             />
           </div>
           @if (bookingForm.get('whatsappNumber')?.errors?.['required'] &&
           bookingForm.get('whatsappNumber')?.touched) {
-          <p class="mt-1 text-sm text-red-600">WhatsApp number is required</p>
+          <p class="mt-1 text-sm text-red-600">
+            {{ "booking.form.whatsappNumberRequired" | translate }}
+          </p>
           } @if (bookingForm.get('whatsappNumber')?.errors?.['pattern']) {
           <p class="mt-1 text-sm text-red-600">
-            Please enter a valid Egyptian phone number
+            {{ "booking.form.whatsappNumberInvalid" | translate }}
           </p>
           }
         </div>
@@ -61,7 +103,7 @@ import { BookingService } from "../../services/booking.service";
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
             <fa-icon [icon]="faIdCard" class="mx-2"></fa-icon>
-            National ID Image
+            {{ "booking.form.nationalIdImage" | translate }}
           </label>
           <div
             class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
@@ -86,7 +128,7 @@ import { BookingService } from "../../services/booking.service";
                   for="national-id-upload"
                   class="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
                 >
-                  <span>Upload a file</span>
+                  <span>{{ "booking.form.upload" | translate }}</span>
                   <input
                     id="national-id-upload"
                     type="file"
@@ -95,7 +137,7 @@ import { BookingService } from "../../services/booking.service";
                     (change)="onFileSelected($event)"
                   />
                 </label>
-                <p class="pl-1">or drag and drop</p>
+                <p class="pl-1">{{ "booking.form.or" | translate }}</p>
               </div>
               <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
               } @else {
@@ -118,7 +160,9 @@ import { BookingService } from "../../services/booking.service";
           </div>
           @if (bookingForm.get('nationalIdImage')?.errors?.['required'] &&
           bookingForm.get('nationalIdImage')?.touched) {
-          <p class="mt-1 text-sm text-red-600">National ID image is required</p>
+          <p class="mt-1 text-sm text-red-600">
+            {{ "booking.form.nationalIdRequired" | translate }}
+          </p>
           }
         </div>
 
@@ -126,7 +170,7 @@ import { BookingService } from "../../services/booking.service";
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
             <fa-icon [icon]="faUsers" class="mx-2"></fa-icon>
-            Number of Travelers
+            {{ "booking.form.numberOfTravelers" | translate }}
           </label>
           <input
             type="number"
@@ -138,7 +182,7 @@ import { BookingService } from "../../services/booking.service";
           @if (bookingForm.get('numberOfTravelers')?.errors?.['required'] &&
           bookingForm.get('numberOfTravelers')?.touched) {
           <p class="mt-1 text-sm text-red-600">
-            Number of travelers is required
+            {{ "booking.form.numberOfTravelersRequired" | translate }}
           </p>
           }
         </div>
@@ -147,20 +191,22 @@ import { BookingService } from "../../services/booking.service";
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
             <fa-icon [icon]="faComments" class="mx-2"></fa-icon>
-            Special Requests
+            {{ "booking.form.specialRequestsField" | translate }}
           </label>
           <textarea
             formControlName="specialRequests"
             rows="3"
             class="input-field"
-            placeholder="Any dietary requirements, accessibility needs, or special preferences?"
+            [placeholder]="'booking.form.specialRequestsPlaceholder' | translate"
           ></textarea>
         </div>
 
         <!-- Total Price -->
         <div class="border-t pt-6">
           <div class="flex justify-between items-center mb-6">
-            <span class="text-lg font-medium text-gray-900">Total Price:</span>
+            <span class="text-lg font-medium text-gray-900"
+              >{{ "booking.form.total" | translate }}:</span
+            >
             <span class="text-2xl font-bold text-primary-600">{{
               totalPrice | currency
             }}</span>
@@ -171,11 +217,16 @@ import { BookingService } from "../../services/booking.service";
             [disabled]="!bookingForm.valid || isSubmitting"
             class="w-full btn-primary"
           >
-            {{ isSubmitting ? "Processing..." : "Confirm Booking" }}
+            {{
+              isSubmitting
+                ? ("booking.form.processing" | translate)
+                : ("booking.form.book" | translate)
+            }}
           </button>
         </div>
       </form>
     </div>
+    }
   `,
 })
 export class BookingFormComponent implements OnInit {
@@ -193,10 +244,11 @@ export class BookingFormComponent implements OnInit {
   faPhone = faPhone;
   faIdCard = faIdCard;
   faTimes = faTimes;
-
+  faCheckCircle = faCheckCircle;
   constructor(
     private fb: FormBuilder,
-    private bookingService: BookingService,
+    public bookingService: BookingService,
+    private dialogService: DialogService,
     private router: Router
   ) {
     this.bookingForm = this.fb.group({
@@ -215,6 +267,49 @@ export class BookingFormComponent implements OnInit {
     this.bookingForm.get("numberOfTravelers")?.valueChanges.subscribe(() => {
       this.updateTotalPrice();
     });
+  }
+
+  async onSubmit() {
+    if (this.bookingForm.valid) {
+      this.isSubmitting = true;
+      this.error = null;
+
+      try {
+        const formData = new FormData();
+        formData.append("tripId", this.trip.id);
+        formData.append(
+          "whatsappNumber",
+          this.bookingForm.value.whatsappNumber
+        );
+        formData.append(
+          "nationalIdImage",
+          this.bookingForm.value.nationalIdImage
+        );
+        formData.append(
+          "numberOfTravelers",
+          this.bookingForm.value.numberOfTravelers
+        );
+        formData.append(
+          "specialRequests",
+          this.bookingForm.value.specialRequests || ""
+        );
+        formData.append("totalPrice", this.totalPrice.toString());
+
+        const booking = this.bookingService.createBooking(formData);
+
+        this.dialogService.success(
+          "Your trip has been successfully booked! You can view the details in your profile."
+        );
+
+        // Form will be hidden automatically due to booking status change
+      } catch (err) {
+        this.dialogService.error(
+          "An error occurred while processing your booking.form. Please try again."
+        );
+      } finally {
+        this.isSubmitting = false;
+      }
+    }
   }
 
   updateTotalPrice() {
@@ -242,42 +337,5 @@ export class BookingFormComponent implements OnInit {
   removeImage() {
     this.nationalIdPreview = null;
     this.bookingForm.patchValue({ nationalIdImage: null });
-  }
-
-  onSubmit() {
-    if (this.bookingForm.valid) {
-      this.isSubmitting = true;
-      this.error = null;
-
-      try {
-        const formData = new FormData();
-        formData.append("tripId", this.trip.id);
-        formData.append(
-          "whatsappNumber",
-          this.bookingForm.value.whatsappNumber
-        );
-        formData.append(
-          "nationalIdImage",
-          this.bookingForm.value.nationalIdImage
-        );
-        formData.append(
-          "numberOfTravelers",
-          this.bookingForm.value.numberOfTravelers
-        );
-        formData.append(
-          "specialRequests",
-          this.bookingForm.value.specialRequests || ""
-        );
-        formData.append("totalPrice", this.totalPrice.toString());
-
-        const booking = this.bookingService.createBooking(formData);
-        this.router.navigate(["/bookings", booking.id]);
-      } catch (err) {
-        this.error =
-          "An error occurred while processing your booking. Please try again.";
-      } finally {
-        this.isSubmitting = false;
-      }
-    }
   }
 }
