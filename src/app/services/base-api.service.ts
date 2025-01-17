@@ -3,17 +3,15 @@ import { Observable, throwError } from "rxjs";
 import { catchError, map, shareReplay } from "rxjs/operators";
 import { ToastService } from "./toast.service";
 import { ApiResponse } from "../models/api.model";
+import { inject } from "@angular/core";
 
 export abstract class BaseApiService<T> {
   protected abstract apiUrl: string;
   private featuredCache$?: Observable<T[]>;
   private cacheDuration = 5 * 60 * 1000; // 5 minutes
   private lastCacheTime = 0;
-
-  constructor(
-    protected http: HttpClient,
-    protected toastService: ToastService
-  ) {}
+  protected http = inject(HttpClient);
+  protected toastService = inject(ToastService);
 
   protected getItems(
     params: Record<string, any> = {}

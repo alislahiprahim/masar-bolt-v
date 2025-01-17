@@ -12,10 +12,6 @@ import { BaseApiService } from "./base-api.service";
 export class TripsService extends BaseApiService<Trip> {
   protected apiUrl = `${environment.apiUrl}/trip`;
 
-  constructor() {
-    super(inject(HttpClient), inject(ToastService));
-  }
-
   getTrips(
     params: {
       page?: number;

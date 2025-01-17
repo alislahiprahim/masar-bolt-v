@@ -15,8 +15,12 @@
     "support": "Support",
     "contactUs": "Contact Us",
     "allRightsReserved": "All rights reserved",
+    "tryAgain": "Try Again",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "save": "Save",
     "close": "Close"
-  },
+      },
   "nav": {
     "home": "Home",
     "trips": "Trips",
@@ -214,6 +218,58 @@
       "total": "Total",
       "processing": "Processing...",
       "book": "Book now"
+    }
+  },
+  "reservations": {
+    "title": "My Reservations",
+    "subtitle": "Manage your travel bookings and itineraries",
+    "empty": "No reservations found",
+    "booking": "Booking",
+    "travelers": "Number of Travelers",
+    "totalPrice": "Total Price",
+    "date": "Booking Date",
+    "processing": "Processing...",
+    "confirm": "Confirm Reservation",
+    "downloadTicket": "Download Ticket",
+    "downloadInvoice": "Download Invoice",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "paid": "Paid",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "filters": {
+      "status": "Filter by Status",
+      "allStatuses": "All Statuses",
+      "search": "Search Reservations",
+      "searchPlaceholder": "Search by booking ID or trip name"
+    },
+    "edit": {
+      "title": "Edit Reservation",
+      "travelers": "Number of Travelers",
+      "whatsapp": "WhatsApp Number",
+      "specialRequests": "Special Requests",
+      "errors": {
+        "travelersRequired": "Number of travelers is required",
+        "travelersMin": "At least one traveler is required",
+        "whatsappRequired": "WhatsApp number is required",
+        "whatsappInvalid": "Please enter a valid phone number"
+      }
+    },
+    "cancel": {
+      "title": "Cancel Reservation",
+      "reason": "Cancellation Reason",
+      "reasonPlaceholder": "Please tell us why you're cancelling this reservation",
+      "confirm": "Confirm Cancellation",
+      "errors": {
+        "reasonRequired": "Please provide a reason for cancellation"
+      }
+    },
+    "messages": {
+      "updateSuccess": "Reservation updated successfully",
+      "cancelSuccess": "Reservation cancelled successfully",
+      "confirmSuccess": "Reservation confirmed successfully"
     }
   }
 }

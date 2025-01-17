@@ -13,10 +13,6 @@ import { GalleryImage } from "../models/gallary.model";
 export class GalleryService extends BaseApiService<GalleryImage> {
   protected apiUrl = `${environment.apiUrl}/Gallery`;
 
-  constructor() {
-    super(inject(HttpClient), inject(ToastService));
-  }
-
   getGalleryImages(filters?: {
     location?: string;
     tag?: string;

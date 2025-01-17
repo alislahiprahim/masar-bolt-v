@@ -15,7 +15,11 @@
     "support": "الدعم",
     "contactUs": "اتصل بنا",
     "allRightsReserved": "جميع الحقوق محفوظة",
-    "close": "اغلاق"
+    "close": "اغلاق",
+    "tryAgain": "حاول مرة أخرى",
+    "edit": "تعديل",
+    "cancel": "إلغاء",
+    "save": "حفظ"
   },
   "nav": {
     "home": "الرئيسية",
@@ -211,6 +215,58 @@
       "total": "الاجمالي",
       "processing": "جاري المعالجة...",
       "book": "احجز الان"
+    }
+  },
+  "reservations": {
+    "title": "حجوزاتي",
+    "subtitle": "إدارة حجوزات السفر والجداول الزمنية",
+    "empty": "لا توجد حجوزات",
+    "booking": "حجز",
+    "travelers": "عدد المسافرين",
+    "totalPrice": "السعر الإجمالي",
+    "date": "تاريخ الحجز",
+    "processing": "جاري المعالجة...",
+    "confirm": "تأكيد الحجز",
+    "downloadTicket": "تحميل التذكرة",
+    "downloadInvoice": "تحميل الفاتورة",
+    "status": {
+      "pending": "قيد الانتظار",
+      "confirmed": "مؤكد",
+      "paid": "مدفوع",
+      "completed": "مكتمل",
+      "cancelled": "ملغي"
+    },
+    "filters": {
+      "status": "تصفية حسب الحالة",
+      "allStatuses": "جميع الحالات",
+      "search": "بحث في الحجوزات",
+      "searchPlaceholder": "البحث برقم الحجز أو اسم الرحلة"
+    },
+    "edit": {
+      "title": "تعديل الحجز",
+      "travelers": "عدد المسافرين",
+      "whatsapp": "رقم الواتساب",
+      "specialRequests": "طلبات خاصة",
+      "errors": {
+        "travelersRequired": "عدد المسافرين مطلوب",
+        "travelersMin": "مطلوب مسافر واحد على الأقل",
+        "whatsappRequired": "رقم الواتساب مطلوب",
+        "whatsappInvalid": "الرجاء إدخال رقم هاتف صحيح"
+      }
+    },
+    "cancel": {
+      "title": "إلغاء الحجز",
+      "reason": "سبب الإلغاء",
+      "reasonPlaceholder": "يرجى إخبارنا بسبب إلغاء هذا الحجز",
+      "confirm": "تأكيد الإلغاء",
+      "errors": {
+        "reasonRequired": "يرجى تقديم سبب للإلغاء"
+      }
+    },
+    "messages": {
+      "updateSuccess": "تم تحديث الحجز بنجاح",
+      "cancelSuccess": "تم إلغاء الحجز بنجاح",
+      "confirmSuccess": "تم تأكيد الحجز بنجاح"
     }
   }
 }
