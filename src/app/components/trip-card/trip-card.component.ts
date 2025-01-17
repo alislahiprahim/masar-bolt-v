@@ -11,17 +11,17 @@ import { TranslateModule } from "@ngx-translate/core";
 import { Trip } from "../../models/trip.model";
 
 @Component({
-    selector: "app-trip-card",
-    imports: [CommonModule, RouterLink, FontAwesomeModule, TranslateModule],
-    template: `
+  selector: "app-trip-card",
+  imports: [CommonModule, RouterLink, FontAwesomeModule, TranslateModule],
+  template: `
     <a [routerLink]="['/trips', trip.id]" class="group">
       <div class="card overflow-hidden">
         <!-- Image -->
         <div class="relative h-64 overflow-hidden">
           <img
             loading="lazy"
-            [src]="trip.imageUrl"
-            [alt]="trip.title"
+            [src]="trip.tripPhotos[0]"
+            [alt]="trip.name"
             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
           <div
@@ -44,13 +44,13 @@ import { Trip } from "../../models/trip.model";
           <h3
             class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors"
           >
-            {{ trip.title }}
+            {{ trip.name }}
           </h3>
 
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center text-gray-600">
               <fa-icon [icon]="faClock" class="ltr:mr-2 rtl:ml-2"></fa-icon>
-              {{ trip.duration }} {{ "common.days" | translate }}
+              {{ trip.days }} {{ "common.days" | translate }}
             </div>
             <div class="flex items-center text-primary-600">
               <fa-icon [icon]="faStar" class="ltr:mr-1 rtl:ml-1"></fa-icon>
@@ -73,7 +73,7 @@ import { Trip } from "../../models/trip.model";
         </div>
       </div>
     </a>
-  `
+  `,
 })
 export class TripCardComponent {
   @Input({ required: true }) trip!: Trip;

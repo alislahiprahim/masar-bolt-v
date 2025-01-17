@@ -26,7 +26,7 @@ export class SeoService {
   ) {}
 
   updateSeo(config: SeoConfig) {
-    if (!isPlatformBrowser(this.platformId)) return;
+     if (!isPlatformBrowser(this.platformId)) return;
     const isRTL = this.languageService.isRTL();
     const lang = this.languageService.getCurrentLang();
 

@@ -1,13 +1,18 @@
 export interface Trip {
   id: string;
-  title: string;
-  destination: string;
+  name: string;
+  days: number;
   price: number;
-  duration: number;
-  startDate: string;
-  endDate: string;
+  tripStatus: number;
+  notes: string;
   description: string;
-  imageUrl: string;
+  date: string;
+  cityId: string;
+  city: string;
+  maxReservations: number;
+  isActive: boolean;
+  tripPhotos: string[];
+  destination: string;
   included: string[];
-  itinerary: { day: number; description: string; }[];
 }
+ 

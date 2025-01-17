@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  output,
+} from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import {
@@ -8,59 +13,76 @@ import {
   faSearch,
   faFilter,
 } from "@fortawesome/free-solid-svg-icons";
+import { TripsStateService } from "../../state/trips.state";
 
 @Component({
-    selector: "app-search-filter",
-    imports: [FormsModule, FontAwesomeModule],
-    template: `<div class="glass-container mb-8 p-6">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <!-- Search -->
-      <div class="relative">
-        <fa-icon
-          [icon]="faSearch"
-          class="absolute z-10 left-3 top-1/2 -translate-y-1/2 text-primary-600"
-        ></fa-icon>
-        <input
-          type="text"
-          [(ngModel)]="searchTerm"
-          (ngModelChange)="filterTrips()"
-          placeholder="Search destinations..."
-          class="input-field pl-10"
-        />
-      </div>
+  selector: "app-search-filter",
+  imports: [FormsModule, FontAwesomeModule],
+  template: `
+    <div class="glass-container mb-12 p-6 shadow-xl">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Search Input -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1"
+            >Search</label
+          >
+          <input
+            type="text"
+            [ngModel]="state.filters().search"
+            (ngModelChange)="onSearchChange($event)"
+            placeholder="Search trips..."
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          />
+        </div>
 
-      <!-- Price Range -->
-      <div>
-        <select
-          [(ngModel)]="selectedPriceRange"
-          (ngModelChange)="filterTrips()"
-          class="input-field"
-        >
-          <option value="">All Price Ranges</option>
-          <option value="0-1000">Under $1,000</option>
-          <option value="1000-2000">$1,000 - $2,000</option>
-          <option value="2000+">Over $2,000</option>
-        </select>
-      </div>
+        <!-- Destination Filter -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1"
+            >Destination</label
+          >
+          <select
+            [ngModel]="state.filters().destination"
+            (ngModelChange)="onDestinationChange($event)"
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          >
+            <option value="">All Destinations</option>
+            @for (destination of state.destinations(); track destination) {
+            <option [value]="destination">{{ destination }}</option>
+            }
+          </select>
+        </div>
 
-      <!-- Duration -->
-      <div>
-        <select
-          [(ngModel)]="selectedDuration"
-          (ngModelChange)="filterTrips()"
-          class="input-field"
-        >
-          <option value="">All Durations</option>
-          <option value="1-3">1-3 Days</option>
-          <option value="4-7">4-7 Days</option>
-          <option value="8+">8+ Days</option>
-        </select>
+        <!-- Price Range -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1"
+            >Price Range</label
+          >
+          <div class="flex items-center gap-2">
+            <input
+              type="number"
+              [ngModel]="state.filters().minPrice"
+              (ngModelChange)="onPriceChange('min', $event)"
+              placeholder="Min"
+              class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            />
+            <span class="text-gray-500">-</span>
+            <input
+              type="number"
+              [ngModel]="state.filters().maxPrice"
+              (ngModelChange)="onPriceChange('max', $event)"
+              placeholder="Max"
+              class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            />
+          </div>
+        </div>
       </div>
     </div>
-  </div>`,
-    changeDetection: ChangeDetectionStrategy.OnPush
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchFilterComponent {
+  protected state = inject(TripsStateService);
+  loadTrips = output<void>();
   faMapMarkerAlt = faMapMarkerAlt;
   faClock = faClock;
   faStar = faStar;
@@ -71,5 +93,20 @@ export class SearchFilterComponent {
   selectedPriceRange = "";
   selectedDuration = "";
 
-  filterTrips() {}
+  protected onSearchChange(search: string) {
+    this.state.updateFilters({ search });
+    this.loadTrips.emit();
+  }
+
+  protected onDestinationChange(destination: string) {
+    this.state.updateFilters({ destination });
+    this.loadTrips.emit();
+  }
+
+  protected onPriceChange(type: "min" | "max", value: number) {
+    this.state.updateFilters({
+      [type === "min" ? "minPrice" : "maxPrice"]: value,
+    });
+    this.loadTrips.emit();
+  }
 }

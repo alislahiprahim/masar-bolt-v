@@ -1,25 +1,23 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import {
-  faArrowRight,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { TranslateModule } from "@ngx-translate/core";
-import { Trip } from "../../../models/trip.model";
 import { TripCardComponent } from "../../trip-card/trip-card.component";
+import { TripsService } from "../../../services/trips.service";
+import { TripsStateService } from "../../../state/trips.state";
 
 @Component({
-    selector: "app-popular-trips-section",
-    imports: [
-        CommonModule,
-        RouterLink,
-        FontAwesomeModule,
-        TranslateModule,
-        TripCardComponent,
-    ],
-    template: `
+  selector: "app-popular-trips-section",
+  imports: [
+    CommonModule,
+    RouterLink,
+    FontAwesomeModule,
+    TranslateModule,
+    TripCardComponent,
+  ],
+  template: `
     <section class="py-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
@@ -31,46 +29,72 @@ import { TripCardComponent } from "../../trip-card/trip-card.component";
           </p>
         </div>
 
+        @if (state.loading()) {
+        <div class="flex justify-center items-center py-12">
+          <fa-icon
+            [icon]="faSpinner"
+            class="text-4xl text-primary-600 animate-spin"
+          ></fa-icon>
+        </div>
+        } @else if (state.error()) {
+        <div class="text-center py-12">
+          <p class="text-red-600">{{ state.error() }}</p>
+          <button (click)="loadPopularTrips()" class="mt-4 btn-primary">
+            Try Again
+          </button>
+        </div>
+        } @else {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          @for (trip of popularTrips; track trip.id) {
-          <app-trip-card [trip]="trip" [rating]="4.8" />
-
+          @for (trip of state.popularTrips(); track trip.id) {
+          <app-trip-card [trip]="trip"></app-trip-card>
           }
         </div>
 
         <div class="text-center mt-12">
-          <a
-            routerLink="/trips"
-            class="btn-primary inline-flex items-center gap-2"
-          >
+          <a routerLink="/trips" class="btn-primary inline-flex items-center">
             {{ "home.popularTrips.viewAll" | translate }}
-            <fa-icon
-              [icon]="faArrowRight"
-              [classList]="'rtl:rotate-180'"
-            ></fa-icon>
+            <svg
+              class="ml-2 w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
           </a>
         </div>
+        }
       </div>
     </section>
-  `
+  `,
 })
 export class PopularTripsSectionComponent {
-  faArrowRight = faChevronRight;
-  popularTrips: Trip[] = [
-    {
-      id: "1",
-      title: "Bali Paradise Escape",
-      destination: "Bali, Indonesia",
-      price: 1299,
-      duration: 7,
-      startDate: "2024-06-01",
-      endDate: "2024-06-07",
-      description:
-        "Experience the magic of Bali with this week-long adventure. Explore ancient temples, relax on pristine beaches, and immerse yourself in the local culture.",
-      imageUrl: "https://images.unsplash.com/photo-1537996194471-e657df975ab4",
-      included: [],
-      itinerary: [],
-    },
-    // ... other trips
-  ];
+  private tripsService = inject(TripsService);
+  protected state = inject(TripsStateService);
+
+  // Icons
+  protected faSpinner = faSpinner;
+
+  ngOnInit() {
+    this.loadPopularTrips();
+  }
+
+  protected loadPopularTrips() {
+    this.state.setLoading(true);
+
+    this.tripsService.getPopularTrips().subscribe({
+      next: (trips) => {
+        this.state.setPopularTrips(trips);
+        this.state.setLoading(false);
+      },
+      error: (error) => {
+        this.state.setError(error.message);
+      },
+    });
+  }
 }

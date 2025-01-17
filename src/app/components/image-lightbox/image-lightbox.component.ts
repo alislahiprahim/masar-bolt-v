@@ -3,9 +3,10 @@ import { CommonModule } from "@angular/common";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { LightboxService } from "./image-lightbox.service";
+import { ImgUrlPipe } from "../../pipes/imgUrl.pipe";
 
 export interface LightboxImage {
-  url: string;
+  filePath: string;
   title: string;
   description?: string;
 }
@@ -13,8 +14,8 @@ export interface LightboxImage {
 @Component({
   selector: "app-lightbox",
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule],
-   template: `
+  imports: [CommonModule, FontAwesomeModule, ImgUrlPipe],
+  template: `
     @if (isOpen) {
     <div
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 transition-opacity duration-300"
@@ -29,7 +30,7 @@ export interface LightboxImage {
         </button>
 
         <img
-          [src]="image.url"
+          [src]="image.filePath | imgUrl"
           [alt]="image.title"
           class="max-h-[90vh] w-auto mx-auto rounded-lg shadow-2xl"
           (click)="$event.stopPropagation()"

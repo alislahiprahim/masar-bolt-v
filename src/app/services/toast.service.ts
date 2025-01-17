@@ -1,5 +1,4 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { Injectable, signal } from "@angular/core";
 
 export interface Toast {
   id: string;
@@ -8,17 +7,22 @@ export interface Toast {
   duration?: number;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: "root",
+})
 export class ToastService {
-  private toasts = new BehaviorSubject<Toast[]>([]);
-  toasts$ = this.toasts.asObservable();
+  // Create a signal for the toasts array with readonly access from components
+  private toastsSignal = signal<Toast[]>([]);
+  readonly toasts = this.toastsSignal.asReadonly();
 
   show(message: string, type: Toast["type"] = "info", duration: number = 3000) {
     const id = crypto.randomUUID();
     const toast: Toast = { id, message, type, duration };
 
-    this.toasts.next([...this.toasts.value, toast]);
+    // Add new toast to the array
+    this.toastsSignal.update((toasts) => [...toasts, toast]);
 
+    // Remove toast after duration (if specified)
     if (duration > 0) {
       setTimeout(() => this.remove(id), duration);
     }
@@ -43,10 +47,10 @@ export class ToastService {
   }
 
   remove(id: string) {
-    this.toasts.next(this.toasts.value.filter((t) => t.id !== id));
+    this.toastsSignal.update((toasts) => toasts.filter((t) => t.id !== id));
   }
 
   clear() {
-    this.toasts.next([]);
+    this.toastsSignal.set([]);
   }
 }
