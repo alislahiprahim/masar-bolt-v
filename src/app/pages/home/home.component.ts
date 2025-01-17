@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
@@ -21,21 +21,22 @@ import { TestimonialsSectionComponent } from "../../components/home/testimonials
 import { GallerySectionComponent } from "../../components/home/gallary-section/gallary-section.component";
 import { ServicesSectionComponent } from "../../components/home/service-section/service-section.component";
 import { TranslateModule } from "@ngx-translate/core";
+import { SeoService } from "../../services/seo.service";
 
 @Component({
-    selector: "app-home",
-    imports: [
-        CommonModule,
-        FontAwesomeModule,
-        ServicesSectionComponent,
-        DestinationsSectionComponent,
-        PopularTripsSectionComponent,
-        GallerySectionComponent,
-        TestimonialsSectionComponent,
-        HeroSectionComponent,
-        TranslateModule,
-    ],
-    template: ` <app-hero-section />
+  selector: "app-home",
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    ServicesSectionComponent,
+    DestinationsSectionComponent,
+    PopularTripsSectionComponent,
+    GallerySectionComponent,
+    TestimonialsSectionComponent,
+    HeroSectionComponent,
+    TranslateModule,
+  ],
+  template: ` <app-hero-section />
 
     @defer (on viewport) {
     <app-services-section />
@@ -67,9 +68,10 @@ import { TranslateModule } from "@ngx-translate/core";
     <div class="h-20 flex items-center justify-center">
       <p>{{ "common.loading" | translate }}</p>
     </div>
-    }`
+    }`,
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  seoService = inject(SeoService);
   faSearch = faSearch;
   faStar = faStar;
   faPlane = faPlane;
@@ -221,6 +223,24 @@ export class HomeComponent {
       location: "Kyoto, Japan",
     },
   ];
+
+  ngOnInit(): void {
+    this.seoService.updateSeo({
+      title: "home page",
+      description: "home page",
+      keywords: [
+        "travel",
+        "vacation",
+        // this.trip.destination,
+        "tour package",
+        "holiday",
+        "masar tavels".toLowerCase(),
+      ],
+      ogImage: "/assets/logo.png",
+      ogType: "masar travel",
+      twitterCard: "summary_large_image",
+    });
+  }
 
   openLightbox(image: any): void {
     this.selectedImage = image;

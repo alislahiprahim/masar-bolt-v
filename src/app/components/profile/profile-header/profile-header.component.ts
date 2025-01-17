@@ -21,7 +21,7 @@ import { User } from "../../../models/user.model";
         />
       </div>
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center space-x-8">
+        <div class="flex items-center space-x-8 gap-2">
           <div class="relative">
             <div
               class="w-24 h-24 rounded-full overflow-hidden bg-white ring-4 ring-white"

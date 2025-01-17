@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { CommonModule, CurrencyPipe } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { FormsModule } from "@angular/forms";
@@ -9,23 +9,26 @@ import {
   faStar,
   faSearch,
   faFilter,
+  faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import { Trip } from "../../models/trip.model";
 import { TripCardComponent } from "../../components/trip-card/trip-card.component";
 import { SearchFilterComponent } from "../../components/search-filter/search-filter.component";
 import { CustomHeroSectionComponent } from "../../components/custom-hero-section/custom-hero-section.component";
+import { TripsService } from "../../services/trips.service";
+import { TripsStateService } from "../../state/trips.state";
 
 @Component({
-    selector: "app-trips",
-    imports: [
-        CommonModule,
-        FormsModule,
-        FontAwesomeModule,
-        TripCardComponent,
-        SearchFilterComponent,
-        CustomHeroSectionComponent,
-    ],
-    template: `
+  selector: "app-trips",
+  imports: [
+    CommonModule,
+    FormsModule,
+    FontAwesomeModule,
+    TripCardComponent,
+    SearchFilterComponent,
+    CustomHeroSectionComponent,
+  ],
+  template: `
     <div class="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50">
       <!-- Header -->
       <app-custom-hero-section
@@ -40,120 +43,99 @@ import { CustomHeroSectionComponent } from "../../components/custom-hero-section
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <!-- Search and Filters -->
-        <app-search-filter />
+        <app-search-filter (loadTrips)="loadTrips()" />
         <!-- Trips Grid -->
-        @if (filteredTrips.length > 0) {
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          @for (trip of filteredTrips; track trip.id) {
-          <app-trip-card [trip]="trip" [rating]="4.8"></app-trip-card>
-          }
+        @if (state.loading()) {
+        <div class="flex justify-center items-center py-12">
+          <fa-icon
+            [icon]="faSpinner"
+            class="text-4xl text-primary-600 animate-spin"
+          ></fa-icon>
         </div>
-        } @else {
+        } @else if (state.error()) {
+        <div class="text-center py-12">
+          <p class="text-red-600">{{ state.error() }}</p>
+          <button (click)="loadTrips()" class="mt-4 btn-primary">
+            Try Again
+          </button>
+        </div>
+        } @else if (state.trips().length === 0) {
         <div class="text-center py-12">
           <p class="text-gray-600">No trips found matching your criteria.</p>
+        </div>
+        } @else {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          @for (trip of state.trips(); track trip.id) {
+          <app-trip-card [trip]="trip"></app-trip-card>
+          }
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-12 flex justify-center gap-2">
+          <button
+            (click)="onPageChange(state.pagination().page - 1)"
+            [disabled]="!state.hasPreviousPage()"
+            class="btn-secondary"
+            [class.opacity-50]="!state.hasPreviousPage()"
+          >
+            Previous
+          </button>
+
+          <span class="px-4 py-2 bg-white rounded-lg shadow">
+            Page {{ state.pagination().page }} of {{ state.totalPages() }}
+          </span>
+
+          <button
+            (click)="onPageChange(state.pagination().page + 1)"
+            [disabled]="!state.hasNextPage()"
+            class="btn-secondary"
+            [class.opacity-50]="!state.hasNextPage()"
+          >
+            Next
+          </button>
         </div>
         }
       </div>
     </div>
-  `
+  `,
 })
-export class TripsComponent {
+export class TripsComponent implements OnInit {
+  private tripsService = inject(TripsService);
+  protected state = inject(TripsStateService);
   // Icons
   faMapMarkerAlt = faMapMarkerAlt;
   faClock = faClock;
   faStar = faStar;
   faSearch = faSearch;
   faFilter = faFilter;
+  faSpinner = faSpinner;
+  ngOnInit(): void {
+    this.loadTrips();
+  }
+  protected loadTrips() {
+    const { filters, pagination } = this.state;
+    this.state.setLoading(true);
 
-  // Filter states
+    this.tripsService
+      .getTrips({
+        ...filters(),
+        ...pagination(),
+      })
+      .subscribe({
+        next: ({ trips, total }) => {
+          this.state.setTrips(trips, total);
+          this.state.setLoading(false);
+        },
+        error: (error) => {
+          this.state.setError(error.message);
+        },
+      });
+  }
 
-  // Mock data for trips
-  trips: Trip[] = [
-    {
-      id: "1",
-      title: "Bali Paradise Escape",
-      destination: "Bali, Indonesia",
-      price: 1299,
-      duration: 7,
-      startDate: "2024-06-01",
-      endDate: "2024-06-07",
-      description:
-        "Experience the magic of Bali with this week-long adventure. Explore ancient temples, relax on pristine beaches, and immerse yourself in the local culture.",
-      imageUrl: "https://images.unsplash.com/photo-1537996194471-e657df975ab4",
-      included: [],
-      itinerary: [],
-    },
-    {
-      id: "2",
-      title: "Dubai Desert Safari",
-      destination: "Dubai, UAE",
-      price: 1599,
-      duration: 5,
-      startDate: "2024-07-15",
-      endDate: "2024-07-20",
-      description:
-        "Embark on an unforgettable desert adventure in Dubai. Experience luxury camping, dune bashing, and traditional Arabian hospitality.",
-      imageUrl: "https://images.unsplash.com/photo-1451337516015-6b6e9a44a8a3",
-      included: [],
-      itinerary: [],
-    },
-    {
-      id: "3",
-      title: "Turkish Delight",
-      destination: "Istanbul, Turkey",
-      price: 1099,
-      duration: 6,
-      startDate: "2024-08-10",
-      endDate: "2024-08-16",
-      description:
-        "Discover the enchanting city where East meets West. Visit historic mosques, shop at the Grand Bazaar, and cruise the Bosphorus.",
-      imageUrl: "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b",
-      included: [],
-      itinerary: [],
-    },
-    {
-      id: "4",
-      title: "Moroccan Magic",
-      destination: "Marrakech, Morocco",
-      price: 1399,
-      duration: 8,
-      startDate: "2024-09-01",
-      endDate: "2024-09-08",
-      description:
-        "Journey through the vibrant souks, stunning riads, and Sahara Desert. Experience the rich culture and warm hospitality of Morocco.",
-      imageUrl: "https://images.unsplash.com/photo-1539020140153-e479b8c22e70",
-      included: [],
-      itinerary: [],
-    },
-    {
-      id: "5",
-      title: "Greek Island Hopping",
-      destination: "Greek Islands, Greece",
-      price: 2199,
-      duration: 10,
-      startDate: "2024-06-15",
-      endDate: "2024-06-25",
-      description:
-        "Explore the stunning Cyclades islands, from Santorini`s caldera to Mykonos`s windmills. Enjoy crystal-clear waters and charming villages.",
-      imageUrl: "https://images.unsplash.com/photo-1533105079780-92b9be482077",
-      included: [],
-      itinerary: [],
-    },
-    {
-      id: "6",
-      title: "Japan Cherry Blossom Tour",
-      destination: "Tokyo, Japan",
-      price: 2499,
-      duration: 9,
-      startDate: "2024-03-25",
-      endDate: "2024-04-03",
-      description:
-        "Experience Japan during the magical cherry blossom season. Visit ancient temples, modern cities, and picturesque gardens.",
-      imageUrl: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e",
-      included: [],
-      itinerary: [],
-    },
-  ];
-
-  filteredTrips: Trip[] = this.trips;
+  protected onPageChange(page: number) {
+    this.state.updatePagination({ page });
+    this.loadTrips();
+    // Scroll to top smoothly
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 }

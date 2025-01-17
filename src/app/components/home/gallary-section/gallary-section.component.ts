@@ -1,27 +1,27 @@
-import { Component } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { RouterLink } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { faExpand } from "@fortawesome/free-solid-svg-icons";
+import { faExpand, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { TranslateModule } from "@ngx-translate/core";
-import {
-  LightboxImage,
-  LightboxComponent,
-} from "../../image-lightbox/image-lightbox.component";
+import { LightboxComponent } from "../../image-lightbox/image-lightbox.component";
+import { GalleryImage } from "../../../models/gallary.model";
+import { GalleryService } from "../../../services/gallary.service";
+import { GalleryStateService } from "../../../state/gallary.state";
 import { LightboxService } from "../../image-lightbox/image-lightbox.service";
-
-interface GalleryImage extends LightboxImage {
-  location: string;
-}
+import { ImgUrlPipe } from "../../../pipes/imgUrl.pipe";
 
 @Component({
   selector: "app-gallery-section",
   standalone: true,
   imports: [
     CommonModule,
+    RouterLink,
     FontAwesomeModule,
     TranslateModule,
     LightboxComponent,
-  ],
+    ImgUrlPipe
+],
   template: `
     <section class="py-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,15 +34,30 @@ interface GalleryImage extends LightboxImage {
           </p>
         </div>
 
+        @if (state.loading()) {
+        <div class="flex justify-center items-center py-12">
+          <fa-icon
+            [icon]="faSpinner"
+            class="text-4xl text-primary-600 animate-spin"
+          ></fa-icon>
+        </div>
+        } @else if (state.error()) {
+        <div class="text-center py-12">
+          <p class="text-red-600">{{ state.error() }}</p>
+          <button (click)="loadFeaturedImages()" class="mt-4 btn-primary">
+            Try Again
+          </button>
+        </div>
+        } @else {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          @for (image of galleryImages; track image.url) {
+          @for (image of state.images(); track image.id) {
           <div
             class="group relative overflow-hidden rounded-lg shadow-lg cursor-pointer"
             (click)="openLightbox(image)"
           >
             <img
-              [loading]="'lazy'"
-              [src]="image.url"
+              loading="lazy"
+              [src]="image.filePath |imgUrl"
               [alt]="image.title"
               class="w-full h-[300px] object-cover transition-transform duration-500 group-hover:scale-110"
             />
@@ -65,6 +80,26 @@ interface GalleryImage extends LightboxImage {
           </div>
           }
         </div>
+
+        <div class="text-center mt-12">
+          <a routerLink="/gallery" class="btn-primary inline-flex items-center">
+            {{ "home.gallery.viewAll" | translate }}
+            <svg
+              class="ml-2 w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </a>
+        </div>
+        }
       </div>
     </section>
 
@@ -75,45 +110,38 @@ interface GalleryImage extends LightboxImage {
     />
   `,
 })
-export class GallerySectionComponent {
-  faExpand = faExpand;
+export class GallerySectionComponent implements OnInit {
+  private galleryService = inject(GalleryService);
+  protected state = inject(GalleryStateService);
+  protected lightboxService = inject(LightboxService);
 
-  galleryImages: GalleryImage[] = [
-    {
-      url: "https://images.unsplash.com/photo-1589308078059-be1415eab4c3",
-      title: "Tropical Paradise",
-      location: "Bali, Indonesia",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e",
-      title: "Mountain Retreat",
-      location: "Swiss Alps",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9",
-      title: "Venice Canals",
-      location: "Venice, Italy",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1533929736458-ca588d08c8be",
-      title: "Desert Adventure",
-      location: "Dubai, UAE",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
-      title: "Paris Landmarks",
-      location: "Paris, France",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1513581166391-887a96ddeafd",
-      title: "Japanese Gardens",
-      location: "Kyoto, Japan",
-    },
-  ];
+  // Icons
+  protected faExpand = faExpand;
+  protected faSpinner = faSpinner;
 
-  constructor(public lightboxService: LightboxService) {}
+  ngOnInit() {
+    this.loadFeaturedImages();
+  }
 
-  openLightbox(image: GalleryImage): void {
+  protected loadFeaturedImages() {
+    this.state.setLoading(true);
+
+    this.galleryService.getFeaturedImages(6).subscribe({
+      next: (images) => {
+        this.state.setImages(images, images.length);
+        this.state.setLoading(false);
+      },
+      error: (error) => {
+        this.state.setError(error.message);
+      },
+    });
+  }
+
+  protected openLightbox(image: GalleryImage) {
     this.lightboxService.open(image);
+  }
+
+  ngOnDestroy() {
+    this.state.reset();
   }
 }

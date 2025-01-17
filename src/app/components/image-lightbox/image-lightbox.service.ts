@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { LightboxImage } from "./image-lightbox.component";
+import { GalleryImage } from "../../models/gallary.model";
 
 @Injectable({
   providedIn: "root",
@@ -13,7 +14,7 @@ export class LightboxService {
   currentImage$: Observable<LightboxImage | null> =
     this.currentImageSubject.asObservable();
 
-  open(image: LightboxImage): void {
+  open(image: GalleryImage): void {
     this.currentImageSubject.next(image);
     this.isOpenSubject.next(true);
   }
