@@ -4,6 +4,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ToastComponent } from "./components/toast/toast.component";
 import { DialogComponent } from "./components/dialog/dialog.component";
+import { SecondaryNavbarComponent } from "./components/secondary-navbar/secondary-navbar.component";
 
 @Component({
   selector: "app-root",
@@ -13,21 +14,26 @@ import { DialogComponent } from "./components/dialog/dialog.component";
     FooterComponent,
     DialogComponent,
     ToastComponent,
+    SecondaryNavbarComponent,
   ],
   template: `
     <div class="min-h-screen flex flex-col">
-      <app-navbar></app-navbar>
+      <div class="fixed top-0 left-0 right-0 z-50">
+        <app-secondary-navbar />
+        <app-navbar />
+      </div>
+      <div class="h-[6.5rem]"></div>
       <main class="flex-grow">
         <router-outlet></router-outlet>
       </main>
       @defer(on viewport){
-      <app-footer></app-footer>
+      <app-footer />
       }@placeholder {
       <div></div>
       }
     </div>
-    <app-dialog></app-dialog>
-    <app-toast></app-toast>
+    <app-dialog />
+    <app-toast />
   `,
 })
 export class AppComponent {

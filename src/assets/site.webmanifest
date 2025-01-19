@@ -1,21 +1,67 @@
 {
   "name": "Masar Travel",
-  "short_name": "Masar",
-  "description": "Your trusted travel partner for unforgettable adventures",
+  "short_name": "Masar Travel",
+  "description": "Your trusted travel partner for unforgettable adventures in Egypt and beyond.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#004080",
   "icons": [
     {
-      "src": "/assets/logo.png",
-      "sizes": "192x192",
+      "src": "/assets/icon.png",
+      "sizes": "134x193",
       "type": "image/png"
     },
     {
-      "src": "/assets/logo.png",
-      "sizes": "512x512",
+      "src": "/assets/icon.png",
+      "sizes": "134x193",
       "type": "image/png"
+    },
+    {
+      "src": "/assets/icon.png",
+      "sizes": "134x193",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/icon.png",
+      "sizes": "134x193",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
-  "theme_color": "#1B305D",
-  "background_color": "#ffffff",
-  "display": "standalone",
-  "start_url": "/"
+  "categories": [
+    "travel",
+    "tourism",
+    "adventure"
+  ],
+  "scope": "/",
+  "orientation": "portrait-primary",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "screenshots": [
+    {
+      "src": "/assets/full-logo.png",
+      "sizes": "500x500",
+      "type": "image/png",
+      "label": "Discover trips to Cairo and Luxor"
+    },
+    {
+      "src": "/assets/full-logo.png",
+      "sizes": "500x500",
+      "type": "image/png",
+      "label": "Plan your honeymoon in Sharm El Sheikh"
+    }
+  ],
+  "localizations": [
+    {
+      "lang": "ar",
+      "name": "ماسار ترافيل",
+      "short_name": "ماسار",
+      "description": "شريكك الموثوق لرحلات لا تُنسى في مصر وما بعدها.",
+      "dir": "rtl"
+    }
+  ]
 }

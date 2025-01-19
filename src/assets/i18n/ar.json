@@ -89,19 +89,28 @@
       "emma": "الاهتمام بالتفاصيل والخدمة الشخصية جعلت رحلتنا لا تُنسى."
     }
   },
-  "footer": {
-    "destinations": "الوجهات",
-    "reviews": "التقييمات",
-    "aboutUs": "عن الشركة",
-    "helpCenter": "مركز المساعدة",
-    "faqs": "الأسئلة الشائعة",
-    "privacyPolicy": "سياسة الخصوصية",
-    "termsOfService": "شروط الخدمة",
-    "cancellationPolicy": "سياسة الإلغاء",
-    "cookiePolicy": "سياسة ملفات تعريف الارتباط",
-    "address": "١٢٣ شارع السفر، المدينة، البلد",
-    "phone": "‎+١ (٥٥٥) ١٢٣-٤٥٦٧",
-    "email": "contact@masar.com"
+"footer": {
+    "newsletter": {
+      "title": "اشترك في نشرتنا الإخبارية",
+      "subtitle": "ابق على اطلاع بأحدث عروض السفر والمغامرات",
+      "placeholder": "أدخل بريدك الإلكتروني",
+      "subscribe": "اشترك"
+    },
+    "quickLinks": "روابط سريعة",
+    "links": {
+      "destinations": "الوجهات",
+      "gallery": "معرض الصور",
+      "reviews": "التقييمات",
+      "about": "من نحن",
+      "contact": "اتصل بنا"
+    },
+    "contact": "اتصل بنا",
+    "workingHours": "ساعات العمل",
+    "weekdays": "الإثنين - الجمعة",
+    "weekend": "السبت - الأحد",
+    "rights": "جميع الحقوق محفوظة.",
+    "privacy": "سياسة الخصوصية",
+    "terms": "شروط الخدمة"
   },
   "profile": {
     "welcome": "مرحباً بعودتك، {{name}}!",

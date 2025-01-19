@@ -2,48 +2,55 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Masar Travel - Your Trusted Travel Partner</title>
+    <title>Masar Travel - Your Trusted Travel Partner for Egypt and Beyond</title>
     <base href="/">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/assets/icon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/icon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/icon.png">
     <link rel="manifest" href="/assets/site.webmanifest">
-    
+
     <!-- Meta Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Discover unforgettable travel experiences with Masar Travel. Book your dream vacation today!">
-    <meta name="keywords" content="travel, tours, vacation, adventure, booking, destinations">
+    <meta name="description" content="Masar Travel: Your trusted travel agency for unforgettable trips in Egypt and beyond, covering Cairo, Sharm El Sheikh, Luxor, Aswan, Dahab, and more. Explore summer, winter, and honeymoon adventures.">
+    <meta name="keywords" content="Masar Travel, travel agency, Egypt, Cairo, Sharm El Sheikh, Luxor, Aswan, Dahab, Saint Catherine, Hurghada, tourism, summer travels, winter travels, honeymoon, tours, adventures">
     <meta name="author" content="Masar Travel">
     <meta name="robots" content="index, follow">
-    
+    <meta name="language" content="en,ar">
+    <meta name="geo.region" content="EG"> <!-- SEO for targeting Egypt -->
+    <meta name="geo.placename" content="Cairo, Egypt">
+    <meta name="geo.position" content="30.0444;31.2357"> <!-- Latitude and Longitude -->
+
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Masar Travel">
-    <meta property="og:title" content="Masar Travel - Your Trusted Travel Partner">
-    <meta property="og:description" content="Discover unforgettable travel experiences with Masar Travel. Book your dream vacation today!">
+    <meta property="og:title" content="Masar Travel - Discover the Best of Egypt and Beyond">
+    <meta property="og:description" content="Plan your dream vacation with Masar Travel. From Cairo to Sharm El Sheikh, explore unforgettable experiences in Egypt and beyond.">
     <meta property="og:image" content="/assets/masar-og-image.jpg">
-    
+    <meta property="og:url" content="https://masar-travel.com">
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@MasarTravel">
     <meta name="twitter:title" content="Masar Travel - Your Trusted Travel Partner">
-    <meta name="twitter:description" content="Discover unforgettable travel experiences with Masar Travel. Book your dream vacation today!">
+    <meta name="twitter:description" content="Unforgettable travel experiences with Masar Travel. Explore Egypt's gems and beyond!">
     <meta name="twitter:image" content="/assets/masar-og-image.jpg">
-    
-    <!-- Preconnect to important third-party domains -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
+
+    <!-- Arabic Meta Tags -->
+    <meta name="description" lang="ar" content="ماسار ترافيل: وكالتك الموثوقة لتنظيم الرحلات في مصر وما بعدها، تغطي القاهرة، شرم الشيخ، الأقصر، أسوان، دهب، والمزيد. استكشف رحلات الصيف، الشتاء، وشهر العسل.">
+    <meta property="og:title" content="ماسار ترافيل - اكتشف جمال مصر وما وراءها">
+    <meta property="og:description" content="خطط لعطلتك مع ماسار ترافيل. من القاهرة إلى شرم الشيخ، استمتع بتجارب لا تُنسى في مصر وخارجها.">
+    <meta name="keywords" lang="ar" content="ماسار ترافيل, وكالة سياحية, مصر, القاهرة, شرم الشيخ, الأقصر, أسوان, دهب, سانت كاترين, الغردقة, سياحة, رحلات الصيف, رحلات الشتاء, شهر العسل, جولات, مغامرات">
+
     <!-- Schema.org markup for Google -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "TravelAgency",
         "name": "Masar Travel",
-        "description": "Your trusted travel partner for unforgettable adventures around the world.",
+        "description": "Your trusted travel partner for unforgettable adventures in Egypt and beyond.",
         "url": "https://masar-travel.com",
         "logo": "https://masar-travel.com/assets/logo.png",
         "sameAs": [
@@ -54,19 +61,25 @@
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "123 Travel Street",
-          "addressLocality": "City",
-          "addressRegion": "State",
+          "addressLocality": "Cairo",
+          "addressRegion": "Cairo Governorate",
           "postalCode": "12345",
-          "addressCountry": "Country"
+          "addressCountry": "EG"
         },
         "contactPoint": {
           "@type": "ContactPoint",
-          "telephone": "+1-555-123-4567",
-          "contactType": "customer service"
+          "telephone": "+20-123-456-7890",
+          "contactType": "customer service",
+          "areaServed": "EG",
+          "availableLanguage": ["English", "Arabic"]
         }
       }
     </script>
-  </head>
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
   <body>
     <app-root>
       <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
