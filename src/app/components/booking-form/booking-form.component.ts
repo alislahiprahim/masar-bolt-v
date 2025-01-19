@@ -1,25 +1,39 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import {
+  FormArray,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import { Router, RouterLink } from "@angular/router";
+import { Router } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import {
   faUsers,
   faComments,
   faPhone,
   faIdCard,
-  faTimes,
+  faLock,
   faCheckCircle,
+  faMobileAlt,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import { TranslateModule } from "@ngx-translate/core";
 import { Trip } from "../../models/trip.model";
 import { BookingService } from "../../services/booking.service";
 import { DialogService } from "../../services/dialog.service";
-import { TranslateModule } from "@ngx-translate/core";
+import { AuthService } from "../../services/auth.service";
+import {
+  ImageFile,
+  ImagePickerComponent,
+} from "../image-picker/image-picker.component";
+import { AuthStateService } from "../../state/auth.state";
+
+interface TravelerInfo {
+  type: "adult" | "childUnder12" | "childUnder6";
+  age?: number;
+}
 
 @Component({
   selector: "app-booking-form",
@@ -28,8 +42,8 @@ import { TranslateModule } from "@ngx-translate/core";
     CommonModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    RouterLink,
     TranslateModule,
+    ImagePickerComponent,
   ],
   template: `
     @if (bookingService.getBookingStatus(trip.id) === 'booked') {
@@ -44,186 +58,269 @@ import { TranslateModule } from "@ngx-translate/core";
           ></fa-icon>
         </div>
         <h3 class="text-lg font-semibold text-gray-900 mb-2">
-          {{ "booking.form.booked" | translate }}
+          {{ "booking.success.title" | translate }}
         </h3>
         <p class="text-gray-600 mb-6">
-          {{ "booking.form.bookedMessage" | translate }}
+          {{ "booking.success.message" | translate }}
         </p>
-        <a
-          routerLink="/profile"
-          class="btn-primary inline-block w-full cursor-pointer"
-        >
-          {{ "booking.form.profile" | translate }}
+
+        <!-- Next Steps -->
+        <div class="text-left bg-gray-50 rounded-lg p-4 mb-6">
+          <h4 class="font-medium text-gray-900 mb-3">
+            {{ "booking.success.nextSteps" | translate }}
+          </h4>
+          <ul class="space-y-2">
+            @for (step of ('booking.success.steps' | translate); track step) {
+            <li class="flex items-start">
+              <span
+                class="w-2 h-2 mt-2 bg-primary-500 rounded-full mr-2"
+              ></span>
+              <span class="text-sm text-gray-600">{{ step }}</span>
+            </li>
+            }
+          </ul>
+        </div>
+        <a routerLink="/profile" class="btn-primary inline-block w-full">
+          {{ "booking.success.viewDetails" | translate }}
         </a>
       </div>
     </div>
     } @else {
-    <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
-      @if (error) {
-      <div
-        class="mb-6 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded relative"
-      >
-        {{ error }}
-      </div>
-      }
+    <!-- Important Information -->
+    <div class="bg-blue-50 border border-blue-100 rounded-xl p-6">
+      <h3 class="text-lg font-semibold text-blue-900 mb-4">
+        {{ "booking.hints.title" | translate }}
+      </h3>
 
+      <!-- Required Documents -->
+      <div class="mb-4">
+        <h4 class="font-medium text-blue-800 mb-2">
+          {{ "booking.hints.documents" | translate }}
+        </h4>
+        <ul class="space-y-1 text-sm text-blue-700">
+          <li>• {{ "booking.hints.adult" | translate }}</li>
+          <li>• {{ "booking.hints.child" | translate }}</li>
+        </ul>
+        <p class="text-sm text-blue-600 mt-2 italic">
+          {{ "booking.hints.note" | translate }}
+        </p>
+      </div>
+
+      <!-- Booking Process -->
+      <div>
+        <h4 class="font-medium text-blue-800 mb-2">
+          {{ "booking.hints.process" | translate }}
+        </h4>
+        <ul class="space-y-1">
+          @for (step of ('booking.hints.steps' | translate); track step) {
+          <li class="flex items-start text-sm text-blue-700">
+            <span class="w-2 h-2 mt-2 bg-blue-400 rounded-full mr-2"></span>
+            {{ step }}
+          </li>
+          }
+        </ul>
+      </div>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-sm">
       <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" class="space-y-6">
         <!-- WhatsApp Number -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            <fa-icon [icon]="faPhone" class="mx-2 rtl:rotate-180"></fa-icon>
-            {{ "booking.form.whatsappNumber" | translate }}
+            <fa-icon [icon]="faPhone" class="mr-2"></fa-icon>
+            {{ "booking.whatsapp" | translate }}
           </label>
-          <div class="flex">
-            <span
-              class="inline-flex items-center px-3 rtl:rounded-r-md ltr:rounded-l-md border ltr:border-r-0 rtl:border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm"
-            >
-              +20
-            </span>
-            <input
-              type="tel"
-              formControlName="whatsappNumber"
-              class="input-field ltr:rounded-l-none rtl:rounded-r-none "
-              placeholder="1234567890"
-            />
-          </div>
+          <input
+            type="tel"
+            formControlName="whatsappNumber"
+            [attr.disabled]="!!userState.user()"
+            class="input-field text-end"
+            [placeholder]="'booking.whatsappPlaceholder' | translate"
+          />
           @if (bookingForm.get('whatsappNumber')?.errors?.['required'] &&
           bookingForm.get('whatsappNumber')?.touched) {
           <p class="mt-1 text-sm text-red-600">
-            {{ "booking.form.whatsappNumberRequired" | translate }}
+            {{ "booking.errors.whatsappRequired" | translate }}
           </p>
-          } @if (bookingForm.get('whatsappNumber')?.errors?.['pattern']) {
+          } @if (bookingForm.get('whatsappNumber')?.errors?.['pattern'] &&
+          bookingForm.get('whatsappNumber')?.touched) {
           <p class="mt-1 text-sm text-red-600">
-            {{ "booking.form.whatsappNumberInvalid" | translate }}
+            {{ "booking.errors.whatsappInvalid" | translate }}
           </p>
           }
         </div>
 
-        <!-- National ID Image -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">
-            <fa-icon [icon]="faIdCard" class="mx-2"></fa-icon>
-            {{ "booking.form.nationalIdImage" | translate }}
-          </label>
+        @if (authService.isAuthenticated()) {
+        <!-- Travelers Information -->
+        <div formArrayName="travelers" class="space-y-4">
+          <h4 class="font-medium text-gray-900">
+            {{ "booking.travelers" | translate }}
+          </h4>
+
+          @for (traveler of getTravelerControls(); let i = $index; track i) {
           <div
-            class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
+            [formGroupName]="i"
+            class="relative grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg"
           >
-            <div class="space-y-1 text-center">
-              @if (!nationalIdPreview) {
-              <svg
-                class="mx-auto h-12 w-12 text-gray-400"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 48 48"
+            <!-- Remove Traveler Button -->
+            @if (i > 0) {
+            <button
+              type="button"
+              (click)="removeTraveler(i)"
+              class="absolute top-2 ltr:right-2 rtl:left-2 p-1.5 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-full"
+              [title]="'booking.removeTraveler' | translate"
+            >
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+            }
+
+            <!-- Traveler Type -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">
+                {{ "booking.travelerTypes.type" | translate }}
+              </label>
+              <select
+                formControlName="type"
+                class="mt-1 py-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500"
               >
-                <path
-                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <div class="flex text-sm text-gray-600">
-                <label
-                  for="national-id-upload"
-                  class="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
-                >
-                  <span>{{ "booking.form.upload" | translate }}</span>
-                  <input
-                    id="national-id-upload"
-                    type="file"
-                    class="sr-only"
-                    accept="image/*"
-                    (change)="onFileSelected($event)"
-                  />
-                </label>
-                <p class="pl-1">{{ "booking.form.or" | translate }}</p>
-              </div>
-              <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-              } @else {
-              <div class="relative">
-                <img
-                  [src]="nationalIdPreview"
-                  alt="National ID Preview"
-                  class="max-h-48 rounded"
-                />
-                <button
-                  type="button"
-                  (click)="removeImage()"
-                  class="absolute -top-2 -right-2 bg-red-100 text-red-600 rounded-full p-1 hover:bg-red-200"
-                >
-                  <fa-icon [icon]="faTimes"></fa-icon>
-                </button>
-              </div>
+                <option value="adult">
+                  {{ "booking.travelerTypes.adult" | translate }}
+                </option>
+                <option value="childUnder12">
+                  {{ "booking.travelerTypes.childUnder12" | translate }}
+                </option>
+                <option value="childUnder6">
+                  {{ "booking.travelerTypes.childUnder6" | translate }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Age (for children) -->
+            @if (traveler.get('type')?.value !== 'adult') {
+            <div>
+              <label class="block text-sm font-medium text-gray-700">
+                {{ "booking.travelerTypes.age" | translate }}
+              </label>
+              <input
+                type="number"
+                formControlName="age"
+                min="0"
+                max="17"
+                class="mt-1 py-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500"
+              />
+              @if (traveler.get('age')?.errors?.['required'] &&
+              traveler.get('age')?.touched) {
+              <p class="mt-1 text-sm text-red-600">
+                {{ "booking.travelerTypes.ageRequired" | translate }}
+              </p>
               }
             </div>
+            }
           </div>
-          @if (bookingForm.get('nationalIdImage')?.errors?.['required'] &&
-          bookingForm.get('nationalIdImage')?.touched) {
-          <p class="mt-1 text-sm text-red-600">
-            {{ "booking.form.nationalIdRequired" | translate }}
-          </p>
           }
+
+          <button
+            type="button"
+            (click)="addTraveler()"
+            class="btn-secondary w-full"
+          >
+            {{ "booking.addTraveler" | translate }}
+          </button>
         </div>
 
-        <!-- Number of Travelers -->
+        <!-- National ID Images -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            <fa-icon [icon]="faUsers" class="mx-2"></fa-icon>
-            {{ "booking.form.numberOfTravelers" | translate }}
+            <fa-icon [icon]="faIdCard" class="mr-2"></fa-icon>
+            {{ "booking.nationalId" | translate }}
           </label>
-          <input
-            type="number"
-            formControlName="numberOfTravelers"
-            min="1"
-            class="input-field"
-            (input)="updateTotalPrice()"
-          />
-          @if (bookingForm.get('numberOfTravelers')?.errors?.['required'] &&
-          bookingForm.get('numberOfTravelers')?.touched) {
-          <p class="mt-1 text-sm text-red-600">
-            {{ "booking.form.numberOfTravelersRequired" | translate }}
-          </p>
-          }
+
+          <app-image-picker
+            [minLength]="requiredDocumentsCount"
+            [label]="'booking.uploadId' | translate"
+            [errorMessage]="'booking.errors.nationalIdRequired' | translate"
+            [showError]="showNationalIdError"
+            formControlName="documents"
+          ></app-image-picker>
         </div>
 
         <!-- Special Requests -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            <fa-icon [icon]="faComments" class="mx-2"></fa-icon>
-            {{ "booking.form.specialRequestsField" | translate }}
+            <fa-icon [icon]="faComments" class="mr-2"></fa-icon>
+            {{ "booking.specialRequests" | translate }}
           </label>
           <textarea
             formControlName="specialRequests"
             rows="3"
             class="input-field"
-            [placeholder]="'booking.form.specialRequestsPlaceholder' | translate"
+            [placeholder]="'booking.specialRequestsPlaceholder' | translate"
           ></textarea>
         </div>
 
-        <!-- Total Price -->
-        <div class="border-t pt-6">
-          <div class="flex justify-between items-center mb-6">
-            <span class="text-lg font-medium text-gray-900"
-              >{{ "booking.form.total" | translate }}:</span
-            >
-            <span class="text-2xl font-bold text-primary-600">{{
-              totalPrice | currency
-            }}</span>
+        <!-- Pricing Information -->
+        <div class="mb-8 bg-primary-50 rounded-lg p-4">
+          <h4 class="font-semibold text-primary-900 mb-2">
+            {{ "booking.pricing.title" | translate }}
+          </h4>
+          <div class="space-y-2 text-sm text-primary-800">
+            <p class="font-medium">
+              {{ "booking.pricing.childPolicy" | translate }}
+            </p>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li>{{ "booking.pricing.firstChild" | translate }}</li>
+              <li>{{ "booking.pricing.secondChild" | translate }}</li>
+              <li>{{ "booking.pricing.otherChildren" | translate }}</li>
+            </ul>
+            <p class="text-xs italic mt-2">
+              {{ "booking.pricing.note" | translate }}
+            </p>
           </div>
-
-          <button
-            type="submit"
-            [disabled]="!bookingForm.valid || isSubmitting"
-            class="w-full btn-primary"
-          >
-            {{
-              isSubmitting
-                ? ("booking.form.processing" | translate)
-                : ("booking.form.book" | translate)
-            }}
-          </button>
         </div>
+        <!-- Total Price -->
+        <div class="border-t pt-4">
+          <div class="flex justify-between items-center text-lg">
+            <span class="font-medium">{{
+              "booking.totalPrice" | translate
+            }}</span>
+            <span class="font-bold text-primary-600">
+              {{ calculateTotalPrice() | currency }}
+            </span>
+          </div>
+        </div>
+        } @else {
+        <!-- Auth Required Message -->
+        <div class="border rounded-lg p-4 bg-gray-50">
+          <div class="flex items-center gap-3">
+            <fa-icon [icon]="faLock" class="text-gray-400"></fa-icon>
+            <div>
+              <p class="text-sm text-gray-600">
+                {{ "booking.authRequired" | translate }}
+              </p>
+              <p class="text-xs text-gray-500 mt-1">
+                {{ "booking.authRequiredHint" | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+        }
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="!isFormValid() || isSubmitting"
+          class="w-full btn-primary flex justify-center items-center"
+        >
+          @if (isSubmitting) {
+          <span class="loading-spinner mr-2"></span>
+          {{ "common.processing" | translate }}
+          } @else {
+          {{
+            authService.isAuthenticated()
+              ? ("booking.confirmBooking" | translate)
+              : ("booking.requestBooking" | translate)
+          }}
+          }
+        </button>
       </form>
     </div>
     }
@@ -232,110 +329,211 @@ import { TranslateModule } from "@ngx-translate/core";
 export class BookingFormComponent implements OnInit {
   @Input({ required: true }) trip!: Trip;
 
-  bookingForm: FormGroup;
-  totalPrice = 0;
+  userState = inject(AuthStateService);
+
+  bookingForm!: FormGroup;
   isSubmitting = false;
   error: string | null = null;
-  nationalIdPreview: string | null = null;
+  showNationalIdError = false;
 
   // Icons
-  faUsers = faUsers;
-  faComments = faComments;
-  faPhone = faPhone;
-  faIdCard = faIdCard;
-  faTimes = faTimes;
-  faCheckCircle = faCheckCircle;
+  protected faUsers = faUsers;
+  protected faComments = faComments;
+  protected faPhone = faMobileAlt;
+  protected faIdCard = faIdCard;
+  protected faLock = faLock;
+  protected faCheckCircle = faCheckCircle;
+  protected faTrash = faTrash;
   constructor(
     private fb: FormBuilder,
     public bookingService: BookingService,
+    public authService: AuthService,
     private dialogService: DialogService,
     private router: Router
   ) {
     this.bookingForm = this.fb.group({
       whatsappNumber: [
-        "",
-        [Validators.required, Validators.pattern("^(10|11|12|15)[0-9]{8}$")],
+        {
+          value: this.userState.user()?.phone || "",
+          disabled: !!this.userState.user(),
+        },
+        [Validators.required, Validators.pattern("^0(10|11|12|15)[0-9]{8}$")],
       ],
-      nationalIdImage: [null, Validators.required],
-      numberOfTravelers: [1, [Validators.required, Validators.min(1)]],
+      travelers: this.fb.array([this.createTravelerGroup()]),
+      documents: [[]],
       specialRequests: [""],
     });
   }
 
   ngOnInit() {
-    this.updateTotalPrice();
-    this.bookingForm.get("numberOfTravelers")?.valueChanges.subscribe(() => {
-      this.updateTotalPrice();
-    });
+    if (this.authService.isAuthenticated()) {
+      if (this.authService.isAuthenticated()) {
+        this.bookingForm
+          .get("documents")
+          ?.setValidators([
+            Validators.required,
+            Validators.minLength(this.requiredDocumentsCount),
+          ]);
+      }
+    }
+  }
+
+  protected isFormValid(): boolean {
+    if (!this.authService.isAuthenticated()) {
+      return this.bookingForm.get("whatsappNumber")?.valid || false;
+    }
+
+    return (
+      this.bookingForm.valid &&
+      this.bookingForm.get("documents")?.value?.length ===
+        this.getTravelerControls().length
+    );
   }
 
   async onSubmit() {
-    if (this.bookingForm.valid) {
-      this.isSubmitting = true;
-      this.error = null;
-
-      try {
-        const formData = new FormData();
-        formData.append("tripId", this.trip.id);
-        formData.append(
-          "whatsappNumber",
-          this.bookingForm.value.whatsappNumber
-        );
-        formData.append(
-          "nationalIdImage",
-          this.bookingForm.value.nationalIdImage
-        );
-        formData.append(
-          "numberOfTravelers",
-          this.bookingForm.value.numberOfTravelers
-        );
-        formData.append(
-          "specialRequests",
-          this.bookingForm.value.specialRequests || ""
-        );
-        formData.append("totalPrice", this.totalPrice.toString());
-
-        const booking = this.bookingService.createBooking(formData);
-
-        this.dialogService.success(
-          "Your trip has been successfully booked! You can view the details in your profile."
-        );
-
-        // Form will be hidden automatically due to booking status change
-      } catch (err) {
-        this.dialogService.error(
-          "An error occurred while processing your booking.form. Please try again."
-        );
-      } finally {
-        this.isSubmitting = false;
+    if (!this.isFormValid()) {
+      if (
+        this.authService.isAuthenticated() &&
+        this.bookingForm.get("documents")?.value?.length !==
+          this.getTravelerControls().length
+      ) {
+        this.showNationalIdError = true;
       }
+      return;
+    }
+
+    this.isSubmitting = true;
+    this.error = null;
+    this.showNationalIdError = false;
+
+    try {
+      if (this.authService.isAuthenticated()) {
+        await this.handleAuthenticatedBooking();
+      } else {
+        await this.handleUnauthenticatedBooking();
+      }
+    } catch (err) {
+      this.dialogService.error("booking.errors.generic");
+    } finally {
+      this.isSubmitting = false;
     }
   }
 
-  updateTotalPrice() {
-    const travelers = this.bookingForm.get("numberOfTravelers")?.value || 1;
-    this.totalPrice = this.trip.price * travelers;
-  }
+  private async handleAuthenticatedBooking() {
+    const formData = new FormData();
+    formData.append("tripId", this.trip.id);
+    formData.append(
+      "whatsappNumber",
+      this.bookingForm.getRawValue().whatsappNumber
+    );
+    formData.append(
+      "travelers",
+      JSON.stringify(this.bookingForm.value.travelers)
+    );
+    formData.append(
+      "specialRequests",
+      this.bookingForm.value.specialRequests || ""
+    );
+    formData.append("totalPrice", this.calculateTotalPrice().toString());
 
-  onFileSelected(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        this.error = "File size should not exceed 10MB";
-        return;
+    this.bookingForm.value.documents.forEach(
+      (img: ImageFile, index: number) => {
+        formData.append(`nationalIdImage${index}`, img.file);
       }
+    );
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.nationalIdPreview = reader.result as string;
-        this.bookingForm.patchValue({ nationalIdImage: file });
-      };
-      reader.readAsDataURL(file);
-    }
+    const booking = await this.bookingService.createBooking(formData);
+    this.dialogService.success("booking.success.message");
   }
 
-  removeImage() {
-    this.nationalIdPreview = null;
-    this.bookingForm.patchValue({ nationalIdImage: null });
+  private async handleUnauthenticatedBooking() {
+    const { whatsappNumber } = this.bookingForm.value;
+
+    this.authService.login({
+      username: whatsappNumber,
+      password: whatsappNumber,
+    }).subscribe(() => {});
+    // await this.bookingService.requestBooking(this.trip.id, whatsappNumber);
+    // this.dialogService.success("booking.requestSent");
+  }
+
+  createTravelerGroup() {
+    return this.fb.group({
+      type: ["adult"],
+      age: [null],
+    });
+  }
+
+  getTravelerControls() {
+    return (this.bookingForm.get("travelers") as FormArray).controls;
+  }
+
+  addTraveler() {
+    const travelers = this.bookingForm.get("travelers") as FormArray;
+    travelers.push(this.createTravelerGroup());
+
+    // Update documents validator
+    this.bookingForm
+      .get("documents")
+      ?.setValidators([
+        Validators.required,
+        Validators.minLength(travelers.length),
+      ]);
+  }
+
+  calculateTotalPrice(): number {
+    const basePrice = this.trip.price;
+    let totalPrice = 0;
+    let childrenUnder12 = 0;
+    let childrenUnder6 = 0;
+
+    this.getTravelerControls().forEach((control) => {
+      const type = control.get("type")?.value;
+
+      switch (type) {
+        case "adult":
+          totalPrice += basePrice;
+          break;
+        case "childUnder12":
+          if (childrenUnder12 === 0) {
+            // First child under 12 is free
+            childrenUnder12++;
+          } else {
+            totalPrice += basePrice;
+          }
+          break;
+        case "childUnder6":
+          if (childrenUnder6 === 0 && childrenUnder12 === 0) {
+            // First child under 6 is free if no child under 12
+            childrenUnder6++;
+          } else if (childrenUnder6 === 0) {
+            // Second child under 6 is free
+            childrenUnder6++;
+          } else {
+            totalPrice += basePrice;
+          }
+          break;
+      }
+    });
+
+    return totalPrice;
+  }
+
+  get requiredDocumentsCount() {
+    return this.getTravelerControls().length;
+  }
+  removeTraveler(index: number) {
+    if (index === 0) return; // Don't remove the first traveler
+    const travelers = this.bookingForm.get("travelers") as FormArray;
+    travelers.removeAt(index);
+
+    // Update documents validator
+    this.bookingForm
+      .get("documents")
+      ?.setValidators([
+        Validators.required,
+        Validators.minLength(travelers.length),
+      ]);
+    this.bookingForm.get("documents")?.updateValueAndValidity();
   }
 }

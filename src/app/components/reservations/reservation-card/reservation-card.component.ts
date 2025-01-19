@@ -64,7 +64,7 @@ import { Reservation } from "../../../models/reservation.model";
 
         <!-- Actions -->
         <div class="flex justify-between items-center">
-          <div class="space-x-2">
+          <div class="flex flex-row gap-2">
             @if (reservation.isEditable) {
             <button (click)="onEdit.emit()" class="btn-secondary text-sm">
               <fa-icon [icon]="faEdit" class="mx-2"></fa-icon>
@@ -77,7 +77,7 @@ import { Reservation } from "../../../models/reservation.model";
             }
           </div>
 
-          <div class="space-x-2">
+          <div class="flex flex-row gap-2">
             @if (reservation.status === 'confirmed' || reservation.status ===
             'completed') {
             <button

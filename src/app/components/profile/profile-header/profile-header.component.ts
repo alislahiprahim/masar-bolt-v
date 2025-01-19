@@ -3,7 +3,7 @@ import { CommonModule } from "@angular/common";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { TranslateModule } from "@ngx-translate/core";
-import { User } from "../../../models/user.model";
+import { UserDetails } from "../../../models/auth.model";
 
 @Component({
   selector: "app-profile-header",
@@ -29,12 +29,9 @@ import { User } from "../../../models/user.model";
               <img
                 [src]="
                   user?.profilePicture ||
-                  'https://ui-avatars.com/api/?name=' +
-                    user?.firstName +
-                    '+' +
-                    user?.lastName
+                  'https://ui-avatars.com/api/?name=' + user?.name
                 "
-                [alt]="user?.firstName"
+                [alt]="user?.name"
                 class="w-full h-full object-cover"
               />
             </div>
@@ -50,7 +47,7 @@ import { User } from "../../../models/user.model";
 
           <div>
             <h1 class="text-3xl font-bold text-white">
-              {{ "profile.welcome" | translate : { name: user?.firstName } }}
+              {{ "profile.welcome" | translate : { name: user?.name } }}
             </h1>
             <p class="text-primary-100 mt-1">
               {{ "profile.subtitle" | translate }}
@@ -62,6 +59,6 @@ import { User } from "../../../models/user.model";
   `,
 })
 export class ProfileHeaderComponent {
-  @Input() user: User | null = null;
+  @Input() user: UserDetails | null = null;
   faPencilAlt = faPencilAlt;
 }

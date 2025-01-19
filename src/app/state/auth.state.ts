@@ -1,0 +1,145 @@
+import { Injectable, computed, signal } from "@angular/core";
+import { AuthState, UserDetails } from "../models/auth.model";
+
+@Injectable({
+  providedIn: "root",
+})
+export class AuthStateService {
+  private state = signal<AuthState>({
+    user: null,
+    token: null,
+    loading: false,
+    error: null,
+  });
+
+  // Computed signals for components
+  readonly user = computed(() => this.state().user);
+  readonly token = computed(() => this.state().token);
+  readonly loading = computed(() => this.state().loading);
+  readonly error = computed(() => this.state().error);
+  readonly isAuthenticated = computed(() => !!this.state().token);
+  readonly reservedTripIds = computed(
+    () => this.state().user?.reservedTripIds || []
+  );
+
+  constructor() {
+    this.loadFromStorage();
+  }
+
+  setUser(user: UserDetails | null) {
+    this.state.update((state) => ({
+      ...state,
+      user,
+      error: null,
+    }));
+    this.saveToStorage();
+  }
+
+  setToken(token: string | null) {
+    this.state.update((state) => ({
+      ...state,
+      token,
+      error: null,
+    }));
+    this.saveToStorage();
+  }
+
+  setLoading(loading: boolean) {
+    this.state.update((state) => ({
+      ...state,
+      loading,
+    }));
+  }
+
+  setError(error: string | null) {
+    this.state.update((state) => ({
+      ...state,
+      error,
+      loading: false,
+    }));
+  }
+
+  addReservedTrip(tripId: string) {
+    if (!this.state().user) return;
+
+    this.state.update((state) => ({
+      ...state,
+      user: state.user
+        ? {
+            ...state.user,
+            reservedTripIds: [...state.user.reservedTripIds, tripId],
+          }
+        : null,
+    }));
+    this.saveToStorage();
+  }
+
+  removeReservedTrip(tripId: string) {
+    if (!this.state().user) return;
+
+    this.state.update((state) => ({
+      ...state,
+      user: state.user
+        ? {
+            ...state.user,
+            reservedTripIds: state.user.reservedTripIds.filter(
+              (id) => id !== tripId
+            ),
+          }
+        : null,
+    }));
+    this.saveToStorage();
+  }
+
+  updateUserDetails(details: Partial<UserDetails>) {
+    if (!this.state().user) return;
+
+    this.state.update((state) => ({
+      ...state,
+      user: state.user ? { ...state.user, ...details } : null,
+    }));
+    this.saveToStorage();
+  }
+
+  clearAuth() {
+    this.state.set({
+      user: null,
+      token: null,
+      loading: false,
+      error: null,
+    });
+    this.clearStorage();
+  }
+
+  private saveToStorage() {
+    const { user, token } = this.state();
+    if (user && token) {
+      localStorage.setItem("auth_user", JSON.stringify(user));
+      localStorage.setItem("auth_token", token);
+    }
+  }
+
+  private loadFromStorage() {
+    try {
+      const storedUser = localStorage.getItem("auth_user");
+      const storedToken = localStorage.getItem("auth_token");
+
+      if (storedUser && storedToken) {
+        this.state.set({
+          user: JSON.parse(storedUser),
+          token: storedToken,
+          loading: false,
+          error: null,
+        });
+      }
+    } catch (error) {
+      console.error("Error loading auth state from storage:", error);
+      this.clearStorage();
+    }
+  }
+
+  private clearStorage() {
+    localStorage.removeItem("auth_user");
+    localStorage.removeItem("auth_token");
+  }
+}

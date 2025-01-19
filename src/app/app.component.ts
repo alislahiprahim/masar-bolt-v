@@ -7,7 +7,13 @@ import { DialogComponent } from "./components/dialog/dialog.component";
 
 @Component({
   selector: "app-root",
-  imports: [RouterOutlet, NavbarComponent, FooterComponent, DialogComponent],
+  imports: [
+    RouterOutlet,
+    NavbarComponent,
+    FooterComponent,
+    DialogComponent,
+    ToastComponent,
+  ],
   template: `
     <div class="min-h-screen flex flex-col">
       <app-navbar></app-navbar>
@@ -21,6 +27,7 @@ import { DialogComponent } from "./components/dialog/dialog.component";
       }
     </div>
     <app-dialog></app-dialog>
+    <app-toast></app-toast>
   `,
 })
 export class AppComponent {
