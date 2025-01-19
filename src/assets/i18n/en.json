@@ -91,18 +91,27 @@
     }
   },
   "footer": {
-    "destinations": "Destinations",
-    "reviews": "Reviews",
-    "aboutUs": "About Us",
-    "helpCenter": "Help Center",
-    "faqs": "FAQs",
-    "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service",
-    "cancellationPolicy": "Cancellation Policy",
-    "cookiePolicy": "Cookie Policy",
-    "address": "123 Travel Street, City, Country",
-    "phone": "+1 (555) 123-4567",
-    "email": "contact@masar.com"
+    "newsletter": {
+      "title": "Subscribe to Our Newsletter",
+      "subtitle": "Stay updated with our latest travel deals and adventures",
+      "placeholder": "Enter your email",
+      "subscribe": "Subscribe"
+    },
+    "quickLinks": "Quick Links",
+    "links": {
+      "destinations": "Destinations",
+      "gallery": "Gallery",
+      "reviews": "Reviews",
+      "about": "About Us",
+      "contact": "Contact"
+    },
+    "contact": "Contact Us",
+    "workingHours": "Working Hours",
+    "weekdays": "Monday - Friday",
+    "weekend": "Saturday - Sunday",
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
   },
   "profile": {
     "welcome": "Welcome back, {{name}}!",
