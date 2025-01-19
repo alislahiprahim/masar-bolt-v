@@ -39,7 +39,8 @@
           },
           "options": {
             "assets": [
-               "src/assets"
+              "src/assets",
+              "src/googlec0f6017e76e2f7cb.html"
             ],
             "index": "src/index.html",
             "browser": "src/main.ts",
