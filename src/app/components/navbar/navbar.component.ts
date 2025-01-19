@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { RouterLink, RouterLinkActive } from "@angular/router";
+import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { TranslateModule } from "@ngx-translate/core";
 import { LanguageSwitcherComponent } from "../language-switcher/language-switcher.component";
@@ -85,6 +85,7 @@ import { AuthService } from "../../services/auth.service";
               } @else {
               <a
                 routerLink="/auth/login"
+                [queryParams]="{ returnUrl: router.url }"
                 class="flex items-center gap-2 text-gray-700 hover:text-primary-600 transition-colors"
               >
                 <fa-icon
@@ -167,6 +168,7 @@ import { AuthService } from "../../services/auth.service";
               } @else {
               <a
                 routerLink="/auth/login"
+                [queryParams]="{ returnUrl: router.url }"
                 class="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-500 hover:text-primary-600 hover:bg-gray-50"
                 (click)="isDrawerOpen = false"
               >
@@ -208,10 +210,10 @@ export class NavbarComponent {
     { path: "/", label: "nav.home", exact: true },
     { path: "/gallery", label: "nav.gallery", exact: false },
     { path: "/trips", label: "nav.trips", exact: false },
-    { path: "/reviews", label: "nav.reviews", exact: false },
+    // { path: "/reviews", label: "nav.reviews", exact: false },
   ];
-
-  constructor(public authService: AuthService) {}
+  protected authService = inject(AuthService);
+  protected router = inject(Router);
 
   logout() {
     this.authService.logout();

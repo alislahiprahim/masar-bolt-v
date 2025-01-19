@@ -23,10 +23,16 @@ import { AuthService } from "../../services/auth.service";
 import { SeoService } from "../../services/seo.service";
 import { TripsService } from "../../services/trips.service";
 import { TripsStateService } from "../../state/trips.state";
+import { SafeHTMLPipe } from "../../pipes/safeHTML.pipe";
 
 @Component({
   selector: "app-trip-details",
-  imports: [CommonModule, FontAwesomeModule, BookingFormComponent],
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    BookingFormComponent,
+    SafeHTMLPipe,
+  ],
   template: `
     @if (state.loading()) {
     <div class="flex justify-center items-center min-h-[60vh]">
@@ -75,8 +81,11 @@ import { TripsStateService } from "../../state/trips.state";
             <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
               <h2 class="text-2xl font-bold mb-4">About This Trip</h2>
               <p class="text-gray-600">
-                {{ state.selectedTrip()!.description }}
+                {{ state.selectedTrip()!.notes }}
               </p>
+              <span
+                [innerHTML]="state.selectedTrip()!.description | safeHTML"
+              ></span>
             </div>
 
             <!-- Included -->

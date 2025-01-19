@@ -114,7 +114,7 @@
       "notifications": "Notifications"
     },
     "details": {
-      "firstName": "First name",
+      "name": "Nname",
       "lastName": "Last name",
       "email": "Email",
       "phone": "Phone number",
@@ -162,63 +162,70 @@
     }
   },
   "booking": {
-    "form": {
-      "title": "Book Your Trip",
-      "whatsapp": {
-        "label": "WhatsApp Number",
-        "placeholder": "Enter your WhatsApp number",
-        "error": {
-          "required": "WhatsApp number is required",
-          "pattern": "Please enter a valid Egyptian phone number"
-        }
-      },
-      "nationalId": {
-        "label": "National ID Image",
-        "dropzone": {
-          "title": "Upload National ID",
-          "text": "Drag and drop your ID image here or click to select",
-          "hint": "PNG, JPG, GIF up to 10MB"
-        },
-        "error": {
-          "required": "National ID image is required",
-          "size": "File size should not exceed 10MB"
-        }
-      },
-      "travelers": {
-        "label": "Number of Travelers",
-        "error": {
-          "required": "Number of travelers is required",
-          "min": "At least one traveler is required"
-        }
-      },
-      "specialRequests": {
-        "label": "Special Requests",
-        "placeholder": "Any dietary requirements, accessibility needs, or special preferences?"
-      },
-      "totalPrice": "Total Price",
-      "perPerson": "per person",
-      "submit": {
-        "button": "Confirm Booking",
-        "processing": "Processing..."
-      },
-      "booked": "You have already booked this trip.",
-      "bookedMessage": " You can view the details in your profile.",
-      "profile": "Profile",
-      "whatsappNumber": "WhatsApp Number",
-      "whatsappNumberRequired": "WhatsApp number is required",
-      "whatsappNumberInvalid": "Please enter a valid Egyptian phone number",
-      "nationalIdImage": "National ID Image",
-      "upload": "Upload",
-      "or": "or drag and drop",
-      "nationalIdRequired": "National ID image is required",
-      "numberOfTravelers": "Number of Travelers",
-      "numberOfTravelersRequired": "Number of travelers is required",
-      "specialRequestsField": "Special Requests",
-      "specialRequestsPlaceholder": "Any dietary requirements, accessibility needs, or special preferences?",
-      "total": "Total",
-      "processing": "Processing...",
-      "book": "Book now"
-    }
+    "whatsapp": "WhatsApp Number",
+    "whatsappPlaceholder": "Enter your WhatsApp number",
+    "travelers": "Number of Travelers",
+    "nationalId": "National ID",
+    "uploadId": "Upload National ID",
+    "specialRequests": "Special Requests",
+    "specialRequestsPlaceholder": "Any special requirements or notes?",
+    "totalPrice": "Total Price",
+    "confirmBooking": "Confirm Booking",
+    "requestBooking": "Request Booking",
+    "authRequired": "Additional details required",
+    "authRequiredHint": "Please log in or create an account to complete your booking",
+    "addTraveler": "Add Traveler",
+    "hints": {
+      "title": "Important Information",
+      "documents": "Required Documents:",
+      "adult": "Adults: National ID or Passport",
+      "child": "Children (under 16): Birth Certificate",
+      "note": "Please ensure all documents are clear and valid",
+      "process": "Booking Process:",
+      "steps": [
+        "Submit your booking request with required documents",
+        "Our team will review your documents",
+        "We'll contact you via WhatsApp for confirmation",
+        "Complete payment to finalize your booking"
+      ]
+    },
+    "pricing": {
+      "title": "Pricing Information",
+      "childPolicy": "Child Pricing Policy:",
+      "firstChild": "First child under 12 years: Free",
+      "secondChild": "Second child under 6 years: Free",
+      "otherChildren": "Other children: Regular price applies",
+      "note": "Please provide birth certificates for all children to verify age"
+    },
+    "travelerTypes": {
+      "adult": "Adult",
+      "child": "Child",
+      "childUnder12": "Child (under 12)",
+      "childUnder6": "Child (under 6)",
+      "age": "Age",
+      "ageRequired": "Age is required for children"
+    },
+    "success": {
+      "title": "Booking Successful!",
+      "message": "Your trip has been successfully booked",
+      "viewDetails": "View Booking Details",
+      "nextSteps": "What's Next?",
+      "steps": [
+        "Our team will review your submitted documents",
+        "We'll contact you via WhatsApp within 24 hours",
+        "Complete payment to confirm your reservation",
+        "Receive your final booking confirmation"
+      ]
+    },
+    "errors": {
+      "whatsappRequired": "WhatsApp number is required",
+      "whatsappInvalid": "Please enter a valid WhatsApp number",
+      "travelersRequired": "Number of travelers is required",
+      "travelersMin": "At least one traveler is required",
+      "nationalIdRequired": "Please upload National ID for all travelers",
+      "generic": "An error occurred while processing your booking"
+    },
+    "requestSent": "Your booking request has been sent successfully"
   },
   "reservations": {
     "title": "My Reservations",
@@ -270,6 +277,30 @@
       "updateSuccess": "Reservation updated successfully",
       "cancelSuccess": "Reservation cancelled successfully",
       "confirmSuccess": "Reservation confirmed successfully"
+    }
+  },
+  "auth": {
+    "phone": "Mobile Number",
+    "phone_hint": "Enter the mobile number you booked with us",
+    "login": {
+      "title": "Login",
+      "subtitle": "Sign in to your account",
+      "email": "Email",
+      "password": "Password",
+      "remember": "Remember me",
+      "forgotPassword": "Forgot Password",
+      "errors": {
+        "emailRequired": "Email is required",
+        "emailInvalid": "Email is invalid",
+        "passwordRequired": "Password is required",
+        "passwordMin": "Password must be at least 6 characters",
+        "loading": "Signing in...",
+        "button": "Login"
+      },
+      "form": {
+        "phoneRequired": "Mobile number is required",
+        "phoneInvalid": "Mobile number is invalid"
+      }
     }
   }
 }

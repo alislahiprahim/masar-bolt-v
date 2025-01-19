@@ -7,19 +7,26 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import {
+  FaIconComponent,
+  FontAwesomeModule,
+} from "@fortawesome/angular-fontawesome";
 import {
   faSignInAlt,
   faEnvelope,
   faLock,
+  faPhone,
+  faMobile,
+  faMobileAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthService } from "../../../services/auth.service";
 import { ToastService } from "../../../services/toast.service";
 import { DialogService } from "../../../services/dialog.service";
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-login",
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FontAwesomeModule],
+  imports: [RouterLink, ReactiveFormsModule, FaIconComponent, TranslateModule],
   template: `
     <div
       class="min-h-screen relative bg-gradient-to-br from-primary-50 to-secondary-50"
@@ -46,10 +53,10 @@ import { DialogService } from "../../../services/dialog.service";
             class="mx-auto h-16 w-auto"
           />
           <h2 class="mt-6 text-center text-4xl font-extrabold text-white">
-            Welcome Back
+            {{ "auth.login.title" | translate }}
           </h2>
           <p class="mt-2 text-center text-lg text-white/80">
-            Sign in to continue your journey
+            {{ "auth.login.subtitle" | translate }}
           </p>
         </div>
 
@@ -69,43 +76,48 @@ import { DialogService } from "../../../services/dialog.service";
               (ngSubmit)="onSubmit()"
               class="space-y-6"
             >
-              <!-- Email Field -->
+              <!-- phone Field -->
               <div>
                 <label
-                  for="email"
+                  for="phone"
                   class="block text-sm font-medium text-gray-700"
                 >
-                  <fa-icon [icon]="faEnvelope" class="mr-2"></fa-icon>
-                  Email address
+                  <fa-icon [icon]="faMobile" class="ml-2 rtl:mr-2"></fa-icon>
+                  {{ "auth.phone" | translate }}
                 </label>
                 <div class="mt-1">
                   <input
-                    id="email"
-                    type="email"
-                    formControlName="email"
-                    class="input-field"
-                    placeholder="your@email.com"
+                    id="phone"
+                    type="tel"
+                    placeholder="1234567890"
+                    formControlName="phone"
+                    class="input-field text-end"
+                    placeholder="01023456789"
                     required
                   />
-                  @if (loginForm.get('email')?.errors?.['required'] &&
-                  loginForm.get('email')?.touched) {
-                  <p class="mt-1 text-sm text-red-600">Email is required</p>
-                  } @if (loginForm.get('email')?.errors?.['email'] &&
-                  loginForm.get('email')?.touched) {
+                  <span class="text-gray-500 text-xs">{{
+                    "auth.phone_hint" | translate
+                  }}</span>
+                  @if (loginForm.get('phone')?.errors?.['required'] &&
+                  loginForm.get('phone')?.touched) {
                   <p class="mt-1 text-sm text-red-600">
-                    Please enter a valid email
+                    {{ "auth.form.phoneRequired" | translate }}
+                  </p>
+                  } @if (loginForm.get('phone')?.errors?.['pattern']) {
+                  <p class="mt-1 text-sm text-red-600">
+                    {{ "auth.form.phoneInvalid" | translate }}
                   </p>
                   }
                 </div>
               </div>
 
               <!-- Password Field -->
-              <div>
+              <!-- <div>
                 <label
                   for="password"
                   class="block text-sm font-medium text-gray-700"
                 >
-                  <fa-icon [icon]="faLock" class="mr-2"></fa-icon>
+                  <fa-icon [icon]="faLock" class="mx-2"></fa-icon>
                   Password
                 </label>
                 <div class="mt-1">
@@ -122,10 +134,10 @@ import { DialogService } from "../../../services/dialog.service";
                   <p class="mt-1 text-sm text-red-600">Password is required</p>
                   }
                 </div>
-              </div>
+              </div> -->
 
               <!-- Remember Me & Forgot Password -->
-              <div class="flex items-center justify-between">
+              <!-- <div class="flex items-center justify-between">
                 <div class="flex items-center">
                   <input
                     id="remember_me"
@@ -146,7 +158,7 @@ import { DialogService } from "../../../services/dialog.service";
                 >
                   Forgot password?
                 </button>
-              </div>
+              </div> -->
 
               <!-- Submit Button -->
               <div>
@@ -155,8 +167,15 @@ import { DialogService } from "../../../services/dialog.service";
                   [disabled]="!loginForm.valid || isLoading"
                   class="w-full btn-primary flex justify-center items-center"
                 >
-                  <fa-icon [icon]="faSignInAlt" class="mr-2"></fa-icon>
-                  {{ isLoading ? "Signing in..." : "Sign in" }}
+                  <fa-icon
+                    [icon]="faSignInAlt"
+                    class="mx-2 rtl:rotate-180"
+                  ></fa-icon>
+                  {{
+                    isLoading
+                      ? ("auth.login.loading" | translate)
+                      : ("auth.login.button" | translate)
+                  }}
                 </button>
               </div>
             </form>
@@ -184,10 +203,10 @@ export class LoginComponent {
   isLoading = false;
   error: string | null = null;
   faSignInAlt = faSignInAlt;
-  faEnvelope = faEnvelope;
+  faMobile = faMobileAlt;
   faLock = faLock;
   dialogService = inject(DialogService);
-
+  translateService = inject(TranslateService);
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -195,9 +214,12 @@ export class LoginComponent {
     private route: ActivatedRoute
   ) {
     this.loginForm = this.fb.group({
-      email: ["", [Validators.required, Validators.email]],
-      password: ["", [Validators.required, Validators.minLength(6)]],
-      rememberMe: [false],
+      phone: [
+        "",
+        [Validators.required, Validators.pattern("^0(10|11|12|15)[0-9]{8}$")],
+      ],
+      // password: ["", [Validators.required, Validators.minLength(6)]],
+      // rememberMe: [false],
     });
   }
 
@@ -206,23 +228,23 @@ export class LoginComponent {
       this.isLoading = true;
       this.error = null;
 
-      const { email, password } = this.loginForm.value;
+      const { phone } = this.loginForm.value;
+      // phone number act as email and password until now
 
-      try {
-        const success = this.authService.login(email, password);
-
-        if (success) {
-          this.dialogService.success("Profile updated successfully!");
-          const returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/";
-          this.router.navigate([returnUrl]);
-        } else {
-          this.error = "Invalid email or password";
-        }
-      } catch (err) {
-        this.error = "An error occurred during sign in";
-      } finally {
-        this.isLoading = false;
-      }
+      this.authService
+        .login({
+          username: phone,
+          password: phone
+        })
+        .subscribe((success: boolean) => {
+          this.isLoading = false;
+          if (success) {
+            // this.dialogService.success("Profile updated successfully!");
+            const returnUrl =
+              this.route.snapshot.queryParams["returnUrl"] || "/";
+            this.router.navigate([returnUrl]);
+          }
+        });
     }
   }
 }

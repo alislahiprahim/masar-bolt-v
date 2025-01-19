@@ -20,7 +20,6 @@ import {
   faReceipt,
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthService } from "../../services/auth.service";
-import { User } from "../../models/user.model";
 import { ProfileHeaderComponent } from "../../components/profile/profile-header/profile-header.component";
 import { ProfileDetailsComponent } from "../../components/profile/profile-details/profile-details.component";
 import { ProfileTabsComponent } from "../../components/profile/profile-tabs/profile-tabs.component";

@@ -11,6 +11,7 @@ import { TranslateModule } from "@ngx-translate/core";
 import { faUser, faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { User } from "../../../models/user.model";
 import { AuthService } from "../../../services/auth.service";
+import { UserDetails } from "../../../models/auth.model";
 
 @Component({
   selector: "app-profile-details",
@@ -32,23 +33,11 @@ import { AuthService } from "../../../services/auth.service";
           <div>
             <label class="block text-sm font-medium text-gray-700">
               <fa-icon [icon]="faUser" class="mr-2"></fa-icon>
-              {{ "profile.details.firstName" | translate }}
+              {{ "profile.details.name" | translate }}
             </label>
             <input
               type="text"
-              formControlName="firstName"
-              class="input-field mt-1"
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700">
-              <fa-icon [icon]="faUser" class="mr-2"></fa-icon>
-              {{ "profile.details.lastName" | translate }}
-            </label>
-            <input
-              type="text"
-              formControlName="lastName"
+              formControlName="name"
               class="input-field mt-1"
             />
           </div>
@@ -72,13 +61,13 @@ import { AuthService } from "../../../services/auth.service";
             </label>
             <input
               type="tel"
-              formControlName="phoneNumber"
+              formControlName="phone"
               class="input-field mt-1"
             />
           </div>
         </div>
 
-        <div>
+        <!-- <div>
           <h3 class="text-lg font-medium text-gray-900 mb-4">
             {{ "profile.details.preferences.title" | translate }}
           </h3>
@@ -123,7 +112,7 @@ import { AuthService } from "../../../services/auth.service";
               />
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div class="flex justify-end space-x-4 rtl:space-x-reverse">
           <button
@@ -144,7 +133,7 @@ export class ProfileDetailsComponent {
   @Input() profileForm!: FormGroup;
   @Output() onSubmit = new EventEmitter<void>();
 
-  user: User | null = null;
+  user: UserDetails | null = null;
   // Icons
   faUser = faUser;
   faEnvelope = faEnvelope;
@@ -152,23 +141,24 @@ export class ProfileDetailsComponent {
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.profileForm = this.fb.group({
-      firstName: ["", Validators.required],
-      lastName: ["", Validators.required],
-      email: ["", [Validators.required, Validators.email]],
-      phoneNumber: [""],
-      preferredDestinations: [[]],
-      travelStyle: [""],
-      dietaryRestrictions: [""],
+      name: ["", Validators.required],
+      email: ["", [Validators.email]],
+      phone: [
+        "",
+        [Validators.required, Validators.pattern("^0(10|11|12|15)[0-9]{8}$")],
+      ],
+      // preferredDestinations: [[]],
+      // travelStyle: [""],
+      // dietaryRestrictions: [""],
     });
   }
   ngOnInit() {
     this.user = this.authService.getCurrentUser();
     if (this.user) {
       this.profileForm.patchValue({
-        firstName: this.user.firstName,
-        lastName: this.user.lastName,
+        name: this.user.name,
         email: this.user.email,
-        phoneNumber: this.user.phoneNumber,
+        phone: this.user.phone,
         preferredDestinations: this.user.preferences?.preferredDestinations,
         travelStyle: this.user.preferences?.travelStyle,
         dietaryRestrictions:
