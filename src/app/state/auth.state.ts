@@ -1,10 +1,19 @@
-import { Injectable, computed, signal } from "@angular/core";
+import {
+  Injectable,
+  PLATFORM_ID,
+  computed,
+  inject,
+  signal,
+} from "@angular/core";
 import { AuthState, UserDetails } from "../models/auth.model";
+import { isPlatformBrowser } from "@angular/common";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthStateService {
+  platformId = inject(PLATFORM_ID);
+
   private state = signal<AuthState>({
     user: null,
     token: null,
@@ -113,7 +122,7 @@ export class AuthStateService {
 
   private saveToStorage() {
     const { user, token } = this.state();
-    if (user && token) {
+    if (user && token && isPlatformBrowser(this.platformId)) {
       localStorage.setItem("auth_user", JSON.stringify(user));
       localStorage.setItem("auth_token", token);
     }
@@ -121,6 +130,7 @@ export class AuthStateService {
 
   private loadFromStorage() {
     try {
+      if (!isPlatformBrowser(this.platformId)) return;
       const storedUser = localStorage.getItem("auth_user");
       const storedToken = localStorage.getItem("auth_token");
 
@@ -139,6 +149,7 @@ export class AuthStateService {
   }
 
   private clearStorage() {
+    if (!isPlatformBrowser(this.platformId)) return;
     localStorage.removeItem("auth_user");
     localStorage.removeItem("auth_token");
   }
