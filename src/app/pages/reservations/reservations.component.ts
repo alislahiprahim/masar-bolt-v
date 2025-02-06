@@ -121,7 +121,7 @@ import { ReservationsStateService } from "../../state/reservation.state";
             (onEdit)="openEditDialog(reservation)"
             (onCancel)="openCancelDialog(reservation)"
             (onConfirm)="handleConfirmReservation(reservation)"
-            (onDownloadInvoice)="handleDownloadInvoice(reservation)"
+            (onDownloadInvoice)="handleDownloadInvoice($event)"
             (onDownloadTicket)="handleDownloadTicket(reservation)"
           />
           }
@@ -264,20 +264,194 @@ export class ReservationsComponent implements OnInit {
     });
   }
 
-  protected handleDownloadInvoice(reservation: any) {
-    this.reservationService.downloadInvoice(reservation.id).subscribe({
-      next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = `invoice-${reservation.id}.pdf`;
-        link.click();
-        window.URL.revokeObjectURL(url);
-      },
-      error: (error) => {
-        this.toastService.error(error.message);
-      },
-    });
+  protected handleDownloadInvoice(ticket: any) {
+    console.log(ticket);
+    const printContent = ticket.nativeElement.innerHTML;
+    const printContentWindow = window.open("", "_blank");
+    printContentWindow?.document.write(`
+      <html>
+        <head>
+          <style>
+          /* General Styles */
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f8f9fa;
+                padding: 20px;
+            }
+                
+      /* Ticket Container */
+      .ticket-container {
+        width: 800px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Layout: Image on Left, Details on Right */
+      .ticket-layout {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+      }
+
+      /* Trip Image */
+      .ticket-image {
+        flex: 1;
+      }
+
+      .ticket-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px 0 0 10px;
+      }
+
+      /* Ticket Details */
+      .ticket-details {
+        flex: 2;
+        padding: 20px;
+      }
+
+      /* Header */
+      .ticket-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+      }
+
+      .logo {
+        width: 50px;
+        height: 50px;
+      }
+
+      .ticket-header h1 {
+        font-size: 22px;
+        margin: 0;
+        color: #2c3e50;
+      }
+
+      .ticket-header p {
+        font-size: 14px;
+        color: #7f8c8d;
+      }
+
+      /* Barcode Section */
+      .barcode-section {
+        text-align: center;
+        margin: 15px 0;
+      }
+
+      .barcode-section img {
+        height: 40px;
+      }
+
+      .barcode-text {
+        font-size: 12px;
+        color: #777;
+      }
+
+      /* Trip Info */
+      .trip-info {
+        margin-top: 15px;
+      }
+
+      .trip-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #34495e;
+        margin-bottom: 10px;
+      }
+
+      .info-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
+
+      .info-row .icon {
+        font-size: 18px;
+        color: #2980b9;
+      }
+
+      .info-row label {
+        font-size: 12px;
+        color: #7f8c8d;
+        display: block;
+      }
+
+      .info-row span {
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      /* Footer */
+      .ticket-footer {
+        margin-top: 20px;
+        text-align: center;
+        padding-top: 10px;
+        border-top: 2px solid #ddd;
+      }
+
+      .ticket-footer p {
+        font-size: 14px;
+        color: #2c3e50;
+        font-weight: bold;
+      }
+
+      .note {
+        font-size: 12px;
+        color: #777;
+      }
+
+      /* Print Styles */
+      @media print {
+        body {
+          background: none;
+          padding: 0;
+        }
+
+        .ticket-container {
+          width: 100%;
+          box-shadow: none;
+          border: none;
+          padding: 10px;
+        }
+
+        .ticket-header,
+        .barcode-section,
+        .trip-info,
+        .ticket-footer {
+          page-break-inside: avoid;
+        }
+
+        .ticket-image {
+          display: none;
+        }
+      }
+    
+          </style
+          </head>
+          <body>
+          ${printContent}
+          </body>
+        <script>
+  
+    setTimeout(() => {
+      window.print(); 
+    }, 3330);
+   
+</script>
+
+      </html>
+      `);
   }
 
   protected handleDownloadTicket(reservation: any) {

@@ -1,4 +1,11 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  viewChild,
+  ElementRef,
+} from "@angular/core";
 import { CommonModule } from "@angular/common";
 import {
   FaIconComponent,
@@ -13,11 +20,12 @@ import {
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { Reservation } from "../../../models/reservation.model";
+import { TicketComponent } from "../../ticket/ticket.component";
 
 @Component({
   selector: "app-reservation-card",
   standalone: true,
-  imports: [CommonModule, TranslateModule, FaIconComponent],
+  imports: [CommonModule, TranslateModule, FaIconComponent, TicketComponent],
   template: `
     <div
       class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
@@ -89,7 +97,7 @@ import { Reservation } from "../../../models/reservation.model";
             </button>
             }
             <button
-              (click)="onDownloadInvoice.emit()"
+              (click)="onDownloadInvoice.emit(this.ticketTemplate())"
               class="btn-secondary text-sm"
             >
               <fa-icon [icon]="faDownload" class="mx-2"></fa-icon>
@@ -118,16 +126,41 @@ import { Reservation } from "../../../models/reservation.model";
         }
       </div>
     </div>
+
+    <app-ticket
+      #tickets
+      class="opacity-0 hidden"
+      [reservation]="reservation"
+      [trip]="trip"
+    />
   `,
 })
 export class ReservationCardComponent {
+  ticketTemplate = viewChild("tickets", { read: ElementRef });
+  trip = {
+    id: "1",
+    name: "aasd asdas",
+    days: 12,
+    price: 33,
+    tripStatus: 3,
+    notes: "awda sasdsa",
+    description: "asdasdzxceda sdas as sdasd",
+    date: new Date().toUTCString(),
+    cityId: "1",
+    city: "casd as",
+    maxReservations: 3,
+    isActive: true,
+    tripPhotos: [""],
+    destination: "",
+    included: [""],
+  };
   @Input({ required: true }) reservation!: Reservation;
   @Input() isProcessing = false;
 
   @Output() onEdit = new EventEmitter<void>();
   @Output() onCancel = new EventEmitter<void>();
   @Output() onConfirm = new EventEmitter<void>();
-  @Output() onDownloadInvoice = new EventEmitter<void>();
+  @Output() onDownloadInvoice = new EventEmitter<any>();
   @Output() onDownloadTicket = new EventEmitter<void>();
 
   // Icons

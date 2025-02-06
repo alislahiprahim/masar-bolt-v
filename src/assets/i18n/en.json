@@ -311,5 +311,15 @@
         "phoneInvalid": "Mobile number is invalid"
       }
     }
+  },
+  "ticket": {
+    "subtitle": "Your Safari Adventure Ticket",
+    "date": "Date",
+    "time": "Time",
+    "location": "Location",
+    "travelers": "Number of Travelers",
+    "contact": "Contact Number",
+    "instructions": "Please present this ticket upon arrival at the meeting point",
+    "validationNote": "This ticket is valid only for the date and time shown above"
   }
 }
