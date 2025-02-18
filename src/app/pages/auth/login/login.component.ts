@@ -23,6 +23,7 @@ import { AuthService } from "../../../services/auth.service";
 import { ToastService } from "../../../services/toast.service";
 import { DialogService } from "../../../services/dialog.service";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
+import { environment } from "../../../../environments/environment.development";
 
 @Component({
   selector: "app-login",
@@ -183,12 +184,12 @@ import { TranslateModule, TranslateService } from "@ngx-translate/core";
             <!-- Register Link -->
             <div class="mt-6 text-center">
               <p class="text-sm text-gray-600">
-                Don't have an account?
+                {{ "auth.register.noAccount" | translate }}
                 <a
                   routerLink="/auth/register"
                   class="font-medium text-primary-600 hover:text-primary-500 hover:underline"
                 >
-                  Create one now
+                  {{ "auth.register.createAccount" | translate }}
                 </a>
               </p>
             </div>
@@ -233,16 +234,19 @@ export class LoginComponent {
 
       this.authService
         .login({
-          username: phone,
-          password: phone
+          phoneNumber: phone,
+          password: environment.userPassword,
         })
         .subscribe((success: boolean) => {
           this.isLoading = false;
           if (success) {
-            // this.dialogService.success("Profile updated successfully!");
             const returnUrl =
               this.route.snapshot.queryParams["returnUrl"] || "/";
-            this.router.navigate([returnUrl]);
+            if (returnUrl.includes("login")) {
+              this.router.navigate(["/"]);
+            } else {
+              this.router.navigate([returnUrl]);
+            }
           }
         });
     }

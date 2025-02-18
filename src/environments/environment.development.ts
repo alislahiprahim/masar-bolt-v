@@ -1,4 +1,5 @@
 export const environment = {
-  apiUrl: "https://kareemslama3-001-site1.ktempurl.com/api",
-  imgUrl: "https://kareemslama3-001-site1.ktempurl.com",
+  apiUrl: "http://localhost:3000/api",
+  imgUrl: "http://localhost:3000",
+  userPassword: "Pass@123",
 };

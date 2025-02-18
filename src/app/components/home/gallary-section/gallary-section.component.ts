@@ -20,8 +20,8 @@ import { ImgUrlPipe } from "../../../pipes/imgUrl.pipe";
     FontAwesomeModule,
     TranslateModule,
     LightboxComponent,
-    ImgUrlPipe
-],
+    ImgUrlPipe,
+  ],
   template: `
     <section class="py-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,12 +52,12 @@ import { ImgUrlPipe } from "../../../pipes/imgUrl.pipe";
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           @for (image of state.images(); track image.id) {
           <div
-            class="group relative overflow-hidden rounded-lg shadow-lg cursor-pointer"
+            class="group relative overflow-hidden  rounded-lg shadow-lg cursor-pointer"
             (click)="openLightbox(image)"
           >
             <img
               loading="lazy"
-              [src]="image.filePath |imgUrl"
+              [src]="image.url | imgUrl"
               [alt]="image.title"
               class="w-full h-[300px] object-cover transition-transform duration-500 group-hover:scale-110"
             />
@@ -68,7 +68,7 @@ import { ImgUrlPipe } from "../../../pipes/imgUrl.pipe";
                 <h3 class="text-xl font-semibold text-white">
                   {{ image.title }}
                 </h3>
-                <p class="text-white/90">{{ image.location }}</p>
+                <p class="text-white/90">{{ image.city.name }}</p>
               </div>
               <div class="absolute top-4 right-4">
                 <fa-icon

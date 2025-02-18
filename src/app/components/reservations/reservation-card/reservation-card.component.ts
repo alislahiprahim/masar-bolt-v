@@ -152,7 +152,7 @@ export class ReservationCardComponent {
     isActive: true,
     tripPhotos: [""],
     destination: "",
-    included: [""],
+    includes: [{ includes: { name: "asdasd" } }],
   };
   @Input({ required: true }) reservation!: Reservation;
   @Input() isProcessing = false;

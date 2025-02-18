@@ -8,6 +8,7 @@ import { ToastService } from "./toast.service";
 import {
   AuthResponse,
   LoginCredentials,
+  RegisterCredentials,
   UserDetails,
 } from "../models/auth.model";
 
@@ -31,13 +32,13 @@ export class AuthService {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/login`, {
         ...credentials,
-        userType: 2,
+        roleIds: [1],
       })
       .pipe(
         tap((response) => {
-          if (response.isSuccess) {
-            this.authState.setToken(response.content?.token);
-            this.authState.setUser(response.content?.userDetails);
+          if (response.status === "success") {
+            this.authState.setToken(response.data?.token);
+            this.authState.setUser(response.data?.user);
             this.toastService.success("Successfully logged in");
           } else {
             const message =
@@ -46,10 +47,38 @@ export class AuthService {
             this.toastService.error(message);
           }
         }),
-        map((response: AuthResponse) => response.isSuccess),
+        map((response: AuthResponse) => response.status === "success"),
         catchError((error) => {
           const message =
             error.error?.message || "An error occurred during login";
+          this.authState.setError(message);
+          this.toastService.error(message);
+          return of(false);
+        })
+      );
+  }
+
+  register(credentials: RegisterCredentials): Observable<boolean> {
+    return this.http
+      .post<AuthResponse>(`${this.apiUrl}/register`, credentials)
+      .pipe(
+        tap((response) => {
+          if (response.status === "success") {
+            this.authState.setToken(response.data?.token);
+            this.authState.setUser(response.data?.user);
+            this.toastService.success("Successfully registered");
+          } else {
+            const message =
+              response?.responseMessage ||
+              "An error occurred during registration";
+            this.authState.setError(message);
+            this.toastService.error(message);
+          }
+        }),
+        map((response: AuthResponse) => response.status === "success"),
+        catchError((error) => {
+          const message =
+            error.error?.message || "An error occurred during registration";
           this.authState.setError(message);
           this.toastService.error(message);
           return of(false);
@@ -84,8 +113,8 @@ export class AuthService {
 
     return this.http.post<AuthResponse>(`${this.apiUrl}/refresh`, {}).pipe(
       tap((response) => {
-        this.authState.setToken(response.content?.token);
-        this.authState.setUser(response.content?.userDetails);
+        this.authState.setToken(response.data?.token);
+        this.authState.setUser(response.data?.user);
       }),
       map(() => true),
       catchError((error) => {

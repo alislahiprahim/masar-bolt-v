@@ -158,7 +158,7 @@ export class ProfileDetailsComponent {
       this.profileForm.patchValue({
         name: this.user.name,
         email: this.user.email,
-        phone: this.user.phone,
+        phone: this.user.phoneNumber,
         preferredDestinations: this.user.preferences?.preferredDestinations,
         travelStyle: this.user.preferences?.travelStyle,
         dietaryRestrictions:

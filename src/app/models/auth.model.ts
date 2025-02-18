@@ -1,20 +1,29 @@
 export interface LoginCredentials {
-  username: string;
+  phoneNumber: string;
   password: string;
 }
 
+export interface RegisterCredentials {
+  phoneNumber?: string;
+  email?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  roles?: string[];
+}
+
 export interface AuthResponse {
-  isSuccess: boolean;
-  content: {
+  status: "success" | "error";
+  data: {
     token: string;
-    userDetails: UserDetails;
+    user: UserDetails;
   };
   responseMessage: string | null;
 }
 
 export interface UserDetails {
   id: string;
-  phone: string;
+  phoneNumber: string;
   email?: string;
   userName?: string;
   name?: string;

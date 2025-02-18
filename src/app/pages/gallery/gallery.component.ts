@@ -13,6 +13,7 @@ import {
   faSpinner,
   faSearch,
   faFilter,
+  faMapMarkerAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { GalleryService } from "../../services/gallary.service";
 import { GalleryStateService } from "../../state/gallary.state";
@@ -131,7 +132,7 @@ import { GalleryImage } from "../../models/gallary.model";
           (click)="openLightbox(image)"
         >
           <img
-            [src]="image.filePath | imgUrl"
+            [src]="image.url | imgUrl"
             [alt]="image.title"
             class="w-full h-[300px] object-cover transition-transform duration-500 group-hover:scale-110"
           />
@@ -142,7 +143,10 @@ import { GalleryImage } from "../../models/gallary.model";
               <h3 class="text-xl font-semibold text-white">
                 {{ image.title }}
               </h3>
-              <p class="text-white/90">{{ image.location }}</p>
+              <p class="text-white/90 flex items-center">
+                <fa-icon [icon]="faMapMarkerAlt" class="mx-1"></fa-icon>
+                {{ image.city.name }}
+              </p>
             </div>
           </div>
         </div>
@@ -168,6 +172,7 @@ export class GalleryComponent {
   protected faSpinner = faSpinner;
   protected faSearch = faSearch;
   protected faFilter = faFilter;
+  protected faMapMarkerAlt = faMapMarkerAlt;
 
   ngOnInit() {
     this.seoService.updateSeo({

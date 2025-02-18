@@ -24,7 +24,7 @@ import { UserDetails } from "../../../models/auth.model";
         <div class="flex items-center space-x-8 gap-2">
           <div class="relative">
             <div
-              class="w-24 h-24 rounded-full overflow-hidden bg-white ring-4 ring-white"
+              class="w-24 h-24 rounded-full overflow-hidden  bg-white ring-4 ring-white"
             >
               <img
                 [src]="

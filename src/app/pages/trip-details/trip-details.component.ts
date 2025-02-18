@@ -24,6 +24,7 @@ import { SeoService } from "../../services/seo.service";
 import { TripsService } from "../../services/trips.service";
 import { TripsStateService } from "../../state/trips.state";
 import { SafeHTMLPipe } from "../../pipes/safeHTML.pipe";
+import { ImgUrlPipe } from "../../pipes/imgUrl.pipe";
 
 @Component({
   selector: "app-trip-details",
@@ -32,6 +33,7 @@ import { SafeHTMLPipe } from "../../pipes/safeHTML.pipe";
     FontAwesomeModule,
     BookingFormComponent,
     SafeHTMLPipe,
+    ImgUrlPipe,
   ],
   template: `
     @if (state.loading()) {
@@ -53,7 +55,7 @@ import { SafeHTMLPipe } from "../../pipes/safeHTML.pipe";
       <!-- Hero Section -->
       <div class="relative h-[60vh] overflow-hidden">
         <img
-          [src]="state.selectedTrip()!.tripPhotos[0]"
+          [src]="state.selectedTrip()!.tripPhotos[0] | imgUrl"
           [alt]="state.selectedTrip()!.name"
           class="w-full h-full object-cover"
         />
@@ -92,10 +94,10 @@ import { SafeHTMLPipe } from "../../pipes/safeHTML.pipe";
             <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
               <h2 class="text-2xl font-bold mb-4">What's Included</h2>
               <ul class="space-y-2">
-                @for (item of state.selectedTrip()!.included; track item) {
+                @for (item of state.selectedTrip()!.includes; track item) {
                 <li class="flex items-center text-gray-600">
                   <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
-                  {{ item }}
+                  {{ item.includes.name }}
                 </li>
                 }
               </ul>
@@ -118,7 +120,7 @@ import { SafeHTMLPipe } from "../../pipes/safeHTML.pipe";
           </div>
 
           <!-- Booking Form -->
-          <div class="lg:col-span-1">
+          <div class="lg:col-span-1 sticky top-0">
             <app-booking-form [trip]="state.selectedTrip()!" />
           </div>
         </div>

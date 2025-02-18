@@ -9,10 +9,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { TranslateModule } from "@ngx-translate/core";
 import { Trip } from "../../models/trip.model";
+import { ImgUrlPipe } from "../../pipes/imgUrl.pipe";
 
 @Component({
   selector: "app-trip-card",
-  imports: [CommonModule, RouterLink, FontAwesomeModule, TranslateModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    FontAwesomeModule,
+    TranslateModule,
+    ImgUrlPipe,
+  ],
   template: `
     <a [routerLink]="['/trips', trip.id]" class="group">
       <div class="card overflow-hidden">
@@ -20,7 +27,7 @@ import { Trip } from "../../models/trip.model";
         <div class="relative h-64 overflow-hidden">
           <img
             loading="lazy"
-            [src]="trip.tripPhotos[0]"
+            [src]="trip.tripPhotos[0] | imgUrl"
             [alt]="trip.name"
             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />

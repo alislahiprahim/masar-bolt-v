@@ -1,11 +1,11 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
-import { catchError, map, shareReplay } from "rxjs/operators";
+import { Observable, pipe, throwError } from "rxjs";
+import { catchError, map, shareReplay, tap } from "rxjs/operators";
 import { ToastService } from "./toast.service";
 import { ApiResponse } from "../models/api.model";
 import { inject } from "@angular/core";
 
-export abstract class BaseApiService<T> {
+export abstract class BaseApiService<T extends Record<string, any>> {
   protected abstract apiUrl: string;
   private featuredCache$?: Observable<T[]>;
   private cacheDuration = 5 * 60 * 1000; // 5 minutes
@@ -14,7 +14,8 @@ export abstract class BaseApiService<T> {
   protected toastService = inject(ToastService);
 
   protected getItems(
-    params: Record<string, any> = {}
+    params: Record<string, any> = {},
+    dataKey: string = ""
   ): Observable<{ items: T[]; total: number }> {
     const queryParams = new URLSearchParams();
 
@@ -25,28 +26,32 @@ export abstract class BaseApiService<T> {
     });
 
     return this.http
-      .get<ApiResponse<T[]>>(`${this.apiUrl}?${queryParams.toString()}`)
+      .get<ApiResponse<Record<string, T> | T>>(
+        `${this.apiUrl}?${queryParams.toString()}`
+      )
       .pipe(
-        map((response) => ({
-          items: response.content,
-          total: response.content.length, // Adjust if total comes from headers or metadata
-        })),
+        map((response) => {
+          const items = dataKey ? response.data[dataKey] : response.data;
+          return {
+            items,
+            total: Array.isArray(items) ? items.length : 0, // Ensure total is calculated correctly
+          };
+        }),
         catchError(this.handleError.bind(this))
       );
   }
 
-  protected getItemById(id: string, path: string = ""): Observable<T> {
-    return this.http
-      .get<ApiResponse<T>>(`${this.apiUrl}/${path}?id=${id}`)
-      .pipe(
-        map((response) => response.content),
-        catchError(this.handleError.bind(this))
-      );
+  protected getItemById(id: string, dataKey: string = ""): Observable<T> {
+    return this.http.get<ApiResponse<T>>(`${this.apiUrl}/${id}`).pipe(
+      map((response) => (dataKey ? response.data[dataKey] : response.data)),
+      catchError(this.handleError.bind(this))
+    );
   }
 
   protected getFeaturedItems(
     limit: number = 6,
-    path: string = ""
+    path: string = "",
+    dataKey: string = ""
   ): Observable<T[]> {
     const now = Date.now();
 
@@ -55,9 +60,9 @@ export abstract class BaseApiService<T> {
     }
 
     this.featuredCache$ = this.http
-      .get<ApiResponse<T[]>>(`${this.apiUrl}/${path}?limit=${limit}`)
+      .get<ApiResponse<T>>(`${this.apiUrl}/${path}?limit=${limit}`)
       .pipe(
-        map((response) => response.content),
+        map((response) => response.data[dataKey]),
         shareReplay(1),
         catchError(this.handleError.bind(this))
       );

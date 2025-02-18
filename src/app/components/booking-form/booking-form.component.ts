@@ -354,7 +354,7 @@ export class BookingFormComponent implements OnInit {
     this.bookingForm = this.fb.group({
       whatsappNumber: [
         {
-          value: this.userState.user()?.phone || "",
+          value: this.userState.user()?.phoneNumber || "",
           disabled: !!this.userState.user(),
         },
         [Validators.required, Validators.pattern("^0(10|11|12|15)[0-9]{8}$")],
@@ -450,7 +450,7 @@ export class BookingFormComponent implements OnInit {
     const { whatsappNumber } = this.bookingForm.value;
 
     this.authService.login({
-      username: whatsappNumber,
+      phoneNumber: whatsappNumber,
       password: whatsappNumber,
     }).subscribe(() => {});
     // await this.bookingService.requestBooking(this.trip.id, whatsappNumber);

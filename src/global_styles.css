@@ -82,7 +82,7 @@
 
   /* Animated button loading state */
   .btn-loading {
-    @apply relative overflow-hidden;
+    @apply relative  ;
   }
   .btn-loading::after {
     @apply absolute inset-0 w-full bg-gradient-to-r from-transparent via-white/20 to-transparent

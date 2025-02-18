@@ -1,14 +1,15 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faMapMarkerAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { LightboxService } from "./image-lightbox.service";
 import { ImgUrlPipe } from "../../pipes/imgUrl.pipe";
 
 export interface LightboxImage {
-  filePath: string;
+  url: string;
   title: string;
   description?: string;
+  city: { name: string };
 }
 
 @Component({
@@ -30,7 +31,7 @@ export interface LightboxImage {
         </button>
 
         <img
-          [src]="image.filePath | imgUrl"
+          [src]="image.url | imgUrl"
           [alt]="image.title"
           class="max-h-[90vh] w-auto mx-auto rounded-lg shadow-2xl"
           (click)="$event.stopPropagation()"
@@ -38,6 +39,10 @@ export interface LightboxImage {
 
         <div class="text-center mt-4">
           <h3 class="text-2xl font-semibold text-white">{{ image.title }}</h3>
+          <p class="text-white/90 flex items-center">
+            <fa-icon [icon]="faMapMarkerAlt" class="mx-1"></fa-icon>
+            {{ image.city.name }}
+          </p>
           @if (image.description) {
           <p class="text-white/75">{{ image.description }}</p>
           }
@@ -53,7 +58,7 @@ export class LightboxComponent {
   @Output() closeEvent = new EventEmitter<void>();
 
   faTimes = faTimes;
-
+  faMapMarkerAlt = faMapMarkerAlt;
   close(): void {
     this.closeEvent.emit();
   }

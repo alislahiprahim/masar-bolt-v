@@ -20,7 +20,7 @@ export class GalleryService extends BaseApiService<GalleryImage> {
     page?: number;
     limit?: number;
   }): Observable<{ images: GalleryImage[]; total: number }> {
-    return this.getItems(filters).pipe(
+    return this.getItems(filters, "images").pipe(
       map(({ items, total }) => ({ images: items, total }))
     );
   }

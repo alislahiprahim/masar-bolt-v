@@ -13,6 +13,6 @@ export interface Trip {
   isActive: boolean;
   tripPhotos: string[];
   destination: string;
-  included: string[];
+  includes: { includes: { name: string } }[];
 }
  

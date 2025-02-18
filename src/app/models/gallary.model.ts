@@ -1,8 +1,8 @@
 export interface GalleryImage {
   id: string;
-  filePath: string;
+  url: string;
   title: string;
-  location: string;
+  city: { name: string };
   description?: string;
   tags?: string[];
   date?: string;

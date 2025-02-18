@@ -24,7 +24,7 @@ export class GalleryStateService {
 
   // Computed locations and tags for filtering
   readonly locations = computed(() =>
-    Array.from(new Set(this.state().images.map((img) => img.location)))
+    Array.from(new Set(this.state().images.map((img) => img.city.name)))
   );
 
   readonly tags = computed(() =>

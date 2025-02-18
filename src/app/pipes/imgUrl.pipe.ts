@@ -5,6 +5,6 @@ import { environment } from "../../environments/environment";
 @Pipe({ name: "imgUrl", standalone: true })
 export class ImgUrlPipe implements PipeTransform {
   transform(path: string): string {
-    return `${environment.imgUrl}/${path}`;
+    return `${environment.imgUrl}${path}`;
   }
 }
