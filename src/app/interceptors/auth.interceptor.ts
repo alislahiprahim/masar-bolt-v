@@ -27,7 +27,7 @@ export function authInterceptor(
 
   return next(request).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401 && !isRefreshing) {
+      if (token && error.status === 401 && !isRefreshing) {
         return handle401Error(request, next, authService, authState);
       }
       return throwError(() => error);

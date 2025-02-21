@@ -8,13 +8,13 @@ import {
   faInfoCircle,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
-import { DialogService, DialogType } from "../../services/dialog.service";
-import { TranslateModule } from "@ngx-translate/core";
+import { DialogService } from "../../services/dialog.service";
+import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
   selector: "app-dialog",
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, TranslateModule],
+  imports: [CommonModule, FontAwesomeModule, TranslatePipe],
   template: `
     @if (dialogService.dialog().isOpen) {
     <div
@@ -52,7 +52,7 @@ import { TranslateModule } from "@ngx-translate/core";
                   class="text-lg font-medium text-center"
                   [class]="getTextClasses()"
                 >
-                  {{ dialogService.dialog().message }}
+                  {{ dialogService.dialog().message | translate }}
                 </p>
               </div>
             </div>

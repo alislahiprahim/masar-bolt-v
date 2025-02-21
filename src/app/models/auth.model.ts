@@ -1,3 +1,5 @@
+import { Reservation } from "./reservation.model";
+
 export interface LoginCredentials {
   phoneNumber: string;
   password: string;
@@ -18,22 +20,44 @@ export interface AuthResponse {
     token: string;
     user: UserDetails;
   };
+  message: string | null;
+}
+
+export interface CheckPhoneResponse {
+  status: "success" | "error";
+  data: { exists: boolean };
   responseMessage: string | null;
 }
 
 export interface UserDetails {
   id: string;
+  firstName?: string;
+  lastName?: string;
   phoneNumber: string;
   email?: string;
-  userName?: string;
-  name?: string;
-  profilePicture?: string;
+  isPhoneVerified: boolean;
+  phoneVerificationCode?: string | null;
+  phoneVerificationExpires?: Date | null;
+  profilePicture?: string | null;
+  isEmailVerified: boolean;
+  isActive: boolean;
   reservedTripIds: string[];
   preferences?: {
-    preferredDestinations: string[];
+    preferredDestinations?: string[];
     dietaryRestrictions?: string[];
     travelStyle?: string;
   };
+  createdAt: Date;
+  updatedAt: Date;
+  lastLoginAt: Date;
+  reservations: Reservation[];
+  roles?: {
+    id: string;
+    name: string;
+    description?: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
 }
 
 export interface AuthState {

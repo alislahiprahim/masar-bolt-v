@@ -30,7 +30,7 @@ export class GalleryService extends BaseApiService<GalleryImage> {
   }
 
   getFeaturedImages(limit: number = 6): Observable<GalleryImage[]> {
-    return this.getFeaturedItems(limit);
+    return this.getFeaturedItems(limit, "", "images");
   }
 
   protected getEntityName(): string {

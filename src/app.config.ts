@@ -3,14 +3,23 @@ import {
   importProvidersFrom,
   provideZoneChangeDetection,
 } from "@angular/core";
-import { provideRouter } from "@angular/router";
+import {
+  provideRouter,
+  withInMemoryScrolling,
+  withRouterConfig,
+  withViewTransitions,
+} from "@angular/router";
 import { provideAnimations } from "@angular/platform-browser/animations";
 import {
   HttpClient,
   provideHttpClient,
   withInterceptors,
 } from "@angular/common/http";
-import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import {
+  provideTranslateService,
+  TranslateLoader,
+  TranslateModule,
+} from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { routes } from "./app/app.routes";
 import { authInterceptor } from "./app/interceptors/auth.interceptor";
@@ -23,7 +32,11 @@ export function HttpLoaderFactory(http: HttpClient) {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(
+      routes,
+      withViewTransitions(),
+      withInMemoryScrolling({ scrollPositionRestoration: "top" })
+    ),
     provideAnimations(),
     provideHttpClient(withInterceptors([authInterceptor])),
     importProvidersFrom(
@@ -36,5 +49,13 @@ export const appConfig: ApplicationConfig = {
         },
       })
     ),
+    provideTranslateService({
+      defaultLanguage: "ar",
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
 };

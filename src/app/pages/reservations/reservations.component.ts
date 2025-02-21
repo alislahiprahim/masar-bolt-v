@@ -169,10 +169,10 @@ export class ReservationsComponent implements OnInit {
     this.state.setLoading(true);
 
     this.reservationService.getUserReservations().subscribe({
-      next: (reservations) => {
+      next: (data) => {
         this.state.setReservations(
-          reservations.reservations,
-          reservations.total
+          data.reservations
+          // data.total
         );
         this.state.setLoading(false);
       },
@@ -238,7 +238,7 @@ export class ReservationsComponent implements OnInit {
         next: () => {
           this.state.updateReservation({
             ...reservation,
-            status: "cancelled",
+            status: "CANCELLED",
             cancellationReason: reason,
           });
           this.toastService.success("reservations.messages.cancelSuccess");

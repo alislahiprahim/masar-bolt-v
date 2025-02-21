@@ -21,11 +21,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Reservation } from "../../../models/reservation.model";
 import { TicketComponent } from "../../ticket/ticket.component";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-reservation-card",
   standalone: true,
-  imports: [CommonModule, TranslateModule, FaIconComponent, TicketComponent],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    FaIconComponent,
+    TicketComponent,
+    RouterLink,
+  ],
   template: `
     <div
       class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
@@ -35,7 +42,12 @@ import { TicketComponent } from "../../ticket/ticket.component";
         <div class="flex justify-between items-start mb-4">
           <div>
             <h3 class="text-lg font-semibold text-gray-900">
-              {{ reservation.title }}
+              <a
+                class="text-primary-600 hover:text-primary-700"
+                [routerLink]="['/trips', reservation.trip.id]"
+              >
+                {{ reservation.trip.name }}
+              </a>
             </h3>
             <p class="text-sm text-gray-500">
               {{ "reservations.booking" | translate }} #{{ reservation.id }}
@@ -86,8 +98,8 @@ import { TicketComponent } from "../../ticket/ticket.component";
           </div>
 
           <div class="flex flex-row gap-2">
-            @if (reservation.status === 'confirmed' || reservation.status ===
-            'completed') {
+            @if (reservation.status === 'CONFIRMED' || reservation.status ===
+            'COMPLETED') {
             <button
               (click)="onDownloadTicket.emit()"
               class="btn-secondary text-sm"
@@ -107,7 +119,7 @@ import { TicketComponent } from "../../ticket/ticket.component";
         </div>
 
         <!-- Confirm Button -->
-        @if (reservation.status === 'pending') {
+        @if (reservation.status === 'PENDING') {
         <div class="mt-4 border-t pt-4">
           <button
             (click)="onConfirm.emit()"
@@ -173,13 +185,13 @@ export class ReservationCardComponent {
   protected getStatusClasses(): string {
     const baseClasses = "px-2.5 py-0.5 rounded-full text-xs font-medium";
     switch (this.reservation.status) {
-      case "confirmed":
+      case "CONFIRMED":
         return `${baseClasses} bg-green-100 text-green-800`;
-      case "pending":
+      case "PENDING":
         return `${baseClasses} bg-yellow-100 text-yellow-800`;
-      case "cancelled":
+      case "CANCELLED":
         return `${baseClasses} bg-red-100 text-red-800`;
-      case "completed":
+      case "COMPLETED":
         return `${baseClasses} bg-blue-100 text-blue-800`;
       default:
         return `${baseClasses} bg-gray-100 text-gray-800`;

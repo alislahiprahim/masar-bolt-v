@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Booking } from '../../models/booking.model';
-
+import { Booking } from "../../models/reservation.model";
+ 
 @Component({
   selector: "app-bookings",
   imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],

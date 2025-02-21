@@ -28,10 +28,9 @@ import { UserDetails } from "../../../models/auth.model";
             >
               <img
                 [src]="
-                  user?.profilePicture ||
-                  'https://ui-avatars.com/api/?name=' + user?.name
+                  user?.profilePicture ?? 'assets/images/default-profile.png'
                 "
-                [alt]="user?.name"
+                [alt]="user?.firstName + ' ' + user?.lastName"
                 class="w-full h-full object-cover"
               />
             </div>
@@ -47,7 +46,11 @@ import { UserDetails } from "../../../models/auth.model";
 
           <div>
             <h1 class="text-3xl font-bold text-white">
-              {{ "profile.welcome" | translate : { name: user?.name } }}
+              {{
+                user?.firstName
+                  ? user?.firstName + " " + user?.lastName
+                  : user?.phoneNumber
+              }}
             </h1>
             <p class="text-primary-100 mt-1">
               {{ "profile.subtitle" | translate }}

@@ -35,7 +35,7 @@ import { TranslateModule } from '@ngx-translate/core';
           >
           </fa-icon>
 
-          <p class="flex-1">{{ toast.message }}</p>
+          <p class="flex-1">{{ toast.message | translate }}</p>
 
           <button
             (click)="toastService.remove(toast.id)"

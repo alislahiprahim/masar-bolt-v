@@ -1,5 +1,5 @@
 import { Component, inject } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, NgClass } from "@angular/common";
 import { Router, RouterLink, ActivatedRoute } from "@angular/router";
 import {
   FormBuilder,
@@ -22,12 +22,23 @@ import {
 import { AuthService } from "../../../services/auth.service";
 import { ToastService } from "../../../services/toast.service";
 import { DialogService } from "../../../services/dialog.service";
-import { TranslateModule, TranslateService } from "@ngx-translate/core";
+import {
+  TranslateModule,
+  TranslatePipe,
+  TranslateService,
+} from "@ngx-translate/core";
 import { environment } from "../../../../environments/environment.development";
+import { ReservationService } from "../../../services/reservation.service";
 
 @Component({
   selector: "app-login",
-  imports: [RouterLink, ReactiveFormsModule, FaIconComponent, TranslateModule],
+  imports: [
+    RouterLink,
+    ReactiveFormsModule,
+    FaIconComponent,
+    TranslatePipe,
+    NgClass,
+  ],
   template: `
     <div
       class="min-h-screen relative bg-gradient-to-br from-primary-50 to-secondary-50"
@@ -166,7 +177,10 @@ import { environment } from "../../../../environments/environment.development";
                 <button
                   type="submit"
                   [disabled]="!loginForm.valid || isLoading"
-                  class="w-full btn-primary flex justify-center items-center"
+                  class="w-full btn-primary flex justify-center items-center disabled:opacity-50"
+                  [ngClass]="{
+                    'pointer-events-none': loginForm.invalid || isLoading
+                  }"
                 >
                   <fa-icon
                     [icon]="faSignInAlt"
@@ -208,6 +222,7 @@ export class LoginComponent {
   faLock = faLock;
   dialogService = inject(DialogService);
   translateService = inject(TranslateService);
+  reservationService = inject(ReservationService);
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,

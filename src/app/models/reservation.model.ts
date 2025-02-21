@@ -1,9 +1,11 @@
+import { Trip } from "./trip.model";
+
 export type ReservationStatus =
-  | "pending"
-  | "confirmed"
-  | "paid"
-  | "cancelled"
-  | "completed";
+  | "PENDING"
+  | "CONFIRMED"
+  | "PAID"
+  | "CANCELLED"
+  | "COMPLETED";
 
 export interface Reservation {
   id: string;
@@ -21,10 +23,31 @@ export interface Reservation {
   paymentUrl?: string;
   cancellationReason?: string;
   isEditable: boolean;
+  trip: Trip;
 }
 
 export interface ReservationUpdate {
   numberOfTravelers?: number;
   whatsappNumber?: string;
   specialRequests?: string;
+}
+
+export interface Booking {
+  id: string;
+  userId: string;
+  tripId: string;
+  status: "pending" | "confirmed" | "completed" | "cancelled";
+  bookingDate: string;
+  whatsappNumber: string;
+  nationalIdImage: string;
+  numberOfTravelers: number;
+  totalPrice: number;
+  specialRequests?: string;
+  amount?: number;
+}
+
+export interface ReservationResponse {
+  status: "success" | "error";
+  data: any;
+  responseMessage: string | null;
 }

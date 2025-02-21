@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import {
   faUsers,
@@ -19,9 +19,8 @@ import {
   faMobileAlt,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { TranslateModule } from "@ngx-translate/core";
+import { TranslateModule, TranslatePipe } from "@ngx-translate/core";
 import { Trip } from "../../models/trip.model";
-import { BookingService } from "../../services/booking.service";
 import { DialogService } from "../../services/dialog.service";
 import { AuthService } from "../../services/auth.service";
 import {
@@ -29,6 +28,7 @@ import {
   ImagePickerComponent,
 } from "../image-picker/image-picker.component";
 import { AuthStateService } from "../../state/auth.state";
+import { ReservationService } from "../../services/reservation.service";
 
 interface TravelerInfo {
   type: "adult" | "childUnder12" | "childUnder6";
@@ -42,11 +42,12 @@ interface TravelerInfo {
     CommonModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    TranslateModule,
+    TranslatePipe,
     ImagePickerComponent,
+    RouterLink,
   ],
   template: `
-    @if (bookingService.getBookingStatus(trip.id) === 'booked') {
+    @if (reservationService.getBookingStatus(trip.id) !== 'CANCELLED') {
     <div class="bg-white p-6 rounded-xl shadow-sm">
       <div class="text-center">
         <div
@@ -65,7 +66,7 @@ interface TravelerInfo {
         </p>
 
         <!-- Next Steps -->
-        <div class="text-left bg-gray-50 rounded-lg p-4 mb-6">
+        <div class="text-start bg-gray-50 rounded-lg p-4 mb-6">
           <h4 class="font-medium text-gray-900 mb-3">
             {{ "booking.success.nextSteps" | translate }}
           </h4>
@@ -73,14 +74,17 @@ interface TravelerInfo {
             @for (step of ('booking.success.steps' | translate); track step) {
             <li class="flex items-start">
               <span
-                class="w-2 h-2 mt-2 bg-primary-500 rounded-full mr-2"
+                class="w-2 h-2 mt-2 bg-primary-500 rounded-full mx-2"
               ></span>
               <span class="text-sm text-gray-600">{{ step }}</span>
             </li>
             }
           </ul>
         </div>
-        <a routerLink="/profile" class="btn-primary inline-block w-full">
+        <a
+          routerLink="/profile/reservations"
+          class="btn-primary inline-block w-full cursor-pointer"
+        >
           {{ "booking.success.viewDetails" | translate }}
         </a>
       </div>
@@ -308,7 +312,10 @@ interface TravelerInfo {
         <button
           type="submit"
           [disabled]="!isFormValid() || isSubmitting"
-          class="w-full btn-primary flex justify-center items-center"
+          class="w-full btn-primary flex justify-center items-center disabled:opacity-50"
+          [ngClass]="{
+            'pointer-events-none': !isFormValid() || isSubmitting
+          }"
         >
           @if (isSubmitting) {
           <span class="loading-spinner mr-2"></span>
@@ -346,7 +353,7 @@ export class BookingFormComponent implements OnInit {
   protected faTrash = faTrash;
   constructor(
     private fb: FormBuilder,
-    public bookingService: BookingService,
+    public reservationService: ReservationService,
     public authService: AuthService,
     private dialogService: DialogService,
     private router: Router
@@ -378,7 +385,7 @@ export class BookingFormComponent implements OnInit {
     }
   }
 
-  protected isFormValid(): boolean {
+  isFormValid(): boolean {
     if (!this.authService.isAuthenticated()) {
       return this.bookingForm.get("whatsappNumber")?.valid || false;
     }
@@ -438,23 +445,31 @@ export class BookingFormComponent implements OnInit {
 
     this.bookingForm.value.documents.forEach(
       (img: ImageFile, index: number) => {
-        formData.append(`nationalIdImage${index}`, img.file);
+        formData.append(`documents`, img.file);
       }
     );
 
-    const booking = await this.bookingService.createBooking(formData);
-    this.dialogService.success("booking.success.message");
+    this.reservationService
+      .createReservation(formData)
+      .subscribe((isSuccess) => {
+        if (isSuccess) {
+          this.router.navigate(["/profile"]);
+        }
+      });
   }
 
   private async handleUnauthenticatedBooking() {
     const { whatsappNumber } = this.bookingForm.value;
 
-    this.authService.login({
-      phoneNumber: whatsappNumber,
-      password: whatsappNumber,
-    }).subscribe(() => {});
-    // await this.bookingService.requestBooking(this.trip.id, whatsappNumber);
-    // this.dialogService.success("booking.requestSent");
+    this.authService
+      .checkPhoneNumber(whatsappNumber)
+      .subscribe((isRegistered) => {
+        if (isRegistered) {
+          this.router.navigate(["/auth/login"]);
+        } else {
+          this.router.navigate(["/auth/register"]);
+        }
+      });
   }
 
   createTravelerGroup() {

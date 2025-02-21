@@ -7,10 +7,13 @@ import { AuthStateService } from "../state/auth.state";
 import { ToastService } from "./toast.service";
 import {
   AuthResponse,
+  CheckPhoneResponse,
   LoginCredentials,
   RegisterCredentials,
   UserDetails,
 } from "../models/auth.model";
+import { DialogService } from "./dialog.service";
+import { ReservationService } from "./reservation.service";
 
 @Injectable({
   providedIn: "root",
@@ -22,7 +25,9 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private authState: AuthStateService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private dialogService: DialogService,
+    private reservationService: ReservationService
   ) {}
 
   login(credentials: LoginCredentials): Observable<boolean> {
@@ -40,9 +45,12 @@ export class AuthService {
             this.authState.setToken(response.data?.token);
             this.authState.setUser(response.data?.user);
             this.toastService.success("Successfully logged in");
+            this.reservationService.setUserReservationsInLocalStorage(
+              response.data.user.reservations
+            );
           } else {
             const message =
-              response?.responseMessage || "An error occurred during login";
+              response?.message || "An error occurred during login";
             this.authState.setError(message);
             this.toastService.error(message);
           }
@@ -69,8 +77,7 @@ export class AuthService {
             this.toastService.success("Successfully registered");
           } else {
             const message =
-              response?.responseMessage ||
-              "An error occurred during registration";
+              response?.message || "An error occurred during registration";
             this.authState.setError(message);
             this.toastService.error(message);
           }
@@ -86,6 +93,38 @@ export class AuthService {
       );
   }
 
+  checkPhoneNumber(phoneNumber: string): Observable<boolean> {
+    return this.http
+      .post<CheckPhoneResponse>(`${this.apiUrl}/check-phone`, {
+        phoneNumber,
+      })
+      .pipe(
+        tap((response) => {
+          if (response.status === "success") {
+            response.data.exists
+              ? this.dialogService.success("auth.phone_already_registered")
+              : this.dialogService.error("auth.phone_not_registered");
+          } else {
+            const message =
+              response?.responseMessage ||
+              "An error occurred during registration";
+            this.authState.setError(message);
+            this.toastService.error(message);
+          }
+        }),
+        map(
+          (response: CheckPhoneResponse) =>
+            response.status === "success" && response.data.exists
+        ),
+        catchError((error) => {
+          const message =
+            error.error?.message || "An error occurred during login";
+          this.authState.setError(message);
+          this.toastService.error(message);
+          return of(false);
+        })
+      );
+  }
   logout(): void {
     // Optionally call logout endpoint
     this.http

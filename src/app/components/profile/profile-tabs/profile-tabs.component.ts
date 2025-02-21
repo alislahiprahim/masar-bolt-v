@@ -68,7 +68,7 @@ import {
 export class ProfileTabsComponent {
   tabs = [
     { path: "./details", label: "profile.tabs.details", icon: faUser },
-    { path: "./trips", label: "profile.tabs.trips", icon: faPlane },
+    // { path: "./trips", label: "profile.tabs.trips", icon: faPlane },
     {
       path: "./reservations",
       label: "reservations.title",

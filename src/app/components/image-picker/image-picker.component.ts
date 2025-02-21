@@ -26,9 +26,7 @@ export interface ImageFile {
       @for (i of getNumberSequence(); track i) {
       <div class="relative">
         @if (images[i]) {
-        <div
-          class="relative rounded-lg overflow-hidden  border border-gray-200"
-        >
+        <div class="relative rounded-lg overflow-hidden border border-gray-200">
           <img
             [src]="images[i].preview"
             class="w-full h-24 object-cover"

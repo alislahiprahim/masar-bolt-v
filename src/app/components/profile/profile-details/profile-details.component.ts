@@ -33,12 +33,37 @@ import { UserDetails } from "../../../models/auth.model";
           <div>
             <label class="block text-sm font-medium text-gray-700">
               <fa-icon [icon]="faUser" class="mr-2"></fa-icon>
-              {{ "profile.details.name" | translate }}
+              {{ "profile.details.firstName" | translate }}
             </label>
             <input
               type="text"
-              formControlName="name"
+              formControlName="firstName"
               class="input-field mt-1"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">
+              <fa-icon [icon]="faUser" class="mr-2"></fa-icon>
+              {{ "profile.details.lastName" | translate }}
+            </label>
+            <input
+              type="text"
+              formControlName="lastName"
+              class="input-field mt-1"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">
+              <fa-icon [icon]="faPhone" class="mr-2"></fa-icon>
+              {{ "profile.details.phone" | translate }}
+            </label>
+            <input
+              type="tel"
+              formControlName="phoneNumber"
+              class="input-field mt-1"
+              placeholder="e.g., +1234567890"
             />
           </div>
 
@@ -56,63 +81,17 @@ import { UserDetails } from "../../../models/auth.model";
 
           <div>
             <label class="block text-sm font-medium text-gray-700">
-              <fa-icon [icon]="faPhone" class="mr-2"></fa-icon>
-              {{ "profile.details.phone" | translate }}
+              <fa-icon [icon]="faUser" class="mr-2"></fa-icon>
+              {{ "profile.details.profilePicture" | translate }}
             </label>
             <input
-              type="tel"
-              formControlName="phone"
+              type="file"
+              formControlName="profilePicture"
               class="input-field mt-1"
+              accept="image/*"
             />
           </div>
         </div>
-
-        <!-- <div>
-          <h3 class="text-lg font-medium text-gray-900 mb-4">
-            {{ "profile.details.preferences.title" | translate }}
-          </h3>
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm text-gray-700">{{
-                "profile.details.preferences.destinations" | translate
-              }}</label>
-              <select
-                multiple
-                formControlName="preferredDestinations"
-                class="input-field mt-1"
-              >
-                <option value="beach">Beach destinations</option>
-                <option value="mountain">Mountain destinations</option>
-                <option value="city">City breaks</option>
-                <option value="cultural">Cultural experiences</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-sm text-gray-700">{{
-                "profile.details.preferences.travelStyle" | translate
-              }}</label>
-              <select formControlName="travelStyle" class="input-field mt-1">
-                <option value="luxury">Luxury</option>
-                <option value="adventure">Adventure</option>
-                <option value="budget">Budget-friendly</option>
-                <option value="family">Family-oriented</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-sm text-gray-700">{{
-                "profile.details.preferences.dietary" | translate
-              }}</label>
-              <input
-                type="text"
-                formControlName="dietaryRestrictions"
-                class="input-field mt-1"
-                placeholder="e.g., vegetarian, gluten-free"
-              />
-            </div>
-          </div>
-        </div> -->
 
         <div class="flex justify-end space-x-4 rtl:space-x-reverse">
           <button
@@ -141,28 +120,22 @@ export class ProfileDetailsComponent {
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.profileForm = this.fb.group({
-      name: ["", Validators.required],
+      firstName: ["", Validators.required],
+      lastName: ["", Validators.required],
       email: ["", [Validators.email]],
-      phone: [
-        "",
-        [Validators.required, Validators.pattern("^0(10|11|12|15)[0-9]{8}$")],
-      ],
-      // preferredDestinations: [[]],
-      // travelStyle: [""],
-      // dietaryRestrictions: [""],
+      phoneNumber: { value: "", disabled: true },
+      profilePicture: [""],
     });
   }
   ngOnInit() {
     this.user = this.authService.getCurrentUser();
     if (this.user) {
       this.profileForm.patchValue({
-        name: this.user.name,
+        firstName: this.user.firstName,
+        lastName: this.user.lastName,
         email: this.user.email,
-        phone: this.user.phoneNumber,
-        preferredDestinations: this.user.preferences?.preferredDestinations,
-        travelStyle: this.user.preferences?.travelStyle,
-        dietaryRestrictions:
-          this.user.preferences?.dietaryRestrictions?.join(", "),
+        phoneNumber: this.user.phoneNumber,
+        profilePicture: this.user.profilePicture,
       });
     }
   }

@@ -126,6 +126,7 @@
       "lastName": "اسم العائلة",
       "email": "البريد الإلكتروني",
       "phone": "رقم الهاتف",
+      "profilePicture": "الصورة الشخصية",
       "preferences": {
         "title": "تفضيلات السفر",
         "destinations": "الوجهات المفضلة",
@@ -154,9 +155,11 @@
       "download": "تحميل",
       "empty": "لا توجد فواتير",
       "statuses": {
-        "paid": "مدفوع",
-        "pending": "قيد الانتظار",
-        "cancelled": "ملغي"
+        "PENDING": "قيد الانتظار",
+        "CONFIRMED": "مؤكد",
+        "PAID": "مدفوع",
+        "CANCELLED": "ملغاة",
+        "COMPLETED": "مكتملة"
       }
     },
     "notifications": {
@@ -246,13 +249,13 @@
     "confirm": "تأكيد الحجز",
     "downloadTicket": "تحميل التذكرة",
     "downloadInvoice": "تحميل الفاتورة",
-    "status": {
-      "pending": "قيد الانتظار",
-      "confirmed": "مؤكد",
-      "paid": "مدفوع",
-      "completed": "مكتمل",
-      "cancelled": "ملغي"
-    },
+  "status": {
+        "PENDING": "قيد الانتظار",
+        "CONFIRMED": "مؤكد",
+        "PAID": "مدفوع",
+        "CANCELLED": "ملغاة",
+        "COMPLETED": "مكتملة"
+      },
     "filters": {
       "status": "تصفية حسب الحالة",
       "allStatuses": "جميع الحالات",
@@ -284,7 +287,9 @@
       "updateSuccess": "تم تحديث الحجز بنجاح",
       "cancelSuccess": "تم إلغاء الحجز بنجاح",
       "confirmSuccess": "تم تأكيد الحجز بنجاح"
-    }
+    },
+    "bookingSuccess": "تم حجز الرحلة بنجاح",
+    "bookingError": "حدث خطأ أثناء حجز الرحلة"
   },
   "auth": {
     "phone": "رقم الموبايل",
@@ -334,7 +339,9 @@
       "phoneNumberLength": "يجب أن يكون رقم الموبايل 11 رقم",
       "firstNameRequired": "الاسم الاول مطلوب",
       "lastNameRequired": "الاسم الاخير مطلوب"
-    }
+    },
+    "phone_already_registered": "رقم الواتساب مستخدم بالفعل، قم بتسجيل الدخول لاستكمال الحجز",
+    "phone_not_registered": "رقم الواتساب غير مسجل، قم بإنشاء حساب لاستكمال الحجز"
   },
   "ticket": {
     "subtitle": "تذكرة رحلة السفاري",
