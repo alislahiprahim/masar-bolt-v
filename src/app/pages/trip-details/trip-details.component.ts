@@ -25,6 +25,7 @@ import { TripsService } from "../../services/trips.service";
 import { TripsStateService } from "../../state/trips.state";
 import { SafeHTMLPipe } from "../../pipes/safeHTML.pipe";
 import { ImgUrlPipe } from "../../pipes/imgUrl.pipe";
+import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
   selector: "app-trip-details",
@@ -32,8 +33,8 @@ import { ImgUrlPipe } from "../../pipes/imgUrl.pipe";
     CommonModule,
     FontAwesomeModule,
     BookingFormComponent,
-    SafeHTMLPipe,
     ImgUrlPipe,
+    TranslatePipe,
   ],
   template: `
     @if (state.loading()) {
@@ -81,22 +82,26 @@ import { ImgUrlPipe } from "../../pipes/imgUrl.pipe";
           <div class="lg:col-span-2">
             <!-- Description -->
             <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
-              <h2 class="text-2xl font-bold mb-4">About This Trip</h2>
+              <h2 class="text-2xl font-bold mb-4">
+                {{ "trip.description.description" | translate }}
+              </h2>
               <p class="text-gray-600">
                 {{ state.selectedTrip()!.notes }}
               </p>
-              <span
+              <!-- <span
                 [innerHTML]="state.selectedTrip()!.description | safeHTML"
-              ></span>
+              ></span> -->
             </div>
 
             <!-- Included -->
             <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
-              <h2 class="text-2xl font-bold mb-4">What's Included</h2>
+              <h2 class="text-2xl font-bold mb-4">
+                {{ "trip.includes.title" | translate }}
+              </h2>
               <ul class="space-y-2">
                 @for (item of state.selectedTrip()!.includes; track item) {
                 <li class="flex items-center text-gray-600">
-                  <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
+                  <span class="w-2 h-2 bg-primary-500 rounded-full mx-2"></span>
                   {{ item.includes.name }}
                 </li>
                 }
@@ -104,19 +109,21 @@ import { ImgUrlPipe } from "../../pipes/imgUrl.pipe";
             </div>
 
             <!-- Itinerary -->
-            <!-- <div class="bg-white rounded-xl shadow-sm p-6">
-                <h2 class="text-2xl font-bold mb-4">Itinerary</h2>
-                <div class="space-y-6">
-                  @for (day of state.selectedTrip()!.itinerary; track day.day) {
-                    <div>
-                      <h3 class="text-lg font-semibold text-primary-600 mb-2">
-                        Day {{ day.day }}
-                      </h3>
-                      <p class="text-gray-600">{{ day.description }}</p>
-                    </div>
-                  }
+            <div class="bg-white rounded-xl shadow-sm p-6">
+              <h2 class="text-2xl font-bold mb-4">
+                {{ "trip.itinerary.title" | translate }}
+              </h2>
+              <div class="space-y-6">
+                @for (day of state.selectedTrip()!.itinerary; track day.day) {
+                <div>
+                  <h3 class="text-lg font-semibold text-primary-600 mb-2">
+                    {{ day.day }}
+                  </h3>
+                  <p class="text-gray-600">{{ day.description }}</p>
                 </div>
-              </div> -->
+                }
+              </div>
+            </div>
           </div>
 
           <!-- Booking Form -->

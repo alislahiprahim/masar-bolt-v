@@ -11,7 +11,7 @@ import { throwError } from "rxjs";
 })
 export class ReservationService extends BaseApiService<Reservation> {
   protected apiUrl = `${environment.apiUrl}/reservations/client`;
-  private bookingStatus: { [tripId: string]: ReservationStatus| null } = {};
+  private bookingStatus: { [tripId: string]: ReservationStatus | null } = {};
   private userReservations: Reservation[] = [];
   getUserReservations(
     params: {
@@ -19,7 +19,7 @@ export class ReservationService extends BaseApiService<Reservation> {
       limit?: number;
       status?: string;
       search?: string;
-    } = {},
+    } = {}
   ): Observable<{ reservations: Reservation[]; total: number }> {
     return this.http
       .get<{
@@ -33,12 +33,11 @@ export class ReservationService extends BaseApiService<Reservation> {
       );
   }
 
-  
   createReservation(formData: FormData): Observable<boolean> {
     return this.http.post<ReservationResponse>(this.apiUrl, formData).pipe(
       tap((response) => {
         if (response.status === "success") {
-          this.bookingStatus[response.data.tripId] =  'PENDING'; // Assuming response.data.reservation contains tripId
+          this.bookingStatus[response.data.tripId] = "PENDING"; // Assuming response.data.reservation contains tripId
           this.toastService.success("booking.bookingSuccess");
         } else {
           this.toastService.error(
@@ -88,9 +87,12 @@ export class ReservationService extends BaseApiService<Reservation> {
       .pipe(catchError(this.handleError.bind(this)));
   }
 
-    getBookingStatus(tripId: string): ReservationStatus | null {
-      this.getUserReservationsFromLocalStorage();
-    return this.userReservations.find((reservation) => reservation.tripId === tripId)?.status || null;
+  getBookingStatus(tripId: string): ReservationStatus | "CANCELLED" {
+    this.getUserReservationsFromLocalStorage();
+    return (
+      this.userReservations.find((reservation) => reservation.tripId === tripId)
+        ?.status || "CANCELLED"
+    );
   }
 
   protected getEntityName(): string {

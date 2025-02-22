@@ -14,5 +14,7 @@ export interface Trip {
   tripPhotos: string[];
   destination: string;
   includes: { includes: { name: string } }[];
+  itinerary: any[];
 }
+  
  

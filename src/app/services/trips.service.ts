@@ -32,7 +32,12 @@ export class TripsService extends BaseApiService<Trip> {
   }
 
   getTripById(id: string, dataKey: string = ""): Observable<Trip> {
-    return this.getItemById(id, dataKey);
+    return this.getItemById(id, dataKey).pipe(
+      map((trip) => ({
+        ...trip,
+        itinerary: trip.itinerary.map((item) => JSON.parse(item)),
+      }))
+    );
   }
 
   getPopularTrips(dataKey: string = "popularTrips"): Observable<Trip[]> {
