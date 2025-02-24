@@ -249,6 +249,7 @@
     "confirm": "تأكيد الحجز",
     "downloadTicket": "تحميل التذكرة",
     "downloadInvoice": "تحميل الفاتورة",
+    "goToPayment": "الانتقال إلى الدفع",
   "status": {
         "PENDING": "قيد الانتظار",
         "CONFIRMED": "مؤكد",

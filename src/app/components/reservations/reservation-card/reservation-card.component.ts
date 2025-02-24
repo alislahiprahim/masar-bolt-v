@@ -18,6 +18,7 @@ import {
   faDownload,
   faSpinner,
   faCheck,
+  faCreditCard,
 } from "@fortawesome/free-solid-svg-icons";
 import { Reservation } from "../../../models/reservation.model";
 import { TicketComponent } from "../../ticket/ticket.component";
@@ -98,7 +99,7 @@ import { RouterLink } from "@angular/router";
           </div>
 
           <div class="flex flex-row gap-2">
-            @if (reservation.status === 'CONFIRMED' || reservation.status ===
+            @if (reservation.status === 'PAID' || reservation.status ===
             'COMPLETED') {
             <button
               (click)="onDownloadTicket.emit()"
@@ -107,7 +108,6 @@ import { RouterLink } from "@angular/router";
               <fa-icon [icon]="faDownload" class="mx-2"></fa-icon>
               {{ "reservations.downloadTicket" | translate }}
             </button>
-            }
             <button
               (click)="onDownloadInvoice.emit(this.ticketTemplate())"
               class="btn-secondary text-sm"
@@ -115,11 +115,12 @@ import { RouterLink } from "@angular/router";
               <fa-icon [icon]="faDownload" class="mx-2"></fa-icon>
               {{ "reservations.downloadInvoice" | translate }}
             </button>
+            }
           </div>
         </div>
 
-        <!-- Confirm Button -->
-        @if (reservation.status === 'PENDING') {
+        <!-- payment Button -->
+        @if (reservation.status === 'CONFIRMED') {
         <div class="mt-4 border-t pt-4">
           <button
             (click)="onConfirm.emit()"
@@ -130,8 +131,8 @@ import { RouterLink } from "@angular/router";
             <fa-icon [icon]="faSpinner" class="mx-2"></fa-icon>
             {{ "reservations.processing" | translate }}
             } @else {
-            <fa-icon [icon]="faCheck" class="mx-2"></fa-icon>
-            {{ "reservations.confirm" | translate }}
+            <fa-icon [icon]="faCreditCard" class="mx-2"></fa-icon>
+            {{ "reservations.goToPayment" | translate }}
             }
           </button>
         </div>
@@ -143,29 +144,12 @@ import { RouterLink } from "@angular/router";
       #tickets
       class="opacity-0 hidden"
       [reservation]="reservation"
-      [trip]="trip"
+      [trip]="reservation.trip"
     />
   `,
 })
 export class ReservationCardComponent {
   ticketTemplate = viewChild("tickets", { read: ElementRef });
-  trip = {
-    id: "1",
-    name: "aasd asdas",
-    days: 12,
-    price: 33,
-    tripStatus: 3,
-    notes: "awda sasdsa",
-    description: "asdasdzxceda sdas as sdasd",
-    date: new Date().toUTCString(),
-    cityId: "1",
-    city: "casd as",
-    maxReservations: 3,
-    isActive: true,
-    tripPhotos: [""],
-    destination: "",
-    includes: [{ includes: { name: "asdasd" } }],
-  };
   @Input({ required: true }) reservation!: Reservation;
   @Input() isProcessing = false;
 
@@ -181,7 +165,7 @@ export class ReservationCardComponent {
   protected faDownload = faDownload;
   protected faSpinner = faSpinner;
   protected faCheck = faCheck;
-
+  protected faCreditCard = faCreditCard;
   protected getStatusClasses(): string {
     const baseClasses = "px-2.5 py-0.5 rounded-full text-xs font-medium";
     switch (this.reservation.status) {
