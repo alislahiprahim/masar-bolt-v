@@ -33,7 +33,7 @@ import { UserDetails } from "../../../models/auth.model";
           <div>
             <label class="block text-sm font-medium text-gray-700">
               <fa-icon [icon]="faUser" class="mr-2"></fa-icon>
-              {{ "profile.details.firstName" | translate }}
+              {{ "profile.details.name" | translate }}
             </label>
             <input
               type="text"

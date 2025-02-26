@@ -8,7 +8,7 @@ export interface Trip {
   description: string;
   date: string;
   cityId: string;
-  city: string;
+  city: { id: string; name: string };
   maxReservations: number;
   isActive: boolean;
   tripPhotos: string[];

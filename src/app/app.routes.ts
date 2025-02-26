@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import { loginGuard } from "./guards/login.guard";
+import { TripResolver } from "./resolvers/trip.resolver";
 
 export const routes: Routes = [
   {
@@ -19,6 +20,7 @@ export const routes: Routes = [
     path: "trips",
     loadComponent: () =>
       import("./pages/trips/trips.component").then((m) => m.TripsComponent),
+    resolve: [TripResolver],
   },
   {
     path: "trips/:id",
@@ -77,19 +79,24 @@ export const routes: Routes = [
             (m) => m.ReservationsComponent
           ),
       },
+      // {
+      //   path: "invoices",
+      //   loadComponent: () =>
+      //     import(
+      //       "./components/profile/profile-invoices/profile-invoices.component"
+      //     ).then((m) => m.ProfileInvoicesComponent),
+      // },
+      // {
+      //   path: "notifications",
+      //   loadComponent: () =>
+      //     import(
+      //       "./components/profile/profile-notifications/profile-notifications.component"
+      //     ).then((m) => m.ProfileNotificationsComponent),
+      // },
       {
-        path: "invoices",
-        loadComponent: () =>
-          import(
-            "./components/profile/profile-invoices/profile-invoices.component"
-          ).then((m) => m.ProfileInvoicesComponent),
-      },
-      {
-        path: "notifications",
-        loadComponent: () =>
-          import(
-            "./components/profile/profile-notifications/profile-notifications.component"
-          ).then((m) => m.ProfileNotificationsComponent),
+        path: "**",
+        redirectTo: "details",
+        pathMatch: "full",
       },
     ],
   },

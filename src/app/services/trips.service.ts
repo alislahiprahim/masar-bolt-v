@@ -5,12 +5,14 @@ import { Trip } from "../models/trip.model";
 import { environment } from "../../environments/environment";
 import { ToastService } from "./toast.service";
 import { BaseApiService } from "./base-api.service";
+import { TripsStateService } from "../state/trips.state";
 
 @Injectable({
   providedIn: "root",
 })
 export class TripsService extends BaseApiService<Trip> {
   protected apiUrl = `${environment.apiUrl}/trips`;
+  protected state = inject(TripsStateService);
 
   getTrips(
     params: {
@@ -46,6 +48,24 @@ export class TripsService extends BaseApiService<Trip> {
 
   protected getEntityName(): string {
     return "trip";
+  }
+
+  loadTrips() {
+    const { filters, pagination } = this.state;
+    this.state.setLoading(true);
+
+    this.getTrips({
+      ...filters(),
+      ...pagination(),
+    }).subscribe({
+      next: ({ trips, total }) => {
+        this.state.setTrips(trips, total);
+        this.state.setLoading(false);
+      },
+      error: (error) => {
+        this.state.setError(error.message);
+      },
+    });
   }
 }
 

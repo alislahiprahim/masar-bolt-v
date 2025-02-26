@@ -19,7 +19,15 @@
     "tryAgain": "حاول مرة أخرى",
     "edit": "تعديل",
     "cancel": "إلغاء",
-    "save": "حفظ"
+    "save": "حفظ",
+    "next": "التالي",
+    "previous": "السابق",
+    "of": "من",
+    "page": "الصفحة",
+    "noTripsFound": "لا يوجد رحلات مطابقة للمعايير",
+    "no_trips_found": "لا يوجد رحلات مطابقة للمعايير",
+    "try_again": "حاول مرة أخرى",
+    "no_results_found": "لا يوجد نتائج مطابقة للمعايير"
   },
   "nav": {
     "home": "الرئيسية",
@@ -250,6 +258,7 @@
     "downloadTicket": "تحميل التذكرة",
     "downloadInvoice": "تحميل الفاتورة",
     "goToPayment": "الانتقال إلى الدفع",
+    "adminConfirmation": "تم التحقق من الحجز بواسطة الأدمن، سيتم الاتصال بك لإكمال عملية الدفع",
   "status": {
         "PENDING": "قيد الانتظار",
         "CONFIRMED": "مؤكد",
@@ -366,5 +375,17 @@
     "itinerary": {
       "title": "الجدول الزمني"
     }
+  },
+  "search_filter": {
+    "search": "بحث",
+    "search_placeholder": "ابحث عن رحلة",
+    "destination": "الوجهة",
+    "all_destinations": "جميع الوجهات",
+    "price_range": "السعر",
+    "min": "الحد الادنى",
+    "max": "الحد الاقصى",
+    "duration": "المدة",
+    "all_durations": "جميع المدة",
+    "clear_filters": "الغاء التصفية"
   }
 }

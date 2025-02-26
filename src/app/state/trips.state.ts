@@ -10,7 +10,7 @@ export interface TripsState {
   total: number;
   filters: {
     search: string;
-    destination: string;
+    cityId: string;
     minPrice: number | null;
     maxPrice: number | null;
     sortBy: string;
@@ -36,7 +36,7 @@ export class TripsStateService {
     total: 0,
     filters: {
       search: "",
-      destination: "",
+      cityId: "",
       minPrice: null,
       maxPrice: null,
       sortBy: "price",
@@ -156,7 +156,7 @@ export class TripsStateService {
       error: null,
       filters: {
         search: "",
-        destination: "",
+        cityId: "",
         minPrice: null,
         maxPrice: null,
         sortBy: "price",

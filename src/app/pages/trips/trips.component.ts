@@ -17,6 +17,7 @@ import { SearchFilterComponent } from "../../components/search-filter/search-fil
 import { CustomHeroSectionComponent } from "../../components/custom-hero-section/custom-hero-section.component";
 import { TripsService } from "../../services/trips.service";
 import { TripsStateService } from "../../state/trips.state";
+import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
   selector: "app-trips",
@@ -27,6 +28,7 @@ import { TripsStateService } from "../../state/trips.state";
     TripCardComponent,
     SearchFilterComponent,
     CustomHeroSectionComponent,
+    TranslatePipe,
   ],
   template: `
     <div class="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50">
@@ -43,7 +45,7 @@ import { TripsStateService } from "../../state/trips.state";
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <!-- Search and Filters -->
-        <app-search-filter (loadTrips)="loadTrips()" />
+        <app-search-filter (loadTrips)="tripsService.loadTrips()" />
         <!-- Trips Grid -->
         @if (state.loading()) {
         <div class="flex justify-center items-center py-12">
@@ -55,13 +57,13 @@ import { TripsStateService } from "../../state/trips.state";
         } @else if (state.error()) {
         <div class="text-center py-12">
           <p class="text-red-600">{{ state.error() }}</p>
-          <button (click)="loadTrips()" class="mt-4 btn-primary">
-            Try Again
+          <button (click)="tripsService.loadTrips()" class="mt-4 btn-primary">
+            {{ "common.try_again" | translate }}
           </button>
         </div>
         } @else if (state.trips().length === 0) {
         <div class="text-center py-12">
-          <p class="text-gray-600">No trips found matching your criteria.</p>
+          <p class="text-gray-600">{{ "common.no_trips_found" | translate }}</p>
         </div>
         } @else {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -78,11 +80,12 @@ import { TripsStateService } from "../../state/trips.state";
             class="btn-secondary"
             [class.opacity-50]="!state.hasPreviousPage()"
           >
-            Previous
+            {{ "common.previous" | translate }}
           </button>
 
           <span class="px-4 py-2 bg-white rounded-lg shadow">
-            Page {{ state.pagination().page }} of {{ state.totalPages() }}
+            {{ "common.page" | translate }} {{ state.pagination().page }}
+            {{ "common.of" | translate }} {{ state.totalPages() }}
           </span>
 
           <button
@@ -91,7 +94,7 @@ import { TripsStateService } from "../../state/trips.state";
             class="btn-secondary"
             [class.opacity-50]="!state.hasNextPage()"
           >
-            Next
+            {{ "common.next" | translate }}
           </button>
         </div>
         }
@@ -100,7 +103,7 @@ import { TripsStateService } from "../../state/trips.state";
   `,
 })
 export class TripsComponent implements OnInit {
-  private tripsService = inject(TripsService);
+  protected tripsService = inject(TripsService);
   protected state = inject(TripsStateService);
   // Icons
   faMapMarkerAlt = faMapMarkerAlt;
@@ -110,31 +113,12 @@ export class TripsComponent implements OnInit {
   faFilter = faFilter;
   faSpinner = faSpinner;
   ngOnInit(): void {
-    this.loadTrips();
-  }
-  protected loadTrips() {
-    const { filters, pagination } = this.state;
-    this.state.setLoading(true);
-
-    this.tripsService
-      .getTrips({
-        ...filters(),
-        ...pagination(),
-      })
-      .subscribe({
-        next: ({ trips, total }) => {
-          this.state.setTrips(trips, total);
-          this.state.setLoading(false);
-        },
-        error: (error) => {
-          this.state.setError(error.message);
-        },
-      });
+    this.tripsService.loadTrips();
   }
 
   protected onPageChange(page: number) {
     this.state.updatePagination({ page });
-    this.loadTrips();
+    this.tripsService.loadTrips();
     // Scroll to top smoothly
     window.scrollTo({ top: 0, behavior: "smooth" });
   }

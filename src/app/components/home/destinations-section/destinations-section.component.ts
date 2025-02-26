@@ -5,11 +5,14 @@ import { TripsService } from "../../../services/trips.service";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { TripsStateService } from "../../../state/trips.state";
+import { CitiesService } from "../../../services/cities.service";
+import { CityStateService } from "../../../state/city.state";
+import { ImgUrlPipe } from "../../../pipes/imgUrl.pipe";
 
 @Component({
   selector: "app-destinations-section",
   standalone: true,
-  imports: [CommonModule, TranslateModule, FontAwesomeModule],
+  imports: [CommonModule, TranslateModule, FontAwesomeModule, ImgUrlPipe],
   template: `
     <section class="py-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -30,13 +33,13 @@ import { TripsStateService } from "../../../state/trips.state";
         </div>
         } @else {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          @for (destination of state.destinations(); track destination) {
+          @for (city of state.cities(); track city.id) {
           <div class="rounded-xl overflow-hidden hover-card">
             <div class="relative h-64">
               <img
                 loading="lazy"
-                [src]="getDestinationImage(destination)"
-                [alt]="destination"
+                [src]="city.imageUrl | imgUrl"
+                [alt]="city.name"
                 class="w-full h-full object-cover"
               />
               <div
@@ -44,11 +47,13 @@ import { TripsStateService } from "../../../state/trips.state";
               >
                 <div class="absolute bottom-0 left-0 right-0 p-6">
                   <h3 class="text-xl font-bold text-white mb-2">
-                    {{ destination }}
+                    {{ city.name }}
                   </h3>
+                  @if (city._count.trips > 0) {
                   <p class="text-white/90">
-                    {{ getDestinationTripsCount(destination) }} trips available
+                    {{ city._count.trips }} trips available
                   </p>
+                  }
                 </div>
               </div>
             </div>
@@ -61,8 +66,8 @@ import { TripsStateService } from "../../../state/trips.state";
   `,
 })
 export class DestinationsSectionComponent implements OnInit {
-  private tripsService = inject(TripsService);
-  protected state = inject(TripsStateService);
+  private citiesService = inject(CitiesService);
+  protected state = inject(CityStateService);
   protected faSpinner = faSpinner;
 
   // Placeholder images for destinations
@@ -70,30 +75,14 @@ export class DestinationsSectionComponent implements OnInit {
     default: "https://images.unsplash.com/photo-1469474968028-56623f02e42e",
   };
 
-  ngOnInit() {
-    this.loadDestinations();
-  }
-
-  private loadDestinations() {
-    this.state.setLoading(true);
-
-    this.tripsService.getTrips().subscribe({
-      next: ({ trips }) => {
-        this.state.setTrips(trips, trips.length);
-        this.state.setLoading(false);
-      },
-      error: (error) => {
-        this.state.setError(error.message);
-      },
-    });
-  }
+  ngOnInit() {}
 
   protected getDestinationImage(destination: string): string {
     return this.destinationImages[destination] || "";
   }
 
   protected getDestinationTripsCount(destination: string): number {
-    return this.state.trips().filter((trip) => trip.city === destination)
+    return this.state.cities().filter((city) => city.name === destination)
       .length;
   }
 }

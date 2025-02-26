@@ -208,8 +208,8 @@ export class NavbarComponent {
 
   navLinks = [
     { path: "/", label: "nav.home", exact: true },
-    { path: "/gallery", label: "nav.gallery", exact: false },
     { path: "/trips", label: "nav.trips", exact: false },
+    { path: "/gallery", label: "nav.gallery", exact: false },
     // { path: "/reviews", label: "nav.reviews", exact: false },
   ];
   protected authService = inject(AuthService);

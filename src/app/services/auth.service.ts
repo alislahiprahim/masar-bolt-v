@@ -150,18 +150,22 @@ export class AuthService {
     const token = this.authState.token();
     if (!token) return of(false);
 
-    return this.http.post<AuthResponse>(`${this.apiUrl}/refresh`, {}).pipe(
-      tap((response) => {
-        this.authState.setToken(response.data?.token);
-        this.authState.setUser(response.data?.user);
-      }),
-      map(() => true),
-      catchError((error) => {
-        console.error("Error refreshing token:", error);
-        this.handleLogout();
-        return of(false);
+    return this.http
+      .post<AuthResponse>(`${this.apiUrl}/refresh`, {
+        token: this.authState.token(),
       })
-    );
+      .pipe(
+        tap((response) => {
+          this.authState.setToken(response.data?.token);
+          this.authState.setUser(response.data?.user);
+        }),
+        map(() => true),
+        catchError((error) => {
+          console.error("Error refreshing token:", error);
+          this.handleLogout();
+          return of(false);
+        })
+      );
   }
 
   updateProfile(details: Partial<UserDetails>): Observable<UserDetails> {

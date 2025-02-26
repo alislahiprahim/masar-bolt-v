@@ -5,8 +5,9 @@ import {
   EventEmitter,
   viewChild,
   ElementRef,
+  inject,
 } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, formatDate } from "@angular/common";
 import {
   FaIconComponent,
   FontAwesomeModule,
@@ -21,8 +22,10 @@ import {
   faCreditCard,
 } from "@fortawesome/free-solid-svg-icons";
 import { Reservation } from "../../../models/reservation.model";
-import { TicketComponent } from "../../ticket/ticket.component";
 import { RouterLink } from "@angular/router";
+import { PrintService } from "../../../services/print.service";
+import { QRCodeComponent } from "angularx-qrcode";
+import { environment } from "../../../../environments/environment.development";
 
 @Component({
   selector: "app-reservation-card",
@@ -31,8 +34,8 @@ import { RouterLink } from "@angular/router";
     CommonModule,
     TranslateModule,
     FaIconComponent,
-    TicketComponent,
     RouterLink,
+    QRCodeComponent,
   ],
   template: `
     <div
@@ -102,25 +105,30 @@ import { RouterLink } from "@angular/router";
             @if (reservation.status === 'PAID' || reservation.status ===
             'COMPLETED') {
             <button
-              (click)="onDownloadTicket.emit()"
+              (click)="
+                printService.exportTicket(
+                  reservation,
+                  this.qrcode(),
+                  'download'
+                )
+              "
               class="btn-secondary text-sm"
             >
               <fa-icon [icon]="faDownload" class="mx-2"></fa-icon>
               {{ "reservations.downloadTicket" | translate }}
             </button>
-            <button
-              (click)="onDownloadInvoice.emit(this.ticketTemplate())"
-              class="btn-secondary text-sm"
-            >
+            <!-- <button class="btn-secondary text-sm">
               <fa-icon [icon]="faDownload" class="mx-2"></fa-icon>
               {{ "reservations.downloadInvoice" | translate }}
-            </button>
+            </button> -->
             }
           </div>
         </div>
 
         <!-- payment Button -->
         @if (reservation.status === 'CONFIRMED') {
+        <!-- TODO: add payment button second version -->
+        <!--           
         <div class="mt-4 border-t pt-4">
           <button
             (click)="onConfirm.emit()"
@@ -135,22 +143,62 @@ import { RouterLink } from "@angular/router";
             {{ "reservations.goToPayment" | translate }}
             }
           </button>
+        </div> -->
+        <!-- implement a message that says the reservation is confirmed by admin and the admin will contact you to complete the payement process -->
+        <div class="mt-4 border-t pt-4">
+          <p class="text-sm text-gray-800 font-bold">
+            {{ "reservations.adminConfirmation" | translate }}
+          </p>
         </div>
         }
       </div>
     </div>
+    <div class="qrcodeImage">
+      <qrcode
+        #qrcode
+        [qrdata]="
+          environment.apiUrl + '/reservations/' + reservation.id + '/paid'
+        "
+        [allowEmptyString]="true"
+        [cssClass]="'center'"
+        [colorDark]="'#000000ff'"
+        [colorLight]="'#ffffffff'"
+        [elementType]="'canvas'"
+        [errorCorrectionLevel]="'M'"
+        [imageHeight]="75"
+        [imageWidth]="75"
+        [margin]="4"
+        [scale]="1"
+        [width]="300"
+        class="hidden"
+      ></qrcode>
+    </div>
+  `,
+  styles: `
+    .qrcodeImage {
+  display: flex;
+  flex: 1;
+}
 
-    <app-ticket
-      #tickets
-      class="opacity-0 hidden"
-      [reservation]="reservation"
-      [trip]="reservation.trip"
-    />
+/* Add custom styles here */
+.center {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
   `,
 })
 export class ReservationCardComponent {
-  ticketTemplate = viewChild("tickets", { read: ElementRef });
-  @Input({ required: true }) reservation!: Reservation;
+  qrcode = viewChild("qrcode", { read: ElementRef });
+  printService = inject(PrintService);
+  @Input({
+    required: true,
+    transform: (value: Reservation) => {
+      value.trip.date = formatDate(value.trip.date, "dd/MM/yyyy", "en");
+      return value;
+    },
+  })
+  reservation!: Reservation;
   @Input() isProcessing = false;
 
   @Output() onEdit = new EventEmitter<void>();
@@ -166,6 +214,7 @@ export class ReservationCardComponent {
   protected faSpinner = faSpinner;
   protected faCheck = faCheck;
   protected faCreditCard = faCreditCard;
+  environment: any = environment;
   protected getStatusClasses(): string {
     const baseClasses = "px-2.5 py-0.5 rounded-full text-xs font-medium";
     switch (this.reservation.status) {

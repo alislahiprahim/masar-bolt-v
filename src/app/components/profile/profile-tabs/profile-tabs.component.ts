@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { TranslateModule } from "@ngx-translate/core";
+import { TranslateModule, TranslatePipe } from "@ngx-translate/core";
 import {
   faUser,
   faPlane,
@@ -13,13 +13,7 @@ import {
 @Component({
   selector: "app-profile-tabs",
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterLink,
-    RouterLinkActive,
-    FontAwesomeModule,
-    TranslateModule,
-  ],
+  imports: [RouterLink, RouterLinkActive, FontAwesomeModule, TranslatePipe],
   template: `
     <!-- Mobile Tabs -->
     <div class="block sm:hidden overflow-x-auto scrollbar-hide">
@@ -74,11 +68,11 @@ export class ProfileTabsComponent {
       label: "reservations.title",
       icon: faPlane,
     },
-    { path: "./invoices", label: "profile.tabs.invoices", icon: faReceipt },
-    {
-      path: "./notifications",
-      label: "profile.tabs.notifications",
-      icon: faBell,
-    },
+    // { path: "./invoices", label: "profile.tabs.invoices", icon: faReceipt },
+    // {
+    //   path: "./notifications",
+    //   label: "profile.tabs.notifications",
+    //   icon: faBell,
+    // },
   ];
 }
