@@ -1,14 +1,21 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { TranslateModule } from "@ngx-translate/core";
-
+import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { Router } from "@angular/router";
 @Component({
-    selector: "app-hero-section",
-    imports: [CommonModule, RouterLink, FontAwesomeModule, TranslateModule],
-    template: `
+  selector: "app-hero-section",
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    RouterLink,
+    FontAwesomeModule,
+    TranslateModule,
+  ],
+  template: `
     <div class="relative min-h-screen flex items-center">
       <!-- Video Background -->
       <div class="absolute inset-0 w-full h-full overflow-hidden">
@@ -49,10 +56,13 @@ import { TranslateModule } from "@ngx-translate/core";
                   type="text"
                   [placeholder]="'home.hero.searchPlaceholder' | translate"
                   class="w-full bg-transparent border-none focus:outline-none text-gray-100 placeholder-gray-300"
+                  [formControl]="searchInput"
+                  (keydown.enter)="navigateToTrips()"
                 />
               </div>
               <button
                 class="btn-primary rounded-full px-6 py-2 flex items-center space-x-2 rtl:gap-2"
+                (click)="navigateToTrips()"
               >
                 <fa-icon [icon]="faSearch"></fa-icon>
                 <span>{{ "common.search" | translate }}</span>
@@ -70,8 +80,16 @@ import { TranslateModule } from "@ngx-translate/core";
         </div>
       </div>
     </div>
-  `
+  `,
 })
 export class HeroSectionComponent {
   faSearch = faSearch;
+  searchInput = new FormControl("");
+  private router = inject(Router);
+
+  navigateToTrips() {
+    this.router.navigate(["/trips"], {
+      queryParams: { search: this.searchInput.value },
+    });
+  }
 }

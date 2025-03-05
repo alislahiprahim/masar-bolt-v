@@ -38,19 +38,9 @@ import { SeoService } from "../../services/seo.service";
   ],
   template: ` <app-hero-section />
 
-    @defer (on viewport) {
     <app-services-section />
-    } @placeholder {
-    <div class="h-20 flex items-center justify-center">
-      <p>{{ "common.loading" | translate }}</p>
-    </div>
-    } @defer (on viewport) {
-    <app-destinations-section />
-    } @placeholder {
-    <div class="h-20 flex items-center justify-center">
-      <p>{{ "common.loading" | translate }}</p>
-    </div>
-    } @defer (on viewport) {
+    <app-destinations-section #destinationsSection />
+    @defer (on viewport(destinationsSection)) {
     <app-popular-trips-section />
     } @placeholder {
     <div class="h-20 flex items-center justify-center">

@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { TranslateModule } from "@ngx-translate/core";
+import { TranslateModule, TranslatePipe } from "@ngx-translate/core";
 import { TripsService } from "../../../services/trips.service";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
@@ -8,11 +8,18 @@ import { TripsStateService } from "../../../state/trips.state";
 import { CitiesService } from "../../../services/cities.service";
 import { CityStateService } from "../../../state/city.state";
 import { ImgUrlPipe } from "../../../pipes/imgUrl.pipe";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-destinations-section",
   standalone: true,
-  imports: [CommonModule, TranslateModule, FontAwesomeModule, ImgUrlPipe],
+  imports: [
+    CommonModule,
+    TranslatePipe,
+    FontAwesomeModule,
+    ImgUrlPipe,
+    RouterLink,
+  ],
   template: `
     <section class="py-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,7 +41,11 @@ import { ImgUrlPipe } from "../../../pipes/imgUrl.pipe";
         } @else {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           @for (city of state.cities(); track city.id) {
-          <div class="rounded-xl overflow-hidden hover-card">
+          <a
+            [routerLink]="['/trips']"
+            [queryParams]="{ cityId: city.id }"
+            class="rounded-xl overflow-hidden hover-card"
+          >
             <div class="relative h-64">
               <img
                 loading="lazy"
@@ -57,7 +68,7 @@ import { ImgUrlPipe } from "../../../pipes/imgUrl.pipe";
                 </div>
               </div>
             </div>
-          </div>
+          </a>
           }
         </div>
         }

@@ -62,7 +62,7 @@ export abstract class BaseApiService<T extends Record<string, any>> {
     this.featuredCache$ = this.http
       .get<ApiResponse<T>>(`${this.apiUrl}/${path}?limit=${limit}`)
       .pipe(
-        map((response) => response.data[dataKey]),
+        map((response) => (dataKey ? response.data[dataKey] : response.data)),
         shareReplay(1),
         catchError(this.handleError.bind(this))
       );

@@ -2,7 +2,7 @@ import { Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { TranslateModule } from "@ngx-translate/core";
 import { TripCardComponent } from "../../trip-card/trip-card.component";
 import { TripsService } from "../../../services/trips.service";
@@ -53,19 +53,7 @@ import { TripsStateService } from "../../../state/trips.state";
         <div class="text-center mt-12">
           <a routerLink="/trips" class="btn-primary inline-flex items-center">
             {{ "home.popularTrips.viewAll" | translate }}
-            <svg
-              class="ml-2 w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            <fa-icon [icon]="faChevronLeft" class="mx-2"></fa-icon>
           </a>
         </div>
         }
@@ -79,7 +67,7 @@ export class PopularTripsSectionComponent {
 
   // Icons
   protected faSpinner = faSpinner;
-
+  protected faChevronLeft = faChevronLeft;
   ngOnInit() {
     this.loadPopularTrips();
   }

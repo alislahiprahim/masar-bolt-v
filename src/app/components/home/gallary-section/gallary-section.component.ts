@@ -2,7 +2,11 @@ import { Component, OnInit, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { faExpand, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faExpand,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 import { TranslateModule } from "@ngx-translate/core";
 import { LightboxComponent } from "../../image-lightbox/image-lightbox.component";
 import { GalleryImage } from "../../../models/gallary.model";
@@ -80,25 +84,13 @@ import { ImgUrlPipe } from "../../../pipes/imgUrl.pipe";
           </div>
           }
         </div>
-
         <div class="text-center mt-12">
           <a routerLink="/gallery" class="btn-primary inline-flex items-center">
             {{ "home.gallery.viewAll" | translate }}
-            <svg
-              class="ml-2 w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            <fa-icon [icon]="faChevronLeft" class="mx-2"></fa-icon>
           </a>
         </div>
+
         }
       </div>
     </section>
@@ -118,7 +110,7 @@ export class GallerySectionComponent implements OnInit {
   // Icons
   protected faExpand = faExpand;
   protected faSpinner = faSpinner;
-
+  protected faChevronLeft = faChevronLeft;
   ngOnInit() {
     this.loadFeaturedImages();
   }

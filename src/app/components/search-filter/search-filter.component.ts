@@ -97,9 +97,12 @@ import { debounceTime, Subject } from "rxjs";
         </div> -->
 
         <!-- clear filters small button -->
+        @if (state.filters().search || state.filters().cityId ||
+        state.filters().minPrice || state.filters().maxPrice ) {
         <button class="btn-primary mt-6" (click)="onClearFilters()">
           {{ "search_filter.clear_filters" | translate }}
         </button>
+        }
       </div>
     </div>
   `,
