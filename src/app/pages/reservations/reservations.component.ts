@@ -170,6 +170,7 @@ export class ReservationsComponent implements OnInit {
 
     this.reservationService.getUserReservations().subscribe({
       next: (data) => {
+        this.reservationService.setUserReservationsInLocalStorage(data.reservations);
         this.state.setReservations(
           data.reservations
           // data.total

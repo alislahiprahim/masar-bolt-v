@@ -17,6 +17,7 @@ export class AuthStateService {
   private state = signal<AuthState>({
     user: null,
     token: null,
+    refreshToken: null,
     loading: false,
     error: null,
   });
@@ -24,6 +25,7 @@ export class AuthStateService {
   // Computed signals for components
   readonly user = computed(() => this.state().user);
   readonly token = computed(() => this.state().token);
+  readonly refreshToken = computed(() => this.state().refreshToken);
   readonly loading = computed(() => this.state().loading);
   readonly error = computed(() => this.state().error);
   readonly isAuthenticated = computed(() => !!this.state().token);
@@ -48,6 +50,15 @@ export class AuthStateService {
     this.state.update((state) => ({
       ...state,
       token,
+      error: null,
+    }));
+    this.saveToStorage();
+  }
+
+  setRefreshToken(token: string | null) {
+    this.state.update((state) => ({
+      ...state,
+      refreshToken: token,
       error: null,
     }));
     this.saveToStorage();
@@ -114,6 +125,7 @@ export class AuthStateService {
     this.state.set({
       user: null,
       token: null,
+      refreshToken: null,
       loading: false,
       error: null,
     });
@@ -121,10 +133,11 @@ export class AuthStateService {
   }
 
   private saveToStorage() {
-    const { user, token } = this.state();
+    const { user, token, refreshToken } = this.state();
     if (user && token && isPlatformBrowser(this.platformId)) {
       localStorage.setItem("auth_user", JSON.stringify(user));
       localStorage.setItem("auth_token", token);
+      localStorage.setItem("auth_refreshToken", refreshToken || "");
     }
   }
 
@@ -138,6 +151,7 @@ export class AuthStateService {
         this.state.set({
           user: JSON.parse(storedUser),
           token: storedToken,
+          refreshToken: localStorage.getItem("auth_refreshToken"),
           loading: false,
           error: null,
         });
@@ -152,5 +166,6 @@ export class AuthStateService {
     if (!isPlatformBrowser(this.platformId)) return;
     localStorage.removeItem("auth_user");
     localStorage.removeItem("auth_token");
+    localStorage.removeItem("auth_refreshToken");
   }
 }

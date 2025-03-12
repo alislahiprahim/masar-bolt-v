@@ -18,6 +18,7 @@ export interface AuthResponse {
   status: "success" | "error";
   data: {
     token: string;
+    refreshToken: string;
     user: UserDetails;
   };
   message: string | null;
@@ -63,6 +64,7 @@ export interface UserDetails {
 export interface AuthState {
   user: UserDetails | null;
   token: string | null;
+  refreshToken: string | null;
   loading: boolean;
   error: string | null;
 }

@@ -1,3 +1,4 @@
+import { Hotel } from "./hotel.model";
 import { Trip } from "./trip.model";
 
 export type ReservationStatus =
@@ -11,6 +12,7 @@ export interface Reservation {
   id: string;
   userId: string;
   tripId: string;
+  tripHotel?:{id:string,hotel?:Hotel,costPerPerson:number};
   title: string;
   status: ReservationStatus;
   createdAt: string;
@@ -36,6 +38,7 @@ export interface Booking {
   id: string;
   userId: string;
   tripId: string;
+  tripHotelId?:string;
   status: "pending" | "confirmed" | "completed" | "cancelled";
   bookingDate: string;
   whatsappNumber: string;

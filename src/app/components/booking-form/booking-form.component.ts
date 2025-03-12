@@ -247,6 +247,26 @@ interface TravelerInfo {
           ></app-image-picker>
         </div>
 
+        <!-- Trip hotels -->
+                  <!-- Trip hotels -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            {{ "booking.Hotel" | translate }}
+          </label>
+          <select
+            formControlName="tripHotelId"
+            class="mt-1 py-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500"
+
+            >
+            <option value="" selected>{{ "booking.selectHotel" | translate }}</option>
+            @for(hotel of trip.TripHotel; track hotel.id){
+
+              <option [value]="hotel.id">
+                {{ hotel.hotel.name }} - {{ hotel.costPerPerson | currency:' ج.م'}}
+              </option>
+            }
+          </select>
+        </div>
         <!-- Special Requests -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
@@ -369,6 +389,7 @@ export class BookingFormComponent implements OnInit {
       travelers: this.fb.array([this.createTravelerGroup()]),
       documents: [[]],
       specialRequests: [""],
+      tripHotelId: this.trip?.TripHotel?.length ? ["", Validators.required] : [""],
     });
   }
 
@@ -442,7 +463,9 @@ export class BookingFormComponent implements OnInit {
       this.bookingForm.value.specialRequests || ""
     );
     formData.append("totalPrice", this.calculateTotalPrice().toString());
-
+    if (this.bookingForm.value.tripHotelId) {
+      formData.append("tripHotelId", this.bookingForm.value.tripHotelId);
+    }
     this.bookingForm.value.documents.forEach(
       (img: ImageFile, index: number) => {
         formData.append(`documents`, img.file);
@@ -453,7 +476,7 @@ export class BookingFormComponent implements OnInit {
       .createReservation(formData)
       .subscribe((isSuccess) => {
         if (isSuccess) {
-          this.router.navigate(["/profile"]);
+          this.router.navigate(["/profile/reservations"]);
         }
       });
   }
@@ -497,7 +520,9 @@ export class BookingFormComponent implements OnInit {
   }
 
   calculateTotalPrice(): number {
-    const basePrice = this.trip.price;
+    const basePrice = this.bookingForm.value.tripHotelId 
+        ? this.trip.TripHotel?.find(hotel => hotel.id === this.bookingForm.value.tripHotelId)?.costPerPerson || this.trip.price 
+        : this.trip.price;
     let totalPrice = 0;
     let childrenUnder12 = 0;
     let childrenUnder6 = 0;

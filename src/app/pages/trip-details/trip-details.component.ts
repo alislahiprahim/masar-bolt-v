@@ -108,6 +108,21 @@ import { TranslatePipe } from "@ngx-translate/core";
               </ul>
             </div>
 
+            <!-- Available Hotels -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+              <h2 class="text-2xl font-bold mb-4">
+                {{ "trip.hotels.title" | translate }}
+              </h2>
+              <ul class="space-y-2">
+                @for (hotel of state.selectedTrip()!.TripHotel; track hotel.id) {
+                <li class="flex items-center text-gray-600">
+                  <span class="w-2 h-2 bg-primary-500 rounded-full mx-2"></span>
+                  {{ hotel.hotel.name }} ({{ hotel.costPerPerson | currency }})
+                </li>
+                }
+              </ul>
+            </div>
+
             <!-- Itinerary -->
             <div class="bg-white rounded-xl shadow-sm p-6">
               <h2 class="text-2xl font-bold mb-4">
@@ -116,10 +131,7 @@ import { TranslatePipe } from "@ngx-translate/core";
               <div class="space-y-6">
                 @for (day of state.selectedTrip()!.itinerary; track day.day) {
                 <div>
-                  <h3 class="text-lg font-semibold text-primary-600 mb-2">
-                    {{ day.day }}
-                  </h3>
-                  <p class="text-gray-600">{{ day.description }}</p>
+                  <h3 class="text-lg font-semibold text-primary-600 mb-2">{{"trip.itinerary.day" | translate}} {{ day.day }} - <span class="text-gray-600 text-sm font-normal">{{ day.description }}</span></h3>
                 </div>
                 }
               </div>
@@ -161,16 +173,11 @@ export class TripDetailsComponent implements OnInit {
   protected state = inject(TripsStateService);
 
   ngOnInit() {
-    const tripId = this.route.snapshot.paramMap.get("id");
-    if (!tripId) {
-      this.router.navigate(["/trips"]);
-      return;
-    }
-
     this.state.setLoading(true);
-    this.tripsService.getTripById(tripId).subscribe({
-      next: (trip) => {
-        this.state.setSelectedTrip(trip);
+    this.route.data.subscribe({
+      next: (data: any) => { 
+        this.trip = data['0'];
+        this.state.setSelectedTrip(this.trip?? null);
         this.state.setLoading(false);
       },
       error: (error) => {

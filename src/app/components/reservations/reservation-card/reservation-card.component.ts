@@ -70,6 +70,14 @@ import { environment } from "../../../../environments/environment.development";
             }}</span>
             <span class="font-medium">{{ reservation.numberOfTravelers }}</span>
           </div>
+          <div *ngIf="reservation.tripHotel" class="flex justify-between text-sm">
+            <span class="text-gray-600">{{
+              "booking.Hotel" | translate
+            }}</span>
+            <span class="font-medium">{{
+              reservation.tripHotel.hotel?.name
+            }}</span>
+          </div>
           <div class="flex justify-between text-sm">
             <span class="text-gray-600">{{
               "reservations.totalPrice" | translate
@@ -85,6 +93,7 @@ import { environment } from "../../../../environments/environment.development";
             <span class="font-medium">{{ reservation.createdAt | date }}</span>
           </div>
         </div>
+          
 
         <!-- Actions -->
         <div class="flex justify-between items-center">

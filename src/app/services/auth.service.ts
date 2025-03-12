@@ -43,6 +43,7 @@ export class AuthService {
         tap((response) => {
           if (response.status === "success") {
             this.authState.setToken(response.data?.token);
+            this.authState.setRefreshToken(response.data?.refreshToken);
             this.authState.setUser(response.data?.user);
             this.toastService.success("Successfully logged in");
             this.reservationService.setUserReservationsInLocalStorage(
@@ -73,6 +74,7 @@ export class AuthService {
         tap((response) => {
           if (response.status === "success") {
             this.authState.setToken(response.data?.token);
+            this.authState.setRefreshToken(response.data?.refreshToken);
             this.authState.setUser(response.data?.user);
             this.toastService.success("Successfully registered");
           } else {
@@ -147,17 +149,17 @@ export class AuthService {
   }
 
   refreshToken(): Observable<boolean> {
-    const token = this.authState.token();
-    if (!token) return of(false);
+    const refreshToken = this.authState.refreshToken();
+    if (!refreshToken) return of(false);
 
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/refresh`, {
-        token: this.authState.token(),
+         refreshToken
       })
       .pipe(
         tap((response) => {
           this.authState.setToken(response.data?.token);
-          this.authState.setUser(response.data?.user);
+          this.authState.setRefreshToken(response.data?.refreshToken);
         }),
         map(() => true),
         catchError((error) => {

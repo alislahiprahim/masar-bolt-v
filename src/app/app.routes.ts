@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import { loginGuard } from "./guards/login.guard";
 import { TripResolver } from "./resolvers/trip.resolver";
+import { TripDetailResolver } from './resolvers/trip-detail.resolver';
 
 export const routes: Routes = [
   {
@@ -28,6 +29,7 @@ export const routes: Routes = [
       import("./pages/trip-details/trip-details.component").then(
         (m) => m.TripDetailsComponent
       ),
+      resolve: [TripDetailResolver],
   },
   {
     path: "auth/login",

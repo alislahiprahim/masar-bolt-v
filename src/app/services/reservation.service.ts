@@ -34,11 +34,14 @@ export class ReservationService extends BaseApiService<Reservation> {
   }
 
   createReservation(formData: FormData): Observable<boolean> {
-    return this.http.post<ReservationResponse>(this.apiUrl, formData).pipe(
+    return this.http.post<ReservationResponse>(`${environment.apiUrl}/reservations`, formData).pipe(
       tap((response) => {
         if (response.status === "success") {
           this.bookingStatus[response.data.tripId] = "PENDING"; // Assuming response.data.reservation contains tripId
           this.toastService.success("booking.bookingSuccess");
+          if(response.data){
+            this.setUserReservationsInLocalStorage([response.data, ...this.userReservations])
+          }
         } else {
           this.toastService.error(
             response.responseMessage || "booking.bookingError"
