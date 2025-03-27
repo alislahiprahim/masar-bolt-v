@@ -76,6 +76,10 @@ module.exports = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-primary': 'linear-gradient(135deg, #1B305D, #556795, #1B377D)',
       },
+      transitionProperty: {
+        'width': 'width',
+        'height': 'height',
+      },
     },
   },
   plugins: [

@@ -37,7 +37,7 @@ export class TripsService extends BaseApiService<Trip> {
     return this.getItemById(id, dataKey).pipe(
       map((trip) => ({
         ...trip,
-        itinerary: trip.itinerary.map((item) => JSON.parse(item)),
+        itinerary: trip.itinerary.map((item) => (typeof item === "string" ? JSON.parse(item) : item)),
       }))
     );
   }

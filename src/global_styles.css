@@ -91,6 +91,69 @@
   }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); }
+  to { transform: scale(1); }
+}
+
+.lightbox-fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.lightbox-scale-in {
+  animation: scaleIn 0.3s ease forwards;
+}
+
+/* Custom media queries for very large screens */
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+
+/* Full height first image - helps ensure it's truly full height on all screen sizes */
+@media (min-width: 768px) {
+  .gallery-first-image {
+    height: calc(100% - 1rem);
+    min-height: 500px;
+  }
+}
+
+.photo-button {
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+
+.photo-button:hover {
+  transform: translateY(-2px);
+}
+
+/* Button scaling animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.pulse-animation {
+  animation: pulse 2s infinite;
+}
+
+/* Optional: Add smooth animation for button transitions */
+.btn-transition {
+  transition: all 0.3s ease;
+}
+
+/* Optional: Add subtle shadow on hover */
+.btn-shadow:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 /* Custom animations */
 @keyframes shimmer {
   100% {

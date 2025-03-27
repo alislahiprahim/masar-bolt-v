@@ -1,4 +1,4 @@
 export const environment = {
-  apiUrl: "https://kareemslama3-001-site1.ktempurl.com/api",
-  imgUrl: "https://kareemslama3-001-site1.ktempurl.com",
+  apiUrl: "https://masar-backend-production.up.railway.app/api",
+  imgUrl: "https://masar-backend-production.up.railway.app",
 };

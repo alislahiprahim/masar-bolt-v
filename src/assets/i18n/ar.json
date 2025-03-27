@@ -27,7 +27,9 @@
     "noTripsFound": "لا يوجد رحلات مطابقة للمعايير",
     "no_trips_found": "لا يوجد رحلات مطابقة للمعايير",
     "try_again": "حاول مرة أخرى",
-    "no_results_found": "لا يوجد نتائج مطابقة للمعايير"
+    "no_results_found": "لا يوجد نتائج مطابقة للمعايير",
+    "all_photos": "الكل",
+    "back_to_trips": "العودة للرحلات"
   },
   "nav": {
     "home": "الرئيسية",
@@ -382,6 +384,10 @@
     },
     "hotels": {
       "title": "الفنادق"
+    },
+    "notes": {
+      "title": "ملاحظات",
+      "description": "ملاحظات"
     }
   },
   "search_filter": {

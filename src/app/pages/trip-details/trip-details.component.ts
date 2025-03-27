@@ -26,6 +26,8 @@ import { TripsStateService } from "../../state/trips.state";
 import { SafeHTMLPipe } from "../../pipes/safeHTML.pipe";
 import { ImgUrlPipe } from "../../pipes/imgUrl.pipe";
 import { TranslatePipe } from "@ngx-translate/core";
+import { ImageGalleryComponent } from "../../components/image-slider/image-slider.component";
+import { BreadcrumpComponent } from "../../components/breadcrump/breadcrump.component";
 
 @Component({
   selector: "app-trip-details",
@@ -35,7 +37,10 @@ import { TranslatePipe } from "@ngx-translate/core";
     BookingFormComponent,
     ImgUrlPipe,
     TranslatePipe,
-  ],
+    SafeHTMLPipe,
+    ImageGalleryComponent,
+    BreadcrumpComponent
+],
   template: `
     @if (state.loading()) {
     <div class="flex justify-center items-center min-h-[60vh]">
@@ -48,50 +53,33 @@ import { TranslatePipe } from "@ngx-translate/core";
     <div class="flex flex-col items-center justify-center min-h-[60vh] px-4">
       <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ state.error() }}</h2>
       <button (click)="router.navigate(['/trips'])" class="btn-primary">
-        Back to Trips
+        {{'common.back_to_trips' | translate}}
       </button>
     </div>
     } @else if (state.selectedTrip()) {
-    <div class="bg-gradient-to-br from-primary-50 to-secondary-50">
+      <div class="bg-gradient-to-br from-primary-50 to-secondary-50">
+      <app-breadcrump class="mb-8" [tripName]="state.selectedTrip()!.name"></app-breadcrump>
       <!-- Hero Section -->
-      <div class="relative h-[60vh] overflow-hidden">
-        <img
-          [src]="state.selectedTrip()!.tripPhotos[0] | imgUrl"
-          [alt]="state.selectedTrip()!.name"
-          class="w-full h-full object-cover"
-        />
-        <div
-          class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-transparent"
-        ></div>
-        <div class="absolute inset-0 flex items-center justify-center">
-          <div class="text-center">
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
-              {{ state.selectedTrip()!.name }}
-            </h1>
-            <p class="text-xl text-white/90">
-              {{ state.selectedTrip()!.destination }}
-            </p>
-          </div>
-        </div>
+      <div class="relative overflow-hidden">
+      <!--  <app-image-slider [images]="state.selectedTrip()!.tripPhotos" />
+        -->
+        <app-image-gallery [images]="state.selectedTrip()!.tripPhotos"></app-image-gallery>
+      
       </div>
 
       <!-- Content -->
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <!-- Trip Details -->
+          <!-- Trip header  -->
           <div class="lg:col-span-2">
-            <!-- Description -->
-            <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
-              <h2 class="text-2xl font-bold mb-4">
-                {{ "trip.description.description" | translate }}
-              </h2>
-              <p class="text-gray-600">
-                {{ state.selectedTrip()!.notes }}
-              </p>
-              <!-- <span
-                [innerHTML]="state.selectedTrip()!.description | safeHTML"
-              ></span> -->
-            </div>
+          <div class="text-start my-2">
+            <h1 class="text-3xl md:text-4xl font-bold text-primary-600 mb-2">
+              {{ state.selectedTrip()!.name }}
+            </h1>
+            <p class="text-lg text-primary-600">
+              {{ state.selectedTrip()!.city.name }}
+            </p>
+          </div>
 
             <!-- Included -->
             <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
@@ -117,27 +105,41 @@ import { TranslatePipe } from "@ngx-translate/core";
                 @for (hotel of state.selectedTrip()!.TripHotel; track hotel.id) {
                 <li class="flex items-center text-gray-600">
                   <span class="w-2 h-2 bg-primary-500 rounded-full mx-2"></span>
-                  {{ hotel.hotel.name }} ({{ hotel.costPerPerson | currency }})
+                  {{ hotel.hotel.name }} ({{ hotel.costPerPerson | currency:'ج.م' }})
                 </li>
                 }
               </ul>
             </div>
 
             <!-- Itinerary -->
-            <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
               <h2 class="text-2xl font-bold mb-4">
                 {{ "trip.itinerary.title" | translate }}
               </h2>
               <div class="space-y-6">
                 @for (day of state.selectedTrip()!.itinerary; track day.day) {
                 <div>
-                  <h3 class="text-lg font-semibold text-primary-600 mb-2">{{"trip.itinerary.day" | translate}} {{ day.day }} - <span class="text-gray-600 text-sm font-normal">{{ day.description }}</span></h3>
+                  <h3 class="text-lg font-semibold text-primary-600 mb-2">{{"trip.itinerary.day" | translate}} {{ day.day }} </h3>
+                  <span class="text-gray-600 text-sm font-normal" [innerHTML]="day.description | safeHTML"></span>
                 </div>
                 }
               </div>
             </div>
+            <!-- Notes -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+              <h2 class="text-2xl font-bold mb-4">
+                {{ "trip.notes.title" | translate }}
+              </h2>
+              <p class="text-gray-600">
+                {{ state.selectedTrip()!.notes }}
+              </p>
+              <!-- <span
+                [innerHTML]="state.selectedTrip()!.description | safeHTML"
+              ></span> -->
+            </div>
           </div>
-
+          
+         
           <!-- Booking Form -->
           <div class="lg:col-span-1 sticky top-0">
             <app-booking-form [trip]="state.selectedTrip()!" />
@@ -149,6 +151,7 @@ import { TranslatePipe } from "@ngx-translate/core";
   `,
 })
 export class TripDetailsComponent implements OnInit {
+
   trip?: Trip;
 
   // Icons
@@ -175,9 +178,9 @@ export class TripDetailsComponent implements OnInit {
   ngOnInit() {
     this.state.setLoading(true);
     this.route.data.subscribe({
-      next: (data: any) => { 
+      next: (data: any) => {
         this.trip = data['0'];
-        this.state.setSelectedTrip(this.trip?? null);
+        this.state.setSelectedTrip(this.trip ?? null);
         this.state.setLoading(false);
       },
       error: (error) => {

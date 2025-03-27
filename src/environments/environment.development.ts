@@ -1,5 +1,5 @@
 export const environment = {
-  apiUrl: "http://localhost:3000/api",
-  imgUrl: "http://localhost:3000",
+  apiUrl: "https://masar-backend-production.up.railway.app/api",
+  imgUrl: "https://masar-backend-production.up.railway.app",
   userPassword: "Pass@123",
 };
