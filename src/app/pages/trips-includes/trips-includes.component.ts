@@ -6,4 +6,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   template: `<p>trips-includes works!</p>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TripsIncludesComponent { }
+export class TripsIncludesComponent {}

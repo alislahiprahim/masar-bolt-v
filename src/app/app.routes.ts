@@ -1,85 +1,68 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
-import { loginGuard } from "./guards/login.guard";
-import { TripResolver } from "./resolvers/trip.resolver";
+import { loginGuard } from './guards/login.guard';
+import { TripResolver } from './resolvers/trip.resolver';
 import { TripDetailResolver } from './resolvers/trip-detail.resolver';
 
 export const routes: Routes = [
   {
-    path: "",
-    loadComponent: () =>
-      import("./pages/home/home.component").then((m) => m.HomeComponent),
+    path: '',
+    loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent),
   },
   {
-    path: "gallery",
-    loadComponent: () =>
-      import("./pages/gallery/gallery.component").then(
-        (m) => m.GalleryComponent
-      ),
+    path: 'gallery',
+    loadComponent: () => import('./pages/gallery/gallery.component').then(m => m.GalleryComponent),
   },
   {
-    path: "trips",
-    loadComponent: () =>
-      import("./pages/trips/trips.component").then((m) => m.TripsComponent),
+    path: 'trips',
+    loadComponent: () => import('./pages/trips/trips.component').then(m => m.TripsComponent),
     resolve: [TripResolver],
   },
   {
-    path: "trips/:id",
+    path: 'trips/:id',
     loadComponent: () =>
-      import("./pages/trip-details/trip-details.component").then(
-        (m) => m.TripDetailsComponent
-      ),
-      resolve: [TripDetailResolver],
+      import('./pages/trip-details/trip-details.component').then(m => m.TripDetailsComponent),
+    resolve: [TripDetailResolver],
   },
   {
-    path: "auth/login",
-    loadComponent: () =>
-      import("./pages/auth/login/login.component").then(
-        (m) => m.LoginComponent
-      ),
+    path: 'auth/login',
+    loadComponent: () => import('./pages/auth/login/login.component').then(m => m.LoginComponent),
     canActivate: [loginGuard],
   },
   {
-    path: "auth/register",
+    path: 'auth/register',
     loadComponent: () =>
-      import("./pages/auth/register/register.component").then(
-        (m) => m.RegisterComponent
-      ),
+      import('./pages/auth/register/register.component').then(m => m.RegisterComponent),
     canActivate: [loginGuard],
   },
   {
-    path: "profile",
-    loadComponent: () =>
-      import("./pages/profile/profile.component").then(
-        (m) => m.ProfileComponent
-      ),
+    path: 'profile',
+    loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent),
     canActivate: [authGuard],
     children: [
       {
-        path: "",
-        redirectTo: "details",
-        pathMatch: "full",
+        path: '',
+        redirectTo: 'details',
+        pathMatch: 'full',
       },
       {
-        path: "details",
+        path: 'details',
         loadComponent: () =>
-          import(
-            "./components/profile/profile-details/profile-details.component"
-          ).then((m) => m.ProfileDetailsComponent),
-      },
-      {
-        path: "trips",
-        loadComponent: () =>
-          import(
-            "./components/profile/profile-trips/profile-trips.component"
-          ).then((m) => m.ProfileTripsComponent),
-      },
-      {
-        path: "reservations",
-        loadComponent: () =>
-          import("./pages/reservations/reservations.component").then(
-            (m) => m.ReservationsComponent
+          import('./components/profile/profile-details/profile-details.component').then(
+            m => m.ProfileDetailsComponent
           ),
+      },
+      {
+        path: 'trips',
+        loadComponent: () =>
+          import('./components/profile/profile-trips/profile-trips.component').then(
+            m => m.ProfileTripsComponent
+          ),
+      },
+      {
+        path: 'reservations',
+        loadComponent: () =>
+          import('./pages/reservations/reservations.component').then(m => m.ReservationsComponent),
       },
       // {
       //   path: "invoices",
@@ -96,25 +79,20 @@ export const routes: Routes = [
       //     ).then((m) => m.ProfileNotificationsComponent),
       // },
       {
-        path: "**",
-        redirectTo: "details",
-        pathMatch: "full",
+        path: '**',
+        redirectTo: 'details',
+        pathMatch: 'full',
       },
     ],
   },
   {
-    path: "bookings",
+    path: 'bookings',
     loadComponent: () =>
-      import("./pages/bookings/bookings.component").then(
-        (m) => m.BookingsComponent
-      ),
+      import('./pages/bookings/bookings.component').then(m => m.BookingsComponent),
     canActivate: [authGuard],
   },
   {
-    path: "reviews",
-    loadComponent: () =>
-      import("./pages/reviews/reviews.component").then(
-        (m) => m.ReviewsComponent
-      ),
+    path: 'reviews',
+    loadComponent: () => import('./pages/reviews/reviews.component').then(m => m.ReviewsComponent),
   },
 ];

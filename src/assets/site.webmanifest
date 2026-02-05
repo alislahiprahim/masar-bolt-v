@@ -32,11 +32,7 @@
       "purpose": "maskable"
     }
   ],
-  "categories": [
-    "travel",
-    "tourism",
-    "adventure"
-  ],
+  "categories": ["travel", "tourism", "adventure"],
   "scope": "/",
   "orientation": "portrait-primary",
   "related_applications": [],

@@ -1,34 +1,34 @@
-import { Injectable } from "@angular/core";
-import { TranslateService } from "@ngx-translate/core";
-import { BehaviorSubject } from "rxjs";
+import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class LanguageService {
-  private currentLangSubject = new BehaviorSubject<string>("en");
+  private currentLangSubject = new BehaviorSubject<string>('ar');
   currentLang$ = this.currentLangSubject.asObservable();
 
   constructor(private translate: TranslateService) {
-    // Initialize language from localStorage or default to 'en'
-    const savedLang = localStorage.getItem("language") || "en";
+    // Initialize language from localStorage or default to 'ar'
+    const savedLang = localStorage.getItem('language') || 'ar';
     this.setLanguage(savedLang);
   }
 
   setLanguage(lang: string) {
-    localStorage.setItem("language", lang);
+    localStorage.setItem('language', lang);
     this.translate.use(lang);
     this.currentLangSubject.next(lang);
 
     // Set HTML dir attribute for RTL support
-    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
 
     // Add RTL class to body for Tailwind RTL support
-    if (lang === "ar") {
-      document.body.classList.add("rtl");
+    if (lang === 'ar') {
+      document.body.classList.add('rtl');
     } else {
-      document.body.classList.remove("rtl");
+      document.body.classList.remove('rtl');
     }
   }
 
@@ -37,6 +37,6 @@ export class LanguageService {
   }
 
   isRTL(): boolean {
-    return this.getCurrentLang() === "ar";
+    return this.getCurrentLang() === 'ar';
   }
 }

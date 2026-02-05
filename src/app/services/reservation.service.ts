@@ -1,13 +1,18 @@
-import { Injectable, inject } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Observable, catchError, map, of, tap } from "rxjs";
-import { Reservation, ReservationResponse, ReservationStatus, ReservationUpdate } from "../models/reservation.model";
-import { environment } from "../../environments/environment";
-import { ToastService } from "./toast.service";
-import { BaseApiService } from "./base-api.service";
-import { throwError } from "rxjs";
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, map, of, tap } from 'rxjs';
+import {
+  Reservation,
+  ReservationResponse,
+  ReservationStatus,
+  ReservationUpdate,
+} from '../models/reservation.model';
+import { environment } from '../../environments/environment';
+import { ToastService } from './toast.service';
+import { BaseApiService } from './base-api.service';
+import { throwError } from 'rxjs';
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ReservationService extends BaseApiService<Reservation> {
   protected apiUrl = `${environment.apiUrl}/reservations/client`;
@@ -28,39 +33,34 @@ export class ReservationService extends BaseApiService<Reservation> {
         message: string;
       }>(`${this.apiUrl}`, { params })
       .pipe(
-        map((response) => response.data),
+        map(response => response.data),
         catchError(this.handleError.bind(this))
       );
   }
 
   createReservation(formData: FormData): Observable<boolean> {
     return this.http.post<ReservationResponse>(`${environment.apiUrl}/reservations`, formData).pipe(
-      tap((response) => {
-        if (response.status === "success") {
-          this.bookingStatus[response.data.tripId] = "PENDING"; // Assuming response.data.reservation contains tripId
-          this.toastService.success("booking.bookingSuccess");
-          if(response.data){
-            this.setUserReservationsInLocalStorage([response.data, ...this.userReservations])
+      tap(response => {
+        if (response.status === 'success') {
+          this.bookingStatus[response.data.tripId] = 'PENDING'; // Assuming response.data.reservation contains tripId
+          this.toastService.success('booking.bookingSuccess');
+          if (response.data) {
+            this.setUserReservationsInLocalStorage([response.data, ...this.userReservations]);
           }
         } else {
-          this.toastService.error(
-            response.responseMessage || "booking.bookingError"
-          );
+          this.toastService.error(response.responseMessage || 'booking.bookingError');
         }
       }),
-      map((response) => response.status === "success"), // Assuming ReservationResponse can be cast to Booking
-      catchError((error) => {
-        console.error("Error creating booking:", error);
-        this.toastService.error("booking.bookingError");
-        return throwError(() => new Error("Booking creation failed"));
+      map(response => response.status === 'success'), // Assuming ReservationResponse can be cast to Booking
+      catchError(error => {
+        console.error('Error creating booking:', error);
+        this.toastService.error('booking.bookingError');
+        return throwError(() => new Error('Booking creation failed'));
       })
     );
   }
 
-  updateReservation(
-    id: string,
-    updates: ReservationUpdate
-  ): Observable<Reservation> {
+  updateReservation(id: string, updates: ReservationUpdate): Observable<Reservation> {
     return this.http
       .patch<Reservation>(`${this.apiUrl}/${id}`, updates)
       .pipe(catchError(this.handleError.bind(this)));
@@ -80,35 +80,35 @@ export class ReservationService extends BaseApiService<Reservation> {
 
   downloadInvoice(id: string): Observable<Blob> {
     return this.http
-      .get(`${this.apiUrl}/${id}/invoice`, { responseType: "blob" })
+      .get(`${this.apiUrl}/${id}/invoice`, { responseType: 'blob' })
       .pipe(catchError(this.handleError.bind(this)));
   }
 
   downloadTicket(id: string): Observable<Blob> {
     return this.http
-      .get(`${this.apiUrl}/${id}/ticket`, { responseType: "blob" })
+      .get(`${this.apiUrl}/${id}/ticket`, { responseType: 'blob' })
       .pipe(catchError(this.handleError.bind(this)));
   }
 
-  getBookingStatus(tripId: string): ReservationStatus | "CANCELLED" {
+  getBookingStatus(tripId: string): ReservationStatus | 'CANCELLED' {
     this.getUserReservationsFromLocalStorage();
     return (
-      this.userReservations.find((reservation) => reservation.tripId === tripId)
-        ?.status || "CANCELLED"
+      this.userReservations.find(reservation => reservation.tripId === tripId)?.status ||
+      'CANCELLED'
     );
   }
 
   protected getEntityName(): string {
-    return "reservation";
+    return 'reservation';
   }
 
   setUserReservationsInLocalStorage(reservations: Reservation[]) {
     this.userReservations = reservations;
-    localStorage.setItem("userReservations", JSON.stringify(reservations));
+    localStorage.setItem('userReservations', JSON.stringify(reservations));
   }
 
   getUserReservationsFromLocalStorage() {
-    const storedReservations = localStorage.getItem("userReservations");
+    const storedReservations = localStorage.getItem('userReservations');
     if (storedReservations) {
       this.userReservations = JSON.parse(storedReservations);
     }
@@ -190,6 +190,6 @@ export class ReservationService extends BaseApiService<Reservation> {
 
 export const mockReservationUpdate: ReservationUpdate = {
   numberOfTravelers: 3,
-  whatsappNumber: "+9988776655",
-  specialRequests: "Require a wheelchair for one traveler.",
+  whatsappNumber: '+9988776655',
+  specialRequests: 'Require a wheelchair for one traveler.',
 };

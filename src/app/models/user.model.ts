@@ -9,5 +9,5 @@ export interface User {
     dietaryRestrictions?: string[];
     travelStyle?: string;
   };
-  profilePicture?:string
+  profilePicture?: string;
 }

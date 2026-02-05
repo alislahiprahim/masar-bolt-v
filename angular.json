@@ -1,7 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
-    "analytics": "1e1de97b-a744-405a-8b5a-0397bb3d01ce"
+    "analytics": "1e1de97b-a744-405a-8b5a-0397bb3d01ce",
+    "schematicCollections": ["angular-eslint"]
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -38,10 +39,7 @@
             }
           },
           "options": {
-            "assets": [
-              "src/assets",
-              "src/googlec0f6017e76e2f7cb.html"
-            ],
+            "assets": ["src/assets", "src/googlec0f6017e76e2f7cb.html"],
             "index": "src/index.html",
             "browser": "src/main.ts",
             "outputPath": "dist/demo",
@@ -62,6 +60,12 @@
             }
           },
           "defaultConfiguration": "development"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+          }
         }
       },
       "prefix": "app",

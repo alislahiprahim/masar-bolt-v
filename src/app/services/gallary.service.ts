@@ -1,14 +1,14 @@
-import { Injectable, inject } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
-import { environment } from "../../environments/environment";
-import { ToastService } from "./toast.service";
-import { BaseApiService } from "./base-api.service";
-import { GalleryImage } from "../models/gallary.model";
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+import { ToastService } from './toast.service';
+import { BaseApiService } from './base-api.service';
+import { GalleryImage } from '../models/gallary.model';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class GalleryService extends BaseApiService<GalleryImage> {
   protected apiUrl = `${environment.apiUrl}/Gallery`;
@@ -20,7 +20,7 @@ export class GalleryService extends BaseApiService<GalleryImage> {
     page?: number;
     limit?: number;
   }): Observable<{ images: GalleryImage[]; total: number }> {
-    return this.getItems(filters, "images").pipe(
+    return this.getItems(filters, 'images').pipe(
       map(({ items, total }) => ({ images: items, total }))
     );
   }
@@ -30,10 +30,10 @@ export class GalleryService extends BaseApiService<GalleryImage> {
   }
 
   getFeaturedImages(limit: number = 6): Observable<GalleryImage[]> {
-    return this.getFeaturedItems(limit, "", "images");
+    return this.getFeaturedItems(limit, '', 'images');
   }
 
   protected getEntityName(): string {
-    return "image";
+    return 'image';
   }
 }

@@ -1,14 +1,9 @@
-import { inject } from "@angular/core";
-import {
-  HttpRequest,
-  HttpHandlerFn,
-  HttpEvent,
-  HttpErrorResponse,
-} from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
-import { catchError, switchMap } from "rxjs/operators";
-import { AuthService } from "../services/auth.service";
-import { AuthStateService } from "../state/auth.state";
+import { inject } from '@angular/core';
+import { HttpRequest, HttpHandlerFn, HttpEvent, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
+import { AuthStateService } from '../state/auth.state';
 
 let isRefreshing = false;
 
@@ -35,10 +30,7 @@ export function authInterceptor(
   );
 }
 
-function addToken(
-  request: HttpRequest<unknown>,
-  token: string
-): HttpRequest<unknown> {
+function addToken(request: HttpRequest<unknown>, token: string): HttpRequest<unknown> {
   return request.clone({
     setHeaders: {
       Authorization: `Bearer ${token}`,
@@ -56,7 +48,7 @@ function handle401Error(
     isRefreshing = true;
 
     return authService.refreshToken().pipe(
-      switchMap((success) => {
+      switchMap(success => {
         isRefreshing = false;
 
         if (success) {
@@ -66,9 +58,9 @@ function handle401Error(
 
         // If refresh failed, redirect to login
         authService.logout();
-        return throwError(() => new Error("Session expired"));
+        return throwError(() => new Error('Session expired'));
       }),
-      catchError((error) => {
+      catchError(error => {
         isRefreshing = false;
         return throwError(() => error);
       })

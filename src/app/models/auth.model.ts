@@ -1,4 +1,4 @@
-import { Reservation } from "./reservation.model";
+import { Reservation } from './reservation.model';
 
 export interface LoginCredentials {
   phoneNumber: string;
@@ -15,7 +15,7 @@ export interface RegisterCredentials {
 }
 
 export interface AuthResponse {
-  status: "success" | "error";
+  status: 'success' | 'error';
   data: {
     token: string;
     refreshToken: string;
@@ -25,7 +25,7 @@ export interface AuthResponse {
 }
 
 export interface CheckPhoneResponse {
-  status: "success" | "error";
+  status: 'success' | 'error';
   data: { exists: boolean };
   responseMessage: string | null;
 }

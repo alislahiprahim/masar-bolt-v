@@ -100,7 +100,7 @@
       "emma": "الاهتمام بالتفاصيل والخدمة الشخصية جعلت رحلتنا لا تُنسى."
     }
   },
-"footer": {
+  "footer": {
     "newsletter": {
       "title": "اشترك في نشرتنا الإخبارية",
       "subtitle": "ابق على اطلاع بأحدث عروض السفر والمغامرات",
@@ -181,7 +181,7 @@
       "empty": "لا توجد إشعارات"
     }
   },
-"booking": {
+  "booking": {
     "whatsapp": "رقم الواتساب",
     "whatsappPlaceholder": "أدخل رقم الواتساب الخاص بك",
     "travelers": "عدد المسافرين",
@@ -195,9 +195,9 @@
     "authRequired": "مطلوب تفاصيل إضافية",
     "authRequiredHint": "يرجى تسجيل الدخول أو إنشاء حساب لإكمال الحجز",
     "addTraveler": "اضافة مسافر",
-    "selectHotel":"حدد الفندق",
-    "Hotel":" الفندق",
-    
+    "selectHotel": "حدد الفندق",
+    "Hotel": " الفندق",
+
     "hints": {
       "title": "معلومات مهمة",
       "documents": "المستندات المطلوبة:",
@@ -265,13 +265,13 @@
     "downloadInvoice": "تحميل الفاتورة",
     "goToPayment": "الانتقال إلى الدفع",
     "adminConfirmation": "تم التحقق من الحجز بواسطة الأدمن، سيتم الاتصال بك لإكمال عملية الدفع",
-  "status": {
-        "PENDING": "قيد الانتظار",
-        "CONFIRMED": "مؤكد",
-        "PAID": "مدفوع",
-        "CANCELLED": "ملغاة",
-        "COMPLETED": "مكتملة"
-      },
+    "status": {
+      "PENDING": "قيد الانتظار",
+      "CONFIRMED": "مؤكد",
+      "PAID": "مدفوع",
+      "CANCELLED": "ملغاة",
+      "COMPLETED": "مكتملة"
+    },
     "filters": {
       "status": "تصفية حسب الحالة",
       "allStatuses": "جميع الحالات",

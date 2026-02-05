@@ -1,18 +1,13 @@
-import { Hotel } from "./hotel.model";
-import { Trip } from "./trip.model";
+import { Hotel } from './hotel.model';
+import { Trip } from './trip.model';
 
-export type ReservationStatus =
-  | "PENDING"
-  | "CONFIRMED"
-  | "PAID"
-  | "CANCELLED"
-  | "COMPLETED";
+export type ReservationStatus = 'PENDING' | 'CONFIRMED' | 'PAID' | 'CANCELLED' | 'COMPLETED';
 
 export interface Reservation {
   id: string;
   userId: string;
   tripId: string;
-  tripHotel?:{id:string,hotel?:Hotel,costPerPerson:number};
+  tripHotel?: { id: string; hotel?: Hotel; costPerPerson: number };
   title: string;
   status: ReservationStatus;
   createdAt: string;
@@ -38,8 +33,8 @@ export interface Booking {
   id: string;
   userId: string;
   tripId: string;
-  tripHotelId?:string;
-  status: "pending" | "confirmed" | "completed" | "cancelled";
+  tripHotelId?: string;
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
   bookingDate: string;
   whatsappNumber: string;
   nationalIdImage: string;
@@ -50,7 +45,7 @@ export interface Booking {
 }
 
 export interface ReservationResponse {
-  status: "success" | "error";
+  status: 'success' | 'error';
   data: any;
   responseMessage: string | null;
 }

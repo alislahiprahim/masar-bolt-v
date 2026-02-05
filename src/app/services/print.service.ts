@@ -7,13 +7,13 @@ import {
   PLATFORM_ID,
   Renderer2,
   RendererFactory2,
-} from "@angular/core";
-import { Reservation } from "../models/reservation.model";
-import html2canvas from "html2canvas";
-import { isPlatformBrowser } from "@angular/common";
+} from '@angular/core';
+import { Reservation } from '../models/reservation.model';
+import html2canvas from 'html2canvas';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class PrintService {
   private renderer!: Renderer2;
@@ -28,18 +28,18 @@ export class PrintService {
   exportTicket(
     reservation: Reservation,
     qrcode: ElementRef | undefined,
-    type: "download" | "print"
+    type: 'download' | 'print'
   ) {
     let qrCodeDataUrl = null;
     if (qrcode && qrcode?.nativeElement) {
       // Get the canvas element inside the QR code component
-      const canvasElement = qrcode.nativeElement.querySelector("canvas");
+      const canvasElement = qrcode.nativeElement.querySelector('canvas');
       if (canvasElement) {
         // To get the image data as a base64 string:
-        qrCodeDataUrl = canvasElement.toDataURL("image/png");
+        qrCodeDataUrl = canvasElement.toDataURL('image/png');
       }
     }
-    if (type === "download") {
+    if (type === 'download') {
       this.downloadTicketAsImage(reservation, qrCodeDataUrl);
     } else {
       this.printTicket(reservation, qrCodeDataUrl);
@@ -48,7 +48,7 @@ export class PrintService {
 
   private printTicket(reservation: Reservation, qrCodeDataUrl: string) {
     setTimeout(() => {
-      const printWindow = window.open("", "_blank");
+      const printWindow = window.open('', '_blank');
       printWindow?.document.write(this.getTemplate(reservation, qrCodeDataUrl));
       printWindow?.document.close();
       printWindow?.print();
@@ -392,19 +392,19 @@ export class PrintService {
 
   private downloadTicketAsImage(reservation: any, qrCodeDataUrl: string) {
     // إنشاء عنصر `div` وإضافة الـ HTML داخله
-    const tempContainer = this.renderer.createElement("div");
-    this.renderer.setStyle(tempContainer, "position", "absolute");
-    this.renderer.setStyle(tempContainer, "left", "-9999px"); // إخفاء العنصر
+    const tempContainer = this.renderer.createElement('div');
+    this.renderer.setStyle(tempContainer, 'position', 'absolute');
+    this.renderer.setStyle(tempContainer, 'left', '-9999px'); // إخفاء العنصر
 
     tempContainer.innerHTML = this.getTemplate(reservation, qrCodeDataUrl);
     document.body.appendChild(tempContainer); // إضافته إلى الـ DOM
 
     // استخدام `html2canvas` لالتقاط صورة من العنصر
-    html2canvas(tempContainer, { scale: 2 }).then((canvas) => {
-      const image = canvas.toDataURL("image/png");
-      const link = document.createElement("a");
+    html2canvas(tempContainer, { scale: 2 }).then(canvas => {
+      const image = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
       link.href = image;
-      link.download = "ticket.png";
+      link.download = 'ticket.png';
       link.click();
 
       // إزالة العنصر بعد الالتقاط

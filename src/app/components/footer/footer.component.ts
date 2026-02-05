@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {
-  faFacebookF,
-  faInstagram,
-  faTiktok,
-} from "@fortawesome/free-brands-svg-icons";
+import { faFacebookF, faInstagram, faTiktok } from '@fortawesome/free-brands-svg-icons';
 import {
   faEnvelope,
   faPhone,
@@ -13,11 +9,11 @@ import {
   faPaperPlane,
   faLocationDot,
   faMobileAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import { TranslateModule } from "@ngx-translate/core";
+} from '@fortawesome/free-solid-svg-icons';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: "app-footer",
+  selector: 'app-footer',
   standalone: true,
   imports: [RouterLink, FontAwesomeModule, TranslateModule],
   template: `
@@ -59,11 +55,7 @@ import { TranslateModule } from "@ngx-translate/core";
           <!-- Company Info -->
           <div class="space-y-6">
             <div class="flex items-center space-x-2">
-              <img
-                src="/assets/logo.png"
-                alt="Masar Logo"
-                class="h-10 w-auto"
-              />
+              <img src="/assets/logo.png" alt="Masar Logo" class="h-10 w-auto" />
             </div>
             <p class="text-gray-400">{{ slogan }}</p>
             <div class="flex gap-2">
@@ -71,8 +63,7 @@ import { TranslateModule } from "@ngx-translate/core";
                 [href]="socialLinks.facebook"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-gray-400 hover:text-primary-500 transition-colors"
-              >
+                class="text-gray-400 hover:text-primary-500 transition-colors">
                 <fa-icon [icon]="faFacebook" size="lg"></fa-icon>
                 <span class="sr-only">Facebook</span>
               </a>
@@ -80,8 +71,7 @@ import { TranslateModule } from "@ngx-translate/core";
                 [href]="socialLinks.instagram"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-gray-400 hover:text-primary-500 transition-colors"
-              >
+                class="text-gray-400 hover:text-primary-500 transition-colors">
                 <fa-icon [icon]="faInstagram" size="lg"></fa-icon>
                 <span class="sr-only">Instagram</span>
               </a>
@@ -89,8 +79,7 @@ import { TranslateModule } from "@ngx-translate/core";
                 [href]="socialLinks.tiktok"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-gray-400 hover:text-primary-500 transition-colors"
-              >
+                class="text-gray-400 hover:text-primary-500 transition-colors">
                 <fa-icon [icon]="faTiktok" size="lg"></fa-icon>
                 <span class="sr-only">TikTok</span>
               </a>
@@ -100,47 +89,32 @@ import { TranslateModule } from "@ngx-translate/core";
           <!-- Quick Links -->
           <div>
             <h3 class="text-lg font-semibold mb-6">
-              {{ "footer.quickLinks" | translate }}
+              {{ 'footer.quickLinks' | translate }}
             </h3>
             <ul class="space-y-4">
               <li>
-                <a
-                  routerLink="/trips"
-                  class="text-gray-400 hover:text-white transition-colors"
-                >
-                  {{ "footer.links.destinations" | translate }}
+                <a routerLink="/trips" class="text-gray-400 hover:text-white transition-colors">
+                  {{ 'footer.links.destinations' | translate }}
                 </a>
               </li>
               <li>
-                <a
-                  routerLink="/gallery"
-                  class="text-gray-400 hover:text-white transition-colors"
-                >
-                  {{ "footer.links.gallery" | translate }}
+                <a routerLink="/gallery" class="text-gray-400 hover:text-white transition-colors">
+                  {{ 'footer.links.gallery' | translate }}
                 </a>
               </li>
               <li>
-                <a
-                  routerLink="/reviews"
-                  class="text-gray-400 hover:text-white transition-colors"
-                >
-                  {{ "footer.links.reviews" | translate }}
+                <a routerLink="/reviews" class="text-gray-400 hover:text-white transition-colors">
+                  {{ 'footer.links.reviews' | translate }}
                 </a>
               </li>
               <li>
-                <a
-                  routerLink="/about"
-                  class="text-gray-400 hover:text-white transition-colors"
-                >
-                  {{ "footer.links.about" | translate }}
+                <a routerLink="/about" class="text-gray-400 hover:text-white transition-colors">
+                  {{ 'footer.links.about' | translate }}
                 </a>
               </li>
               <li>
-                <a
-                  routerLink="/contact"
-                  class="text-gray-400 hover:text-white transition-colors"
-                >
-                  {{ "footer.links.contact" | translate }}
+                <a routerLink="/contact" class="text-gray-400 hover:text-white transition-colors">
+                  {{ 'footer.links.contact' | translate }}
                 </a>
               </li>
             </ul>
@@ -149,42 +123,35 @@ import { TranslateModule } from "@ngx-translate/core";
           <!-- Contact Info -->
           <div>
             <h3 class="text-lg font-semibold mb-6">
-              {{ "footer.contact" | translate }}
+              {{ 'footer.contact' | translate }}
             </h3>
             <ul class="space-y-4">
               <!-- Headquarters -->
               <li class="flex items-start text-gray-400">
-                <fa-icon
-                  [icon]="faLocationDot"
-                  class="mx-3 mt-1 text-primary-500"
-                ></fa-icon>
+                <fa-icon [icon]="faLocationDot" class="mx-3 mt-1 text-primary-500"></fa-icon>
                 <div>
                   <p class="font-medium text-white">
                     {{ companyHeadquarters }}
                   </p>
                   @for (branch of branches; track branch.location) {
-                  <div class="mt-2">
-                    <p class="font-medium">{{ branch.location }}</p>
-                    <p class="text-sm">{{ branch.address }}</p>
-                  </div>
+                    <div class="mt-2">
+                      <p class="font-medium">{{ branch.location }}</p>
+                      <p class="text-sm">{{ branch.address }}</p>
+                    </div>
                   }
                 </div>
               </li>
 
               <!-- Phone Numbers -->
               @for (number of contactNumbers; track number) {
-              <li>
-                <a
-                  [href]="'tel:' + number"
-                  class="flex items-center text-gray-400 hover:text-white transition-colors"
-                >
-                  <fa-icon
-                    [icon]="faPhone"
-                    class="mx-3 text-primary-500"
-                  ></fa-icon>
-                  {{ number }}
-                </a>
-              </li>
+                <li>
+                  <a
+                    [href]="'tel:' + number"
+                    class="flex items-center text-gray-400 hover:text-white transition-colors">
+                    <fa-icon [icon]="faPhone" class="mx-3 text-primary-500"></fa-icon>
+                    {{ number }}
+                  </a>
+                </li>
               }
             </ul>
           </div>
@@ -192,15 +159,15 @@ import { TranslateModule } from "@ngx-translate/core";
           <!-- Working Hours -->
           <div>
             <h3 class="text-lg font-semibold mb-6">
-              {{ "footer.workingHours" | translate }}
+              {{ 'footer.workingHours' | translate }}
             </h3>
             <ul class="space-y-2 text-gray-400">
               <li class="flex justify-between">
-                <span>{{ "footer.weekdays" | translate }}</span>
+                <span>{{ 'footer.weekdays' | translate }}</span>
                 <span>10:00 - 22:00</span>
               </li>
               <li class="flex justify-between">
-                <span>{{ "footer.weekend" | translate }}</span>
+                <span>{{ 'footer.weekend' | translate }}</span>
                 <span>10:00 - 20:00</span>
               </li>
             </ul>
@@ -209,24 +176,16 @@ import { TranslateModule } from "@ngx-translate/core";
 
         <!-- Bottom Bar -->
         <div class="mt-12 pt-8 border-t border-gray-700">
-          <div
-            class="flex flex-col md:flex-row justify-between items-center gap-4"
-          >
+          <div class="flex flex-col md:flex-row justify-between items-center gap-4">
             <p class="text-gray-400 text-center md:text-left">
-              &copy; {{ currentYear }} Masar. {{ "footer.rights" | translate }}
+              &copy; {{ currentYear }} Masar. {{ 'footer.rights' | translate }}
             </p>
             <div class="flex space-x-6">
-              <a
-                href="#"
-                class="text-gray-400 hover:text-white text-sm transition-colors"
-              >
-                {{ "footer.privacy" | translate }}
+              <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">
+                {{ 'footer.privacy' | translate }}
               </a>
-              <a
-                href="#"
-                class="text-gray-400 hover:text-white text-sm transition-colors"
-              >
-                {{ "footer.terms" | translate }}
+              <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">
+                {{ 'footer.terms' | translate }}
               </a>
             </div>
           </div>
@@ -239,20 +198,19 @@ export class FooterComponent {
   currentYear = new Date().getFullYear();
 
   // Company Information
-  companyHeadquarters = "مقر الشركة";
+  companyHeadquarters = 'مقر الشركة';
   branches = [
     {
-      location: "فرع الفيوم",
-      address: "شارع الرمله، أمام مطعم أسماك أفندينا",
+      location: 'فرع الفيوم',
+      address: 'شارع الرمله، أمام مطعم أسماك أفندينا',
     },
   ];
-  slogan = "#رحله_واحده_بتقربنا_كلنا";
-  contactNumbers = ["01093886054", "01009700165", "01068332615", "01115245726"];
+  slogan = '#رحله_واحده_بتقربنا_كلنا';
+  contactNumbers = ['01093886054', '01009700165', '01068332615', '01115245726'];
   socialLinks = {
-    tiktok: "https://vt.tiktok.com/ZS6q4qepy/",
-    instagram:
-      "https://www.instagram.com/masar_tours1?igsh=MTBpeWZ0M2ZhNmtmcg==",
-    facebook: "https://www.facebook.com/share/15w9kk7sjL/",
+    tiktok: 'https://vt.tiktok.com/ZS6q4qepy/',
+    instagram: 'https://www.instagram.com/masar_tours1?igsh=MTBpeWZ0M2ZhNmtmcg==',
+    facebook: 'https://www.facebook.com/share/15w9kk7sjL/',
   };
 
   // Icons

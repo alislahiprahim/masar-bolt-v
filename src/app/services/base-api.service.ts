@@ -1,9 +1,9 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { Observable, pipe, throwError } from "rxjs";
-import { catchError, map, shareReplay, tap } from "rxjs/operators";
-import { ToastService } from "./toast.service";
-import { ApiResponse } from "../models/api.model";
-import { inject } from "@angular/core";
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, pipe, throwError } from 'rxjs';
+import { catchError, map, shareReplay, tap } from 'rxjs/operators';
+import { ToastService } from './toast.service';
+import { ApiResponse } from '../models/api.model';
+import { inject } from '@angular/core';
 
 export abstract class BaseApiService<T extends Record<string, any>> {
   protected abstract apiUrl: string;
@@ -15,7 +15,7 @@ export abstract class BaseApiService<T extends Record<string, any>> {
 
   protected getItems(
     params: Record<string, any> = {},
-    dataKey: string = ""
+    dataKey: string = ''
   ): Observable<{ items: T[]; total: number }> {
     const queryParams = new URLSearchParams();
 
@@ -26,32 +26,34 @@ export abstract class BaseApiService<T extends Record<string, any>> {
     });
 
     return this.http
-      .get<ApiResponse<Record<string, T> | T>>(
-        `${this.apiUrl}?${queryParams.toString()}`
-      )
+      .get<ApiResponse<Record<string, T> | T>>(`${this.apiUrl}?${queryParams.toString()}`)
       .pipe(
-        map((response) => {
+        map(response => {
           const items = dataKey ? response.data[dataKey] : response.data;
           return {
             items,
-            total: Array.isArray(items) ? items.length : 0, // Ensure total is calculated correctly
+            total: response.data['total']
+              ? response.data['total']
+              : Array.isArray(items)
+                ? items.length
+                : 0, // Ensure total is calculated correctly
           };
         }),
         catchError(this.handleError.bind(this))
       );
   }
 
-  protected getItemById(id: string, dataKey: string = ""): Observable<T> {
+  protected getItemById(id: string, dataKey: string = ''): Observable<T> {
     return this.http.get<ApiResponse<T>>(`${this.apiUrl}/${id}`).pipe(
-      map((response) => (dataKey ? response.data[dataKey] : response.data)),
+      map(response => (dataKey ? response.data[dataKey] : response.data)),
       catchError(this.handleError.bind(this))
     );
   }
 
   protected getFeaturedItems(
     limit: number = 6,
-    path: string = "",
-    dataKey: string = ""
+    path: string = '',
+    dataKey: string = ''
   ): Observable<T[]> {
     const now = Date.now();
 
@@ -62,7 +64,7 @@ export abstract class BaseApiService<T extends Record<string, any>> {
     this.featuredCache$ = this.http
       .get<ApiResponse<T>>(`${this.apiUrl}/${path}?limit=${limit}`)
       .pipe(
-        map((response) => (dataKey ? response.data[dataKey] : response.data)),
+        map(response => (dataKey ? response.data[dataKey] : response.data)),
         shareReplay(1),
         catchError(this.handleError.bind(this))
       );
@@ -72,7 +74,7 @@ export abstract class BaseApiService<T extends Record<string, any>> {
   }
 
   protected handleError(error: HttpErrorResponse) {
-    let errorMessage = "An error occurred. Please try again later.";
+    let errorMessage = 'An error occurred. Please try again later.';
 
     if (error.error instanceof ErrorEvent) {
       errorMessage = error.error.message;
@@ -85,16 +87,16 @@ export abstract class BaseApiService<T extends Record<string, any>> {
             errorMessage = `The requested ${this.getEntityName()} was not found.`;
             break;
           case 401:
-            errorMessage = "Please log in to access this content.";
+            errorMessage = 'Please log in to access this content.';
             break;
           case 403:
-            errorMessage = "You do not have permission to access this content.";
+            errorMessage = 'You do not have permission to access this content.';
             break;
           case 429:
-            errorMessage = "Too many requests. Please try again later.";
+            errorMessage = 'Too many requests. Please try again later.';
             break;
           case 500:
-            errorMessage = "Server error. Please try again later.";
+            errorMessage = 'Server error. Please try again later.';
             break;
         }
       }

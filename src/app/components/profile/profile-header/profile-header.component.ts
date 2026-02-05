@@ -1,59 +1,43 @@
-import { Component, Input } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
-import { TranslateModule } from "@ngx-translate/core";
-import { UserDetails } from "../../../models/auth.model";
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { TranslateModule } from '@ngx-translate/core';
+import { UserDetails } from '../../../models/auth.model';
 
 @Component({
-  selector: "app-profile-header",
+  selector: 'app-profile-header',
   standalone: true,
   imports: [CommonModule, FontAwesomeModule, TranslateModule],
   template: `
-    <div
-      class="relative bg-gradient-to-r from-primary-600 to-primary-800 py-16"
-    >
+    <div class="relative bg-gradient-to-r from-primary-600 to-primary-800 py-16">
       <div class="absolute inset-0 overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1488085061387-422e29b40080"
           alt="Profile Background"
-          class="w-full h-full object-cover opacity-10"
-        />
+          class="w-full h-full object-cover opacity-10" />
       </div>
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center space-x-8 gap-2">
           <div class="relative">
-            <div
-              class="w-24 h-24 rounded-full overflow-hidden  bg-white ring-4 ring-white"
-            >
+            <div class="w-24 h-24 rounded-full overflow-hidden  bg-white ring-4 ring-white">
               <img
-                [src]="
-                  user?.profilePicture ?? 'assets/images/default-profile.png'
-                "
+                [src]="user?.profilePicture ?? 'assets/images/default-profile.png'"
                 [alt]="user?.firstName + ' ' + user?.lastName"
-                class="w-full h-full object-cover"
-              />
+                class="w-full h-full object-cover" />
             </div>
             <button
-              class="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50"
-            >
-              <fa-icon
-                [icon]="faPencilAlt"
-                class="text-primary-600 text-sm"
-              ></fa-icon>
+              class="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50">
+              <fa-icon [icon]="faPencilAlt" class="text-primary-600 text-sm"></fa-icon>
             </button>
           </div>
 
           <div>
             <h1 class="text-3xl font-bold text-white">
-              {{
-                user?.firstName
-                  ? user?.firstName + " " + user?.lastName
-                  : user?.phoneNumber
-              }}
+              {{ user?.firstName ? user?.firstName + ' ' + user?.lastName : user?.phoneNumber }}
             </h1>
             <p class="text-primary-100 mt-1">
-              {{ "profile.subtitle" | translate }}
+              {{ 'profile.subtitle' | translate }}
             </p>
           </div>
         </div>

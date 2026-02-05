@@ -1,15 +1,15 @@
-import { Injectable, inject } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { map, Observable, of } from "rxjs";
-import { Trip } from "../models/trip.model";
-import { environment } from "../../environments/environment";
-import { ToastService } from "./toast.service";
-import { BaseApiService } from "./base-api.service";
-import { City } from "../models/city.model";
-import { CityStateService } from "../state/city.state";
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable, of } from 'rxjs';
+import { Trip } from '../models/trip.model';
+import { environment } from '../../environments/environment';
+import { ToastService } from './toast.service';
+import { BaseApiService } from './base-api.service';
+import { City } from '../models/city.model';
+import { CityStateService } from '../state/city.state';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class CitiesService extends BaseApiService<City> {
   protected apiUrl = `${environment.apiUrl}/cities`;
@@ -23,9 +23,9 @@ export class CitiesService extends BaseApiService<City> {
       minPrice?: number | null;
       maxPrice?: number | null;
       sortBy?: string;
-      sortOrder?: "asc" | "desc";
+      sortOrder?: 'asc' | 'desc';
     } = {},
-    dataKey: string = "cities"
+    dataKey: string = 'cities'
   ): Observable<{ cities: City[]; total: number }> {
     // return of({ items: mockTrips, total: mockTrips.length }).pipe(
     return this.getItems(params, dataKey).pipe(
@@ -33,20 +33,20 @@ export class CitiesService extends BaseApiService<City> {
     );
   }
 
-  getCityById(id: string, dataKey: string = ""): Observable<City> {
+  getCityById(id: string, dataKey: string = ''): Observable<City> {
     return this.getItemById(id, dataKey).pipe(
-      map((city) => ({
+      map(city => ({
         ...city,
       }))
     );
   }
 
-  getPopularCities(dataKey: string = "popularCities"): Observable<City[]> {
+  getPopularCities(dataKey: string = 'popularCities'): Observable<City[]> {
     return this.getFeaturedItems(6, dataKey);
   }
 
   protected getEntityName(): string {
-    return "city";
+    return 'city';
   }
 
   loadDestinations() {
@@ -58,7 +58,7 @@ export class CitiesService extends BaseApiService<City> {
         this.state.setCities(cities, cities.length);
         this.state.setLoading(false);
       },
-      error: (error) => {
+      error: error => {
         this.state.setError(error.message);
       },
     });

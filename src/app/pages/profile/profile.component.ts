@@ -1,12 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from "@angular/forms";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faUser,
   faEnvelope,
@@ -18,19 +13,19 @@ import {
   faTrash,
   faPlane,
   faReceipt,
-} from "@fortawesome/free-solid-svg-icons";
-import { AuthService } from "../../services/auth.service";
-import { ProfileHeaderComponent } from "../../components/profile/profile-header/profile-header.component";
-import { ProfileDetailsComponent } from "../../components/profile/profile-details/profile-details.component";
-import { ProfileTabsComponent } from "../../components/profile/profile-tabs/profile-tabs.component";
-import { ProfileTripsComponent } from "../../components/profile/profile-trips/profile-trips.component";
-import { ProfileInvoicesComponent } from "../../components/profile/profile-invoices/profile-invoices.component";
-import { ProfileNotificationsComponent } from "../../components/profile/profile-notifications/profile-notifications.component";
-import { ReservationsComponent } from "../reservations/reservations.component";
-import { RouterOutlet } from "@angular/router";
+} from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../../services/auth.service';
+import { ProfileHeaderComponent } from '../../components/profile/profile-header/profile-header.component';
+import { ProfileDetailsComponent } from '../../components/profile/profile-details/profile-details.component';
+import { ProfileTabsComponent } from '../../components/profile/profile-tabs/profile-tabs.component';
+import { ProfileTripsComponent } from '../../components/profile/profile-trips/profile-trips.component';
+import { ProfileInvoicesComponent } from '../../components/profile/profile-invoices/profile-invoices.component';
+import { ProfileNotificationsComponent } from '../../components/profile/profile-notifications/profile-notifications.component';
+import { ReservationsComponent } from '../reservations/reservations.component';
+import { RouterOutlet } from '@angular/router';
 
 interface ProfileTab {
-  id: "details" | "trips" | "invoices" | "notifications" | "reservations";
+  id: 'details' | 'trips' | 'invoices' | 'notifications' | 'reservations';
   label: string;
   icon: any;
 }
@@ -48,11 +43,11 @@ interface Invoice {
   tripName: string;
   amount: number;
   date: string;
-  status: "paid" | "pending";
+  status: 'paid' | 'pending';
 }
 
 @Component({
-  selector: "app-profile",
+  selector: 'app-profile',
   imports: [ProfileHeaderComponent, ProfileTabsComponent, RouterOutlet],
   template: `
     <app-profile-header [user]="user" />
@@ -69,7 +64,10 @@ interface Invoice {
 export class ProfileComponent implements OnInit {
   user = this.authService.getCurrentUser();
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {}
 }

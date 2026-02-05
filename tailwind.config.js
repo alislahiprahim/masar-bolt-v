@@ -1,9 +1,7 @@
-const plugin = require('tailwindcss/plugin')
+const plugin = require('tailwindcss/plugin');
 
 module.exports = {
-  content: [
-    "./src/**/*.{html,ts}",
-  ],
+  content: ['./src/**/*.{html,ts}'],
   theme: {
     extend: {
       colors: {
@@ -37,25 +35,25 @@ module.exports = {
           DEFAULT: '#1B377D', // yale-blue
           light: '#556795', // lapis-lazuli
           dark: '#152758', // space-cadet
-        }
+        },
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
       },
       animation: {
-        'gradient': 'gradient 6s ease infinite',
-        'shimmer': 'shimmer 2s infinite',
-        'float': 'float 6s ease-in-out infinite',
+        gradient: 'gradient 6s ease infinite',
+        shimmer: 'shimmer 2s infinite',
+        float: 'float 6s ease-in-out infinite',
       },
       keyframes: {
         gradient: {
           '0%, 100%': {
             'background-size': '200% 200%',
-            'background-position': 'left center'
+            'background-position': 'left center',
           },
           '50%': {
             'background-size': '200% 200%',
-            'background-position': 'right center'
+            'background-position': 'right center',
           },
         },
         shimmer: {
@@ -77,19 +75,19 @@ module.exports = {
         'gradient-primary': 'linear-gradient(135deg, #1B305D, #556795, #1B377D)',
       },
       transitionProperty: {
-        'width': 'width',
-        'height': 'height',
+        width: 'width',
+        height: 'height',
       },
     },
   },
   plugins: [
-    plugin(function({ addUtilities }) {
+    plugin(function ({ addUtilities }) {
       addUtilities({
         '.glass': {
           'backdrop-filter': 'blur(4px)',
-          'border': '1px solid rgba(254, 254, 254, 0.2)',
+          border: '1px solid rgba(254, 254, 254, 0.2)',
         },
-      })
+      });
     }),
   ],
-}
+};

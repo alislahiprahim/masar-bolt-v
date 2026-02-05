@@ -1,4 +1,4 @@
-import { Hotel } from "./hotel.model";
+import { Hotel } from './hotel.model';
 
 export interface Trip {
   id: string;
@@ -17,11 +17,9 @@ export interface Trip {
   destination: string;
   includes: { includes: { name: string } }[];
   itinerary: any[];
-  TripHotel:{
-    id:string,
-    hotel:Hotel,
-    costPerPerson:number
-  }[]
+  TripHotel: {
+    id: string;
+    hotel: Hotel;
+    costPerPerson: number;
+  }[];
 }
-  
- 

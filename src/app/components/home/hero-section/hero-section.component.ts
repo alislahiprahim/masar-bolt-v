@@ -1,51 +1,34 @@
-import { Component, inject } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { RouterLink } from "@angular/router";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { TranslateModule } from "@ngx-translate/core";
-import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { Router } from "@angular/router";
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 @Component({
-  selector: "app-hero-section",
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    RouterLink,
-    FontAwesomeModule,
-    TranslateModule,
-  ],
+  selector: 'app-hero-section',
+  imports: [FormsModule, ReactiveFormsModule, RouterLink, FontAwesomeModule, TranslateModule],
   template: `
     <div class="relative min-h-screen flex items-center">
       <!-- Video Background -->
       <div class="absolute inset-0 w-full h-full overflow-hidden">
-        <video
-          autoplay
-          muted
-          loop
-          playsinline
-          class="w-full h-full object-cover"
-        >
+        <video autoplay muted loop playsinline class="w-full h-full object-cover">
           <source
             src="https://cdn.coverr.co/videos/coverr-villas-by-the-beach-1963/720p.mp4"
-            type="video/mp4"
-          />
+            type="video/mp4" />
         </video>
-        <div
-          class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"
-        ></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
       </div>
 
       <!-- Hero Content -->
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
         <div class="text-center">
-          <h1
-            class="text-5xl md:text-6xl font-extrabold text-white mb-6 animate-float"
-          >
-            {{ "home.hero.title" | translate }}
+          <h1 class="text-5xl md:text-6xl font-extrabold text-white mb-6 animate-float">
+            {{ 'home.hero.title' | translate }}
           </h1>
           <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
-            {{ "home.hero.subtitle" | translate }}
+            {{ 'home.hero.subtitle' | translate }}
           </p>
 
           <!-- Search Bar -->
@@ -57,15 +40,13 @@ import { Router } from "@angular/router";
                   [placeholder]="'home.hero.searchPlaceholder' | translate"
                   class="w-full bg-transparent border-none focus:outline-none text-gray-100 placeholder-gray-300"
                   [formControl]="searchInput"
-                  (keydown.enter)="navigateToTrips()"
-                />
+                  (keydown.enter)="navigateToTrips()" />
               </div>
               <button
                 class="btn-primary rounded-full px-6 py-2 flex items-center space-x-2 rtl:gap-2"
-                (click)="navigateToTrips()"
-              >
+                (click)="navigateToTrips()">
                 <fa-icon [icon]="faSearch"></fa-icon>
-                <span>{{ "common.search" | translate }}</span>
+                <span>{{ 'common.search' | translate }}</span>
               </button>
             </div>
           </div>
@@ -73,9 +54,8 @@ import { Router } from "@angular/router";
           <a
             routerLink="/trips"
             class="inline-flex items-center btn-primary text-lg px-8 py-3 rounded-full
-                    transform hover:scale-105 transition-all duration-300"
-          >
-            {{ "home.hero.discoverButton" | translate }}
+                    transform hover:scale-105 transition-all duration-300">
+            {{ 'home.hero.discoverButton' | translate }}
           </a>
         </div>
       </div>
@@ -84,11 +64,11 @@ import { Router } from "@angular/router";
 })
 export class HeroSectionComponent {
   faSearch = faSearch;
-  searchInput = new FormControl("");
+  searchInput = new FormControl('');
   private router = inject(Router);
 
   navigateToTrips() {
-    this.router.navigate(["/trips"], {
+    this.router.navigate(['/trips'], {
       queryParams: { search: this.searchInput.value },
     });
   }

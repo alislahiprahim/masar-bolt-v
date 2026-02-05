@@ -1,14 +1,14 @@
-import { Injectable, inject } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { map, Observable, of } from "rxjs";
-import { Trip } from "../models/trip.model";
-import { environment } from "../../environments/environment";
-import { ToastService } from "./toast.service";
-import { BaseApiService } from "./base-api.service";
-import { TripsStateService } from "../state/trips.state";
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable, of } from 'rxjs';
+import { Trip } from '../models/trip.model';
+import { environment } from '../../environments/environment';
+import { ToastService } from './toast.service';
+import { BaseApiService } from './base-api.service';
+import { TripsStateService } from '../state/trips.state';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class TripsService extends BaseApiService<Trip> {
   protected apiUrl = `${environment.apiUrl}/trips`;
@@ -23,9 +23,9 @@ export class TripsService extends BaseApiService<Trip> {
       minPrice?: number | null;
       maxPrice?: number | null;
       sortBy?: string;
-      sortOrder?: "asc" | "desc";
+      sortOrder?: 'asc' | 'desc';
     } = {},
-    dataKey: string = "trips"
+    dataKey: string = 'trips'
   ): Observable<{ trips: Trip[]; total: number }> {
     // return of({ items: mockTrips, total: mockTrips.length }).pipe(
     return this.getItems(params, dataKey).pipe(
@@ -33,21 +33,21 @@ export class TripsService extends BaseApiService<Trip> {
     );
   }
 
-  getTripById(id: string, dataKey: string = ""): Observable<Trip> {
+  getTripById(id: string, dataKey: string = ''): Observable<Trip> {
     return this.getItemById(id, dataKey).pipe(
-      map((trip) => ({
+      map(trip => ({
         ...trip,
-        itinerary: trip.itinerary.map((item) => (typeof item === "string" ? JSON.parse(item) : item)),
+        itinerary: trip.itinerary.map(item => (typeof item === 'string' ? JSON.parse(item) : item)),
       }))
     );
   }
 
-  getPopularTrips(dataKey: string = ""): Observable<Trip[]> {
-    return this.getFeaturedItems(6, "featured");
+  getPopularTrips(dataKey: string = ''): Observable<Trip[]> {
+    return this.getFeaturedItems(6, 'featured');
   }
 
   protected getEntityName(): string {
-    return "trip";
+    return 'trip';
   }
 
   loadTrips() {
@@ -59,10 +59,14 @@ export class TripsService extends BaseApiService<Trip> {
       ...pagination(),
     }).subscribe({
       next: ({ trips, total }) => {
-        this.state.setTrips(trips, total);
+        console.log(pagination());
+        this.state.setTrips(
+          pagination().page === 1 ? trips : [...this.state.trips(), ...trips],
+          total
+        );
         this.state.setLoading(false);
       },
-      error: (error) => {
+      error: error => {
         this.state.setError(error.message);
       },
     });

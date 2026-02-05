@@ -1,5 +1,5 @@
-import { Injectable, computed, signal } from "@angular/core";
-import { Reservation } from "../models/reservation.model";
+import { Injectable, computed, signal } from '@angular/core';
+import { Reservation } from '../models/reservation.model';
 
 export interface ReservationsState {
   reservations: Reservation[];
@@ -18,7 +18,7 @@ export interface ReservationsState {
 }
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ReservationsStateService {
   // State signal
@@ -29,8 +29,8 @@ export class ReservationsStateService {
     error: null,
     total: 0,
     filters: {
-      status: "",
-      search: "",
+      status: '',
+      search: '',
     },
     pagination: {
       page: 1,
@@ -40,9 +40,7 @@ export class ReservationsStateService {
 
   // Computed signals
   readonly reservations = computed(() => this.state().reservations);
-  readonly selectedReservation = computed(
-    () => this.state().selectedReservation
-  );
+  readonly selectedReservation = computed(() => this.state().selectedReservation);
   readonly loading = computed(() => this.state().loading);
   readonly error = computed(() => this.state().error);
   readonly filters = computed(() => this.state().filters);
@@ -63,7 +61,7 @@ export class ReservationsStateService {
 
   // State updates
   setReservations(reservations: Reservation[], total?: number) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       reservations,
       total: total ?? reservations.length,
@@ -72,21 +70,21 @@ export class ReservationsStateService {
   }
 
   setSelectedReservation(reservation: Reservation | null) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       selectedReservation: reservation,
     }));
   }
 
   setLoading(loading: boolean) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       loading,
     }));
   }
 
   setError(error: string | null) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       error,
       loading: false,
@@ -94,18 +92,16 @@ export class ReservationsStateService {
   }
 
   updateReservation(updatedReservation: Reservation) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
-      reservations: state.reservations.map((reservation) =>
-        reservation.id === updatedReservation.id
-          ? updatedReservation
-          : reservation
+      reservations: state.reservations.map(reservation =>
+        reservation.id === updatedReservation.id ? updatedReservation : reservation
       ),
     }));
   }
 
-  updateFilters(filters: Partial<ReservationsState["filters"]>) {
-    this.state.update((state) => ({
+  updateFilters(filters: Partial<ReservationsState['filters']>) {
+    this.state.update(state => ({
       ...state,
       filters: {
         ...state.filters,
@@ -118,8 +114,8 @@ export class ReservationsStateService {
     }));
   }
 
-  updatePagination(pagination: Partial<ReservationsState["pagination"]>) {
-    this.state.update((state) => ({
+  updatePagination(pagination: Partial<ReservationsState['pagination']>) {
+    this.state.update(state => ({
       ...state,
       pagination: {
         ...state.pagination,
@@ -136,8 +132,8 @@ export class ReservationsStateService {
       error: null,
       total: 0,
       filters: {
-        status: "",
-        search: "",
+        status: '',
+        search: '',
       },
       pagination: {
         page: 1,
@@ -153,16 +149,14 @@ export class ReservationsStateService {
 
     // Filter by status
     if (status) {
-      filtered = filtered.filter(
-        (reservation) => reservation.status === status
-      );
+      filtered = filtered.filter(reservation => reservation.status === status);
     }
 
     // Filter by search term
     if (search) {
       const searchLower = search.toLowerCase();
       filtered = filtered.filter(
-        (reservation) =>
+        reservation =>
           reservation.id.toLowerCase().includes(searchLower) ||
           reservation.title?.toLowerCase().includes(searchLower) ||
           reservation.whatsappNumber.includes(search)

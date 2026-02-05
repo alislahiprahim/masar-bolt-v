@@ -1,16 +1,8 @@
-import { Component, inject } from "@angular/core";
-import { CommonModule, NgClass } from "@angular/common";
-import { Router, RouterLink, ActivatedRoute } from "@angular/router";
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from "@angular/forms";
-import {
-  FaIconComponent,
-  FontAwesomeModule,
-} from "@fortawesome/angular-fontawesome";
+import { Component, inject } from '@angular/core';
+import { CommonModule, NgClass } from '@angular/common';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FaIconComponent, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faSignInAlt,
   faEnvelope,
@@ -18,84 +10,57 @@ import {
   faPhone,
   faMobile,
   faMobileAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import { AuthService } from "../../../services/auth.service";
-import { ToastService } from "../../../services/toast.service";
-import { DialogService } from "../../../services/dialog.service";
-import {
-  TranslateModule,
-  TranslatePipe,
-  TranslateService,
-} from "@ngx-translate/core";
-import { environment } from "../../../../environments/environment.development";
-import { ReservationService } from "../../../services/reservation.service";
+} from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../../../services/auth.service';
+import { ToastService } from '../../../services/toast.service';
+import { DialogService } from '../../../services/dialog.service';
+import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../../environments/environment.development';
+import { ReservationService } from '../../../services/reservation.service';
 
 @Component({
-  selector: "app-login",
-  imports: [
-    RouterLink,
-    ReactiveFormsModule,
-    FaIconComponent,
-    TranslatePipe,
-    NgClass,
-  ],
+  selector: 'app-login',
+  imports: [RouterLink, ReactiveFormsModule, FaIconComponent, TranslatePipe, NgClass],
   template: `
-    <div
-      class="min-h-screen relative bg-gradient-to-br from-primary-50 to-secondary-50"
-    >
+    <div class="min-h-screen relative bg-gradient-to-br from-primary-50 to-secondary-50">
       <!-- Background Image with Overlay -->
       <div class="absolute inset-0 z-0">
         <img
           src="https://images.unsplash.com/photo-1488085061387-422e29b40080"
           alt="Login Background"
-          class="w-full h-full object-cover"
-        />
+          class="w-full h-full object-cover" />
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
       </div>
 
       <!-- Login Form Container -->
-      <div
-        class="relative z-10 min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8"
-      >
+      <div class="relative z-10 min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
           <!-- Logo or Brand -->
-          <img
-            src="/assets/logo.png"
-            alt="Masar Logo"
-            class="mx-auto h-16 w-auto"
-          />
+          <img src="/assets/logo.png" alt="Masar Logo" class="mx-auto h-16 w-auto" />
           <h2 class="mt-6 text-center text-4xl font-extrabold text-white">
-            {{ "auth.login.title" | translate }}
+            {{ 'auth.login.title' | translate }}
           </h2>
           <p class="mt-2 text-center text-lg text-white/80">
-            {{ "auth.login.subtitle" | translate }}
+            {{ 'auth.login.subtitle' | translate }}
           </p>
         </div>
 
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div class="glass-container p-8">
             @if (error) {
-            <div
-              class="mb-6 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg relative"
-              role="alert"
-            >
-              <span class="block sm:inline">{{ error }}</span>
-            </div>
+              <div
+                class="mb-6 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg relative"
+                role="alert">
+                <span class="block sm:inline">{{ error }}</span>
+              </div>
             }
 
-            <form
-              [formGroup]="loginForm"
-              (ngSubmit)="onSubmit()"
-              class="space-y-6"
-            >
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
               <!-- phone Field -->
               <div>
-                <label
-                  for="phone"
-                  class="block text-sm font-medium text-gray-700"
-                >
+                <label for="phone" class="block text-sm font-medium text-gray-700">
                   <fa-icon [icon]="faMobile" class="ml-2 rtl:mr-2"></fa-icon>
-                  {{ "auth.phone" | translate }}
+                  {{ 'auth.phone' | translate }}
                 </label>
                 <div class="mt-1">
                   <input
@@ -105,20 +70,19 @@ import { ReservationService } from "../../../services/reservation.service";
                     formControlName="phone"
                     class="input-field text-end"
                     placeholder="01023456789"
-                    required
-                  />
-                  <span class="text-gray-500 text-xs">{{
-                    "auth.phone_hint" | translate
-                  }}</span>
-                  @if (loginForm.get('phone')?.errors?.['required'] &&
-                  loginForm.get('phone')?.touched) {
-                  <p class="mt-1 text-sm text-red-600">
-                    {{ "auth.form.phoneRequired" | translate }}
-                  </p>
-                  } @if (loginForm.get('phone')?.errors?.['pattern']) {
-                  <p class="mt-1 text-sm text-red-600">
-                    {{ "auth.form.phoneInvalid" | translate }}
-                  </p>
+                    required />
+                  <span class="text-gray-500 text-xs">{{ 'auth.phone_hint' | translate }}</span>
+                  @if (
+                    loginForm.get('phone')?.errors?.['required'] && loginForm.get('phone')?.touched
+                  ) {
+                    <p class="mt-1 text-sm text-red-600">
+                      {{ 'auth.form.phoneRequired' | translate }}
+                    </p>
+                  }
+                  @if (loginForm.get('phone')?.errors?.['pattern']) {
+                    <p class="mt-1 text-sm text-red-600">
+                      {{ 'auth.form.phoneInvalid' | translate }}
+                    </p>
                   }
                 </div>
               </div>
@@ -179,17 +143,13 @@ import { ReservationService } from "../../../services/reservation.service";
                   [disabled]="!loginForm.valid || isLoading"
                   class="w-full btn-primary flex justify-center items-center disabled:opacity-50"
                   [ngClass]="{
-                    'pointer-events-none': loginForm.invalid || isLoading
-                  }"
-                >
-                  <fa-icon
-                    [icon]="faSignInAlt"
-                    class="mx-2 rtl:rotate-180"
-                  ></fa-icon>
+                    'pointer-events-none': loginForm.invalid || isLoading,
+                  }">
+                  <fa-icon [icon]="faSignInAlt" class="mx-2 rtl:rotate-180"></fa-icon>
                   {{
                     isLoading
-                      ? ("auth.login.loading" | translate)
-                      : ("auth.login.button" | translate)
+                      ? ('auth.login.loading' | translate)
+                      : ('auth.login.button' | translate)
                   }}
                 </button>
               </div>
@@ -198,12 +158,11 @@ import { ReservationService } from "../../../services/reservation.service";
             <!-- Register Link -->
             <div class="mt-6 text-center">
               <p class="text-sm text-gray-600">
-                {{ "auth.register.noAccount" | translate }}
+                {{ 'auth.register.noAccount' | translate }}
                 <a
                   routerLink="/auth/register"
-                  class="font-medium text-primary-600 hover:text-primary-500 hover:underline"
-                >
-                  {{ "auth.register.createAccount" | translate }}
+                  class="font-medium text-primary-600 hover:text-primary-500 hover:underline">
+                  {{ 'auth.register.createAccount' | translate }}
                 </a>
               </p>
             </div>
@@ -230,10 +189,7 @@ export class LoginComponent {
     private route: ActivatedRoute
   ) {
     this.loginForm = this.fb.group({
-      phone: [
-        "",
-        [Validators.required, Validators.pattern("^0(10|11|12|15)[0-9]{8}$")],
-      ],
+      phone: ['', [Validators.required, Validators.pattern('^0(10|11|12|15)[0-9]{8}$')]],
       // password: ["", [Validators.required, Validators.minLength(6)]],
       // rememberMe: [false],
     });
@@ -255,10 +211,9 @@ export class LoginComponent {
         .subscribe((success: boolean) => {
           this.isLoading = false;
           if (success) {
-            const returnUrl =
-              this.route.snapshot.queryParams["returnUrl"] || "/";
-            if (returnUrl.includes("login")) {
-              this.router.navigate(["/"]);
+            const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+            if (returnUrl.includes('login')) {
+              this.router.navigate(['/']);
             } else {
               this.router.navigate([returnUrl]);
             }

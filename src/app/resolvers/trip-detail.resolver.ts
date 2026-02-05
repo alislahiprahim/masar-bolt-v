@@ -6,22 +6,22 @@ import { TripsService } from '../services/trips.service';
 import { ReservationService } from '../services/reservation.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TripDetailResolver implements Resolve<Trip | null> {
-  constructor(private tripsService: TripsService, private reservationService: ReservationService) {}
+  constructor(
+    private tripsService: TripsService,
+    private reservationService: ReservationService
+  ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<Trip | null> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Trip | null> {
     const tripId = route.paramMap.get('id');
     if (!tripId) {
       return of(null);
     }
-    this.reservationService.getUserReservations()
+    this.reservationService.getUserReservations();
     return this.tripsService.getTripById(tripId).pipe(
-      catchError((error) => {
+      catchError(error => {
         console.error('Error loading trip:', error);
         return of(null);
       })

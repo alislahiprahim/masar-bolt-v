@@ -1,13 +1,13 @@
-import { Component, inject, OnInit } from "@angular/core";
-import { RouterOutlet } from "@angular/router";
-import { NavbarComponent } from "./components/navbar/navbar.component";
-import { FooterComponent } from "./components/footer/footer.component";
-import { ToastComponent } from "./components/toast/toast.component";
-import { DialogComponent } from "./components/dialog/dialog.component";
-import { SecondaryNavbarComponent } from "./components/secondary-navbar/secondary-navbar.component";
-import { CitiesService } from "./services/cities.service";
+import { Component, inject, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { ToastComponent } from './components/toast/toast.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { SecondaryNavbarComponent } from './components/secondary-navbar/secondary-navbar.component';
+import { CitiesService } from './services/cities.service';
 @Component({
-  selector: "app-root",
+  selector: 'app-root',
   imports: [
     RouterOutlet,
     NavbarComponent,
@@ -26,10 +26,10 @@ import { CitiesService } from "./services/cities.service";
       <main class="flex-grow">
         <router-outlet></router-outlet>
       </main>
-      @defer(on viewport){
-      <app-footer />
-      }@placeholder {
-      <div></div>
+      @defer (on viewport) {
+        <app-footer />
+      } @placeholder {
+        <div></div>
       }
     </div>
     <app-dialog />
@@ -37,7 +37,7 @@ import { CitiesService } from "./services/cities.service";
   `,
 })
 export class AppComponent implements OnInit {
-  title = "TravelPro";
+  title = 'TravelPro';
   protected citiesService = inject(CitiesService);
   ngOnInit() {
     this.citiesService.loadDestinations();

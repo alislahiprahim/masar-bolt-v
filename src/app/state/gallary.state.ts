@@ -1,8 +1,8 @@
-import { Injectable, computed, signal } from "@angular/core";
-import { GalleryState, GalleryImage } from "../models/gallary.model";
+import { Injectable, computed, signal } from '@angular/core';
+import { GalleryState, GalleryImage } from '../models/gallary.model';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class GalleryStateService {
   // State signal
@@ -24,16 +24,16 @@ export class GalleryStateService {
 
   // Computed locations and tags for filtering
   readonly locations = computed(() =>
-    Array.from(new Set(this.state().images.map((img) => img.city.name)))
+    Array.from(new Set(this.state().images.map(img => img.city.name)))
   );
 
   readonly tags = computed(() =>
-    Array.from(new Set(this.state().images.flatMap((img) => img.tags || [])))
+    Array.from(new Set(this.state().images.flatMap(img => img.tags || [])))
   );
 
   // State updates
   setImages(images: GalleryImage[], length: number) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       images: images,
       total: length,
@@ -42,29 +42,29 @@ export class GalleryStateService {
   }
 
   setSelectedImage(image: GalleryImage | null) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       selectedImage: image,
     }));
   }
 
   setLoading(loading: boolean) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       loading,
     }));
   }
 
   setError(error: string | null) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       error,
       loading: false,
     }));
   }
 
-  updateFilters(filters: Partial<GalleryState["filters"]>) {
-    this.state.update((state) => ({
+  updateFilters(filters: Partial<GalleryState['filters']>) {
+    this.state.update(state => ({
       ...state,
       filters: {
         ...state.filters,

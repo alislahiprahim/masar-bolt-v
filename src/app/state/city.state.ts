@@ -1,10 +1,10 @@
 // city.state.ts
 
-import { signal, computed, Injectable } from "@angular/core";
-import { City, CityState } from "../models/city.model";
+import { signal, computed, Injectable } from '@angular/core';
+import { City, CityState } from '../models/city.model';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class CityStateService {
   private state = signal<CityState>({
@@ -12,7 +12,7 @@ export class CityStateService {
     loading: false,
     error: null,
     total: 0,
-    filters: { search: "", destination: "" },
+    filters: { search: '', destination: '' },
     pagination: { page: 1, limit: 10 },
   });
 
@@ -24,7 +24,7 @@ export class CityStateService {
   readonly pagination = computed(() => this.state().pagination);
 
   setCities(cities: City[], total: number) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       cities,
       total,
@@ -32,39 +32,39 @@ export class CityStateService {
   }
 
   setLoading(loading: boolean) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       loading,
     }));
   }
 
   setError(error: string | null) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       error,
     }));
   }
 
-  updateFilters(filters: Partial<CityState["filters"]>) {
-    this.state.update((state) => ({
+  updateFilters(filters: Partial<CityState['filters']>) {
+    this.state.update(state => ({
       ...state,
       filters: { ...state.filters, ...filters },
     }));
   }
 
-  updatePagination(pagination: Partial<CityState["pagination"]>) {
-    this.state.update((state) => ({
+  updatePagination(pagination: Partial<CityState['pagination']>) {
+    this.state.update(state => ({
       ...state,
       pagination: { ...state.pagination, ...pagination },
     }));
   }
 
   reset() {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       cities: [],
 
-      filters: { search: "", destination: "" },
+      filters: { search: '', destination: '' },
       pagination: { page: 1, limit: 10 },
     }));
   }

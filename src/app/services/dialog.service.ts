@@ -1,6 +1,6 @@
-import { Injectable, signal } from "@angular/core";
+import { Injectable, signal } from '@angular/core';
 
-export type DialogType = "success" | "error" | "warning" | "info";
+export type DialogType = 'success' | 'error' | 'warning' | 'info';
 
 export interface DialogState {
   isOpen: boolean;
@@ -10,19 +10,19 @@ export interface DialogState {
 }
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class DialogService {
   private state = signal<DialogState>({
     isOpen: false,
-    message: "",
-    type: "info",
+    message: '',
+    type: 'info',
     hasButton: false,
   });
 
   readonly dialog = this.state.asReadonly();
 
-  show(message: string, type: DialogType = "info") {
+  show(message: string, type: DialogType = 'info') {
     this.state.set({
       isOpen: true,
       message,
@@ -31,26 +31,26 @@ export class DialogService {
   }
 
   success(message: string) {
-    this.show(message, "success");
+    this.show(message, 'success');
   }
 
   error(message: string) {
-    this.show(message, "error");
+    this.show(message, 'error');
   }
 
   warning(message: string) {
-    this.show(message, "warning");
+    this.show(message, 'warning');
   }
 
   info(message: string) {
-    this.show(message, "info");
+    this.show(message, 'info');
   }
 
   close() {
     this.state.set({
       isOpen: false,
-      message: "",
-      type: "info",
+      message: '',
+      type: 'info',
     });
   }
 }

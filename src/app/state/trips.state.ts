@@ -1,5 +1,5 @@
-import { Injectable, computed, signal } from "@angular/core";
-import { Trip } from "../models/trip.model";
+import { Injectable, computed, signal } from '@angular/core';
+import { Trip } from '../models/trip.model';
 
 export interface TripsState {
   trips: Trip[];
@@ -14,7 +14,7 @@ export interface TripsState {
     minPrice: number | null;
     maxPrice: number | null;
     sortBy: string;
-    sortOrder: "asc" | "desc";
+    sortOrder: 'asc' | 'desc';
   };
   pagination: {
     page: number;
@@ -23,7 +23,7 @@ export interface TripsState {
 }
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class TripsStateService {
   // State signals
@@ -35,16 +35,16 @@ export class TripsStateService {
     error: null,
     total: 0,
     filters: {
-      search: "",
-      cityId: "",
+      search: '',
+      cityId: '',
       minPrice: null,
       maxPrice: null,
-      sortBy: "price",
-      sortOrder: "asc",
+      sortBy: 'price',
+      sortOrder: 'asc',
     },
     pagination: {
       page: 1,
-      limit: 12,
+      limit: 8,
     },
   });
 
@@ -61,7 +61,7 @@ export class TripsStateService {
   // Additional computed signals for UI
   readonly hasNextPage = computed(() => {
     const { page, limit } = this.state().pagination;
-    return page * limit < this.state().total;
+    return this.state().trips.length < this.state().total;
   });
 
   readonly hasPreviousPage = computed(() => this.state().pagination.page > 1);
@@ -71,7 +71,7 @@ export class TripsStateService {
   );
 
   readonly priceRange = computed(() => {
-    const prices = this.state().trips.map((trip) => trip.price);
+    const prices = this.state().trips.map(trip => trip.price);
     return {
       min: Math.min(...prices),
       max: Math.max(...prices),
@@ -79,12 +79,12 @@ export class TripsStateService {
   });
 
   readonly destinations = computed(() =>
-    Array.from(new Set(this.state().trips.map((trip) => trip.destination)))
+    Array.from(new Set(this.state().trips.map(trip => trip.destination)))
   );
 
   // State updates
   setTrips(trips: Trip[], total: number) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       trips,
       total,
@@ -93,7 +93,7 @@ export class TripsStateService {
   }
 
   setPopularTrips(trips: Trip[]) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       popularTrips: trips,
       error: null,
@@ -101,7 +101,7 @@ export class TripsStateService {
   }
 
   setSelectedTrip(trip: Trip | null) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       selectedTrip: trip,
       error: null,
@@ -109,22 +109,22 @@ export class TripsStateService {
   }
 
   setLoading(loading: boolean) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       loading,
     }));
   }
 
   setError(error: string | null) {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       error,
       loading: false,
     }));
   }
 
-  updateFilters(filters: Partial<TripsState["filters"]>) {
-    this.state.update((state) => ({
+  updateFilters(filters: Partial<TripsState['filters']>) {
+    this.state.update(state => ({
       ...state,
       filters: {
         ...state.filters,
@@ -137,8 +137,8 @@ export class TripsStateService {
     }));
   }
 
-  updatePagination(pagination: Partial<TripsState["pagination"]>) {
-    this.state.update((state) => ({
+  updatePagination(pagination: Partial<TripsState['pagination']>) {
+    this.state.update(state => ({
       ...state,
       pagination: {
         ...state.pagination,
@@ -148,19 +148,19 @@ export class TripsStateService {
   }
 
   reset() {
-    this.state.update((state) => ({
+    this.state.update(state => ({
       ...state,
       trips: [],
       selectedTrip: null,
       loading: false,
       error: null,
       filters: {
-        search: "",
-        cityId: "",
+        search: '',
+        cityId: '',
         minPrice: null,
         maxPrice: null,
-        sortBy: "price",
-        sortOrder: "asc",
+        sortBy: 'price',
+        sortOrder: 'asc',
       },
       pagination: {
         page: 1,

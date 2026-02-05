@@ -1,27 +1,22 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  output,
-} from "@angular/core";
-import { Location } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
+import { Location } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faMapMarkerAlt,
   faClock,
   faStar,
   faSearch,
   faFilter,
-} from "@fortawesome/free-solid-svg-icons";
-import { TripsStateService } from "../../state/trips.state";
-import { TranslatePipe } from "@ngx-translate/core";
-import { CityStateService } from "../../state/city.state";
-import { CitiesService } from "../../services/cities.service";
-import { debounceTime, Subject } from "rxjs";
+} from '@fortawesome/free-solid-svg-icons';
+import { TripsStateService } from '../../state/trips.state';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CityStateService } from '../../state/city.state';
+import { CitiesService } from '../../services/cities.service';
+import { debounceTime, Subject } from 'rxjs';
 
 @Component({
-  selector: "app-search-filter",
+  selector: 'app-search-filter',
   imports: [FormsModule, FontAwesomeModule, TranslatePipe],
   template: `
     <div class="glass-container mb-12 p-6 shadow-xl">
@@ -29,32 +24,30 @@ import { debounceTime, Subject } from "rxjs";
         <!-- Search Input -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">{{
-            "search_filter.search" | translate
+            'search_filter.search' | translate
           }}</label>
           <input
             type="text"
             [ngModel]="state.filters().search"
             (ngModelChange)="onSearchChange($event)"
             placeholder="{{ 'search_filter.search_placeholder' | translate }}"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          />
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
         </div>
 
         <!-- Destination Filter -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">{{
-            "search_filter.destination" | translate
+            'search_filter.destination' | translate
           }}</label>
           <select
             [ngModel]="state.filters().cityId"
             (ngModelChange)="onDestinationChange($event)"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          >
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent">
             <option value="">
-              {{ "search_filter.all_destinations" | translate }}
+              {{ 'search_filter.all_destinations' | translate }}
             </option>
             @for (city of cityState.cities(); track city.id) {
-            <option [value]="city.id">{{ city.name }}</option>
+              <option [value]="city.id">{{ city.name }}</option>
             }
           </select>
         </div>
@@ -97,11 +90,15 @@ import { debounceTime, Subject } from "rxjs";
         </div> -->
 
         <!-- clear filters small button -->
-        @if (state.filters().search || state.filters().cityId ||
-        state.filters().minPrice || state.filters().maxPrice ) {
-        <button class="btn-primary mt-6" (click)="onClearFilters()">
-          {{ "search_filter.clear_filters" | translate }}
-        </button>
+        @if (
+          state.filters().search ||
+          state.filters().cityId ||
+          state.filters().minPrice ||
+          state.filters().maxPrice
+        ) {
+          <button class="btn-primary mt-6" (click)="onClearFilters()">
+            {{ 'search_filter.clear_filters' | translate }}
+          </button>
         }
       </div>
     </div>
@@ -119,13 +116,13 @@ export class SearchFilterComponent {
   faSearch = faSearch;
   faFilter = faFilter;
 
-  searchTerm = "";
-  selectedPriceRange = "";
-  selectedDuration = "";
+  searchTerm = '';
+  selectedPriceRange = '';
+  selectedDuration = '';
   private searchTermSubject = new Subject<string>();
 
   ngOnInit() {
-    this.searchTermSubject.pipe(debounceTime(500)).subscribe((search) => {
+    this.searchTermSubject.pipe(debounceTime(500)).subscribe(search => {
       this.state.updateFilters({ search });
       this.loadTrips.emit();
     });
@@ -142,17 +139,17 @@ export class SearchFilterComponent {
     this.loadTrips.emit();
   }
 
-  protected onPriceChange(type: "min" | "max", value: number) {
+  protected onPriceChange(type: 'min' | 'max', value: number) {
     this.state.updateFilters({
-      [type === "min" ? "minPrice" : "maxPrice"]: value,
+      [type === 'min' ? 'minPrice' : 'maxPrice']: value,
     });
     this.loadTrips.emit();
   }
 
   protected onClearFilters() {
     this.state.updateFilters({
-      search: "",
-      cityId: "",
+      search: '',
+      cityId: '',
     });
     this.loadTrips.emit();
   }
@@ -162,7 +159,7 @@ export class SearchFilterComponent {
     const baseUrl = window.location.pathname;
 
     // Replace the current state without triggering navigation events
-    window.history.replaceState({}, "", baseUrl);
+    window.history.replaceState({}, '', baseUrl);
 
     // If you need to update Angular's knowledge of the URL without navigation
     this.location.replaceState(baseUrl);
