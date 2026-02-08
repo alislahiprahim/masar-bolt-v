@@ -21,10 +21,8 @@ import { ImageFile, ImagePickerComponent } from '../image-picker/image-picker.co
 import { AuthStateService } from '../../state/auth.state';
 import { ReservationService } from '../../services/reservation.service';
 
-interface TravelerInfo {
-  type: 'adult' | 'childUnder12' | 'childUnder6';
-  age?: number;
-}
+import { TravelerInfo } from '../../models/booking.model';
+import { BookingCalculatorService } from '../../services/booking-calculator.service';
 
 @Component({
   selector: 'app-booking-form',
@@ -228,22 +226,24 @@ interface TravelerInfo {
             </div>
 
             <!-- Trip hotels -->
-            <!-- Trip hotels -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                {{ 'booking.Hotel' | translate }}
-              </label>
-              <select
-                formControlName="tripHotelId"
-                class="mt-1 py-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500">
-                <option value="" selected>{{ 'booking.selectHotel' | translate }}</option>
-                @for (hotel of trip.TripHotel; track hotel.id) {
-                  <option [value]="hotel.id">
-                    {{ hotel.hotel.name }} - {{ hotel.costPerPerson | currency: ' ج.م' }}
-                  </option>
-                }
-              </select>
-            </div>
+            @if (trip.TripHotel?.length) {
+              <!-- Trip hotels -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  {{ 'booking.Hotel' | translate }}
+                </label>
+                <select
+                  formControlName="tripHotelId"
+                  class="mt-1 py-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500">
+                  <option value="" selected>{{ 'booking.selectHotel' | translate }}</option>
+                  @for (hotel of trip.TripHotel; track hotel.id) {
+                    <option [value]="hotel.id">
+                      {{ hotel.hotel.name }} - {{ hotel.costPerPerson | currency: ' ج.م' }}
+                    </option>
+                  }
+                </select>
+              </div>
+            }
             <!-- Special Requests -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">
@@ -349,7 +349,8 @@ export class BookingFormComponent implements OnInit {
     public reservationService: ReservationService,
     public authService: AuthService,
     private dialogService: DialogService,
-    private router: Router
+    private router: Router,
+    private bookingCalculator: BookingCalculatorService
   ) {
     this.bookingForm = this.fb.group({
       whatsappNumber: [
@@ -470,44 +471,16 @@ export class BookingFormComponent implements OnInit {
   }
 
   calculateTotalPrice(): number {
-    const basePrice = this.bookingForm.value.tripHotelId
-      ? this.trip.TripHotel?.find(hotel => hotel.id === this.bookingForm.value.tripHotelId)
-          ?.costPerPerson || this.trip.price
-      : this.trip.price;
-    let totalPrice = 0;
-    let childrenUnder12 = 0;
-    let childrenUnder6 = 0;
+    const travelers = this.getTravelerControls().map(control => ({
+      type: control.get('type')?.value,
+      age: control.get('age')?.value,
+    })) as TravelerInfo[];
 
-    this.getTravelerControls().forEach(control => {
-      const type = control.get('type')?.value;
-
-      switch (type) {
-        case 'adult':
-          totalPrice += basePrice;
-          break;
-        case 'childUnder12':
-          if (childrenUnder12 === 0) {
-            // First child under 12 is free
-            childrenUnder12++;
-          } else {
-            totalPrice += basePrice;
-          }
-          break;
-        case 'childUnder6':
-          if (childrenUnder6 === 0 && childrenUnder12 === 0) {
-            // First child under 6 is free if no child under 12
-            childrenUnder6++;
-          } else if (childrenUnder6 === 0) {
-            // Second child under 6 is free
-            childrenUnder6++;
-          } else {
-            totalPrice += basePrice;
-          }
-          break;
-      }
-    });
-
-    return totalPrice;
+    return this.bookingCalculator.calculateTripPrice(
+      this.trip,
+      travelers,
+      this.bookingForm.value.tripHotelId
+    );
   }
 
   get requiredDocumentsCount() {

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TelegramConnectionComponent } from '../../telegram/telegram-connection/telegram-connection.component';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -11,7 +12,7 @@ import { UserDetails } from '../../../models/auth.model';
 @Component({
   selector: 'app-profile-details',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule, TranslateModule],
+  imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule, TranslateModule, TelegramConnectionComponent],
   template: `
     <div class="bg-white rounded-xl shadow-sm p-6">
       <form
@@ -80,6 +81,8 @@ import { UserDetails } from '../../../models/auth.model';
         </div>
       </form>
     </div>
+    
+    <app-telegram-connection />
   `,
 })
 export class ProfileDetailsComponent {

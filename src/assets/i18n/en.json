@@ -321,5 +321,14 @@
     "contact": "Contact Number",
     "instructions": "Please present this ticket upon arrival at the meeting point",
     "validationNote": "This ticket is valid only for the date and time shown above"
+  },
+  "telegram": {
+    "title": "Telegram Notifications",
+    "description": "Connect your Telegram account to receive instant updates about your trips and reservations.",
+    "connect_button": "Connect Telegram",
+    "disconnect_button": "Disconnect",
+    "connect_hint": "You will be redirected to Telegram to start the bot.",
+    "connected": "Connected as",
+    "not_connected": "Not Connected"
   }
 }
