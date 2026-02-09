@@ -28,7 +28,7 @@ export class AuthService {
     private toastService: ToastService,
     private dialogService: DialogService,
     private reservationService: ReservationService
-  ) {}
+  ) { }
 
   login(credentials: LoginCredentials): Observable<boolean> {
     this.authState.setLoading(true);
@@ -37,7 +37,7 @@ export class AuthService {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/login`, {
         ...credentials,
-        roleIds: [1],
+        roleIds: ['CLIENT'],
       })
       .pipe(
         tap(response => {
