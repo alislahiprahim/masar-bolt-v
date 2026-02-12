@@ -24,6 +24,7 @@ export class TripsService extends BaseApiService<Trip> {
       maxPrice?: number | null;
       sortBy?: string;
       sortOrder?: 'asc' | 'desc';
+      tag?: string;
     } = {},
     dataKey: string = 'trips'
   ): Observable<{ trips: Trip[]; total: number }> {

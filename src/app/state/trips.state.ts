@@ -14,7 +14,9 @@ export interface TripsState {
     minPrice: number | null;
     maxPrice: number | null;
     sortBy: string;
+
     sortOrder: 'asc' | 'desc';
+    tag?: string;
   };
   pagination: {
     page: number;
@@ -40,7 +42,9 @@ export class TripsStateService {
       minPrice: null,
       maxPrice: null,
       sortBy: 'price',
+
       sortOrder: 'asc',
+      tag: undefined,
     },
     pagination: {
       page: 1,
@@ -161,6 +165,7 @@ export class TripsStateService {
         maxPrice: null,
         sortBy: 'price',
         sortOrder: 'asc',
+        tag: undefined,
       },
       pagination: {
         page: 1,

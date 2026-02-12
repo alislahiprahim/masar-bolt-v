@@ -15,11 +15,12 @@ export interface Trip {
   isActive: boolean;
   tripPhotos: string[];
   destination: string;
-  includes: { includes: { name: string } }[];
+  includes: { includes: { title: string; description: string; image: string } }[];
   itinerary: any[];
   TripHotel: {
     id: string;
     hotel: Hotel;
     costPerPerson: number;
   }[];
+  tags: string[];
 }

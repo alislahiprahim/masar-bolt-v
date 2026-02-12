@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -80,6 +80,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class TripsComponent implements OnInit {
   protected tripsService = inject(TripsService);
+  protected route = inject(ActivatedRoute);
   protected state = inject(TripsStateService);
   // Icons
   faMapMarkerAlt = faMapMarkerAlt;
@@ -89,7 +90,11 @@ export class TripsComponent implements OnInit {
   faFilter = faFilter;
   faSpinner = faSpinner;
   ngOnInit(): void {
-    this.tripsService.loadTrips();
+    this.route.queryParams.subscribe(params => {
+      const tag = params['tag'] || undefined;
+      this.state.updateFilters({ ...this.state.filters(), tag });
+      this.tripsService.loadTrips();
+    });
   }
 
   protected onShowMore() {

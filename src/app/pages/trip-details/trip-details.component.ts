@@ -39,6 +39,7 @@ import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.comp
     SafeHTMLPipe,
     ImageGalleryComponent,
     BreadcrumpComponent,
+    RouterLink
   ],
   template: `
     @if (state.loading()) {
@@ -74,6 +75,13 @@ import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.comp
                 <p class="text-lg text-primary-600">
                   {{ state.selectedTrip()!.city.name }}
                 </p>
+                <div class="flex flex-wrap gap-2 mt-2">
+                  @for (tag of state.selectedTrip()!.tags; track tag) {
+                    <a [routerLink]="['/trips']" [queryParams]="{tag: tag}" class="px-3 py-1 bg-primary-100 text-primary-800 rounded-full text-sm font-medium hover:bg-primary-200 transition-colors">
+                      #{{ tag }}
+                    </a>
+                  }
+                </div>
               </div>
 
               <!-- Included -->
@@ -81,14 +89,21 @@ import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.comp
                 <h2 class="text-2xl font-bold mb-4">
                   {{ 'trip.includes.title' | translate }}
                 </h2>
-                <ul class="space-y-2">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   @for (item of state.selectedTrip()!.includes; track item) {
-                    <li class="flex items-center text-gray-600">
-                      <span class="w-2 h-2 bg-primary-500 rounded-full mx-2"></span>
-                      {{ item.includes.name }}
-                    </li>
+                    <div class="flex flex-col items-center p-4 bg-gray-50 rounded-xl hover:shadow-md transition-all duration-300 border border-gray-100 text-center group">
+                      <div class="w-16 h-16 mb-3 bg-white rounded-full p-3 shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <img 
+                          [src]="item.includes.image" 
+                          [alt]="item.includes.title" 
+                          class="w-full h-full object-contain"
+                        >
+                      </div>
+                      <h3 class="font-bold text-gray-800 mb-1">{{ item.includes.title }}</h3>
+                      <p class="text-sm text-gray-500 line-clamp-2">{{ item.includes.description }}</p>
+                    </div>
                   }
-                </ul>
+                </div>
               </div>
 
               <!-- Available Hotels -->
@@ -129,12 +144,7 @@ import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.comp
                 <h2 class="text-2xl font-bold mb-4">
                   {{ 'trip.notes.title' | translate }}
                 </h2>
-                <p class="text-gray-600">
-                  {{ state.selectedTrip()!.notes }}
-                </p>
-                <!-- <span
-                [innerHTML]="state.selectedTrip()!.description | safeHTML"
-              ></span> -->
+                <div class="text-gray-600 break-words overflow-wrap-anywhere" [innerHTML]="state.selectedTrip()!.notes | safeHTML"></div>
               </div>
             </div>
 

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -18,6 +19,7 @@ import { debounceTime, Subject } from 'rxjs';
 @Component({
   selector: 'app-search-filter',
   imports: [FormsModule, FontAwesomeModule, TranslatePipe],
+  standalone: true,
   template: `
     <div class="glass-container mb-12 p-6 shadow-xl">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -94,7 +96,8 @@ import { debounceTime, Subject } from 'rxjs';
           state.filters().search ||
           state.filters().cityId ||
           state.filters().minPrice ||
-          state.filters().maxPrice
+          state.filters().maxPrice ||
+          state.filters().tag
         ) {
           <button class="btn-primary mt-6" (click)="onClearFilters()">
             {{ 'search_filter.clear_filters' | translate }}
@@ -105,10 +108,13 @@ import { debounceTime, Subject } from 'rxjs';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class SearchFilterComponent {
   protected state = inject(TripsStateService);
   protected cityState = inject(CityStateService);
   protected location = inject(Location);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
   loadTrips = output<void>();
   faMapMarkerAlt = faMapMarkerAlt;
   faClock = faClock;
@@ -150,7 +156,9 @@ export class SearchFilterComponent {
     this.state.updateFilters({
       search: '',
       cityId: '',
+      tag: undefined
     });
+    this.router.navigate([], { relativeTo: this.route, queryParams: {} });
     this.loadTrips.emit();
   }
 
