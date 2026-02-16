@@ -57,7 +57,7 @@ import { TranslateModule } from '@ngx-translate/core';
             <div class="flex items-center space-x-2">
               <img src="/assets/logo.png" alt="Masar Logo" class="h-10 w-auto" />
             </div>
-            <p class="text-gray-400">{{ slogan }}</p>
+            <p class="text-gray-400">{{ 'footer.companyInfo.slogan' | translate }}</p>
             <div class="flex gap-2">
               <a
                 [href]="socialLinks.facebook"
@@ -131,12 +131,12 @@ import { TranslateModule } from '@ngx-translate/core';
                 <fa-icon [icon]="faLocationDot" class="mx-3 mt-1 text-primary-500"></fa-icon>
                 <div>
                   <p class="font-medium text-white">
-                    {{ companyHeadquarters }}
+                    {{ 'footer.companyInfo.headquarters' | translate }}
                   </p>
                   @for (branch of branches; track branch.location) {
                     <div class="mt-2">
-                      <p class="font-medium">{{ branch.location }}</p>
-                      <p class="text-sm">{{ branch.address }}</p>
+                      <p class="font-medium">{{ branch.location | translate }}</p>
+                      <p class="text-sm">{{ branch.address | translate }}</p>
                     </div>
                   }
                 </div>
@@ -197,15 +197,12 @@ import { TranslateModule } from '@ngx-translate/core';
 export class FooterComponent {
   currentYear = new Date().getFullYear();
 
-  // Company Information
-  companyHeadquarters = 'مقر الشركة';
   branches = [
     {
-      location: 'فرع الفيوم',
-      address: 'شارع الرمله، أمام مطعم أسماك أفندينا',
+      location: 'footer.companyInfo.branches.fayoum.location',
+      address: 'footer.companyInfo.branches.fayoum.address',
     },
   ];
-  slogan = '#رحله_واحده_بتقربنا_كلنا';
   contactNumbers = ['01093886054', '01009700165', '01068332615', '01115245726'];
   socialLinks = {
     tiktok: 'https://vt.tiktok.com/ZS6q4qepy/',

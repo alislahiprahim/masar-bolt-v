@@ -11,6 +11,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 import { ImgUrlPipe } from '../../pipes/imgUrl.pipe';
 import { GalleryImage } from '../../models/gallary.model';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-gallery',
@@ -21,26 +22,27 @@ import { GalleryImage } from '../../models/gallary.model';
     FaIconComponent,
     FormsModule,
     ImgUrlPipe,
+    TranslateModule,
   ],
   template: `
     <!-- Hero Banner -->
     <app-custom-hero-section
       [bannerImg]="'https://images.unsplash.com/photo-1469474968028-56623f02e42e'"
-      [title]="'Travel Gallery'"
-      [subTitle]="'Immerse yourself in stunning destinations through our curated collection of travel photography'" />
+      [title]="'gallery.hero.title' | translate"
+      [subTitle]="'gallery.hero.subtitle' | translate" />
     <!-- Filters -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
       <div class="glass-container mb-12 p-6 shadow-xl">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <!-- Search -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ 'gallery.filter.search' | translate }}</label>
             <div class="relative">
               <input
                 type="text"
                 [ngModel]="state.filters().search"
                 (ngModelChange)="onSearchChange($event)"
-                placeholder="Search images..."
+                [placeholder]="'gallery.filter.searchPlaceholder' | translate"
                 class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
               <fa-icon
                 [icon]="faSearch"
@@ -50,12 +52,12 @@ import { GalleryImage } from '../../models/gallary.model';
 
           <!-- Location Filter -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ 'gallery.filter.location' | translate }}</label>
             <select
               [ngModel]="state.filters().location"
               (ngModelChange)="onLocationChange($event)"
               class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-              <option value="">All Locations</option>
+              <option value="">{{ 'gallery.filter.allLocations' | translate }}</option>
               @for (location of state.locations(); track location) {
                 <option [value]="location">{{ location }}</option>
               }
@@ -64,12 +66,12 @@ import { GalleryImage } from '../../models/gallary.model';
 
           <!-- Tag Filter -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Tag</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ 'gallery.filter.tag' | translate }}</label>
             <select
               [ngModel]="state.filters().tag"
               (ngModelChange)="onTagChange($event)"
               class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-              <option value="">All Tags</option>
+              <option value="">{{ 'gallery.filter.allTags' | translate }}</option>
               @for (tag of state.tags(); track tag) {
                 <option [value]="tag">{{ tag }}</option>
               }
@@ -88,11 +90,11 @@ import { GalleryImage } from '../../models/gallary.model';
       } @else if (state.error()) {
         <div class="text-center py-12">
           <p class="text-red-600">{{ state.error() }}</p>
-          <button (click)="loadGallery()" class="mt-4 btn-primary">Try Again</button>
+          <button (click)="loadGallery()" class="mt-4 btn-primary">{{ 'common.tryAgain' | translate }}</button>
         </div>
       } @else if (state.images().length === 0) {
         <div class="text-center py-12">
-          <p class="text-gray-600">No images found matching your criteria.</p>
+          <p class="text-gray-600">{{ 'gallery.filter.empty' | translate }}</p>
         </div>
       } @else {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

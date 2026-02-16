@@ -30,53 +30,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     CustomHeroSectionComponent,
     TranslatePipe,
   ],
-  template: `
-    <div class="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50">
-      <!-- Header -->
-      <app-custom-hero-section
-        [bannerImg]="'https://images.unsplash.com/photo-1488085061387-422e29b40080'"
-        [title]="'Explore Our Trips' | translate"
-        [subTitle]="
-          'Discover handcrafted journeys to the world\`s most extraordinary destinations'
-            | translate
-        " />
-
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <!-- Search and Filters -->
-        <app-search-filter (loadTrips)="tripsService.loadTrips()" />
-        <!-- Trips Grid -->
-        @if (state.loading()) {
-          <div class="flex justify-center items-center py-12">
-            <fa-icon [icon]="faSpinner" class="text-4xl text-primary-600 animate-spin"></fa-icon>
-          </div>
-        } @else if (state.error()) {
-          <div class="text-center py-12">
-            <p class="text-red-600">{{ state.error() }}</p>
-            <button (click)="tripsService.loadTrips()" class="mt-4 btn-primary">
-              {{ 'common.try_again' | translate }}
-            </button>
-          </div>
-        } @else if (state.trips().length === 0) {
-          <div class="text-center py-12">
-            <p class="text-gray-600">{{ 'common.no_trips_found' | translate }}</p>
-          </div>
-        } @else {
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @for (trip of state.trips(); track trip.id) {
-              <app-trip-card [trip]="trip"></app-trip-card>
-            }
-          </div>
-
-          <!-- Show More Button -->
-          <div class="mt-12 flex justify-center">
-            <button *ngIf="state.hasNextPage()" (click)="onShowMore()" class="btn-secondary">
-              {{ 'common.show_more' | translate }}
-            </button>
-          </div>
-        }
-      </div>
-    </div>
-  `,
+  templateUrl: './trips.component.html',
 })
 export class TripsComponent implements OnInit {
   protected tripsService = inject(TripsService);

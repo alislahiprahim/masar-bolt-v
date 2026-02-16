@@ -25,7 +25,7 @@ import { AuthService } from '../../services/auth.service';
           <!-- Logo and Brand -->
           <div class="flex items-center">
             <a routerLink="/" class="flex items-center space-x-2">
-              <img src="/assets/logo.png" alt="Masar Tours" class="h-10 w-auto" />
+              <img src="/assets/logo.png" [alt]="'nav.logoAlt' | translate" class="h-10 w-auto" />
             </a>
 
             <!-- Desktop Navigation Links -->

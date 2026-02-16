@@ -29,7 +29,8 @@
     "try_again": "حاول مرة أخرى",
     "no_results_found": "لا يوجد نتائج مطابقة للمعايير",
     "all_photos": "الكل",
-    "back_to_trips": "العودة للرحلات"
+    "back_to_trips": "العودة للرحلات",
+    "currencySymbol": "ج.م"
   },
   "nav": {
     "home": "الرئيسية",
@@ -40,7 +41,8 @@
     "login": "تسجيل الدخول",
     "register": "إنشاء حساب",
     "profile": "الملف الشخصي",
-    "logout": "تسجيل الخروج"
+    "logout": "تسجيل الخروج",
+    "logoAlt": "مسار تورز"
   },
   "home": {
     "hero": {
@@ -114,6 +116,16 @@
       "reviews": "التقييمات",
       "about": "من نحن",
       "contact": "اتصل بنا"
+    },
+    "companyInfo": {
+      "headquarters": "مقر الشركة",
+      "slogan": "#رحله_واحده_بتقربنا_كلنا",
+      "branches": {
+        "fayoum": {
+          "location": "فرع الفيوم",
+          "address": "شارع الرمله، أمام مطعم أسماك أفندينا"
+        }
+      }
     },
     "contact": "اتصل بنا",
     "workingHours": "ساعات العمل",
@@ -250,6 +262,27 @@
     },
     "requestSent": "تم إرسال طلب الحجز بنجاح"
   },
+  "trips": {
+    "hero": {
+      "title": "اكتشف رحلاتنا",
+      "subtitle": "اكتشف وجهات مذهلة وتجارب سفر استثنائية حول العالم"
+    }
+  },
+  "gallery": {
+    "hero": {
+      "title": "معرض الصور",
+      "subtitle": "استمتع بمشاهدة أجمل المناظر من وجهاتنا الساحرة"
+    },
+    "filter": {
+      "search": "بحث",
+      "searchPlaceholder": "بحث عن صور...",
+      "location": "الموقع",
+      "allLocations": "كل المواقع",
+      "tag": "التصنيف",
+      "allTags": "كل التصنيفات",
+      "empty": "لا توجد صور مطابقة لمعايير البحث."
+    }
+  },
   "reservations": {
     "title": "حجوزاتي",
     "subtitle": "إدارة حجوزات السفر والجداول الزمنية",
@@ -353,7 +386,14 @@
       "phoneNumberPatternInvalid": "يجب أن يكون رقم الموبايل على الشكل 01012345678",
       "phoneNumberLength": "يجب أن يكون رقم الموبايل 11 رقم",
       "firstNameRequired": "الاسم الاول مطلوب",
-      "lastNameRequired": "الاسم الاخير مطلوب"
+      "lastNameRequired": "الاسم الاخير مطلوب",
+      "placeholders": {
+        "firstName": "أحمد",
+        "lastName": "محمد",
+        "email": "البريد@الإلكتروني.com",
+        "phone": "01012345678",
+        "password": "••••••••"
+      }
     },
     "phone_already_registered": "رقم الواتساب مستخدم بالفعل، قم بتسجيل الدخول لاستكمال الحجز",
     "phone_not_registered": "رقم الواتساب غير مسجل، قم بإنشاء حساب لاستكمال الحجز"

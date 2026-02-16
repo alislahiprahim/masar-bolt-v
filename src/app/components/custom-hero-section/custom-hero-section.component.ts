@@ -29,6 +29,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 })
 export class CustomHeroSectionComponent {
   bannerImg = input('https://images.unsplash.com/photo-1488085061387-422e29b40080');
-  title = input('TravelPro');
-  subTitle = input("Discover handcrafted journeys to the world's most extraordinary destinations");
+  title = input('');
+  subTitle = input('');
 }

@@ -19,7 +19,8 @@
     "edit": "Edit",
     "cancel": "Cancel",
     "save": "Save",
-    "close": "Close"
+    "close": "Close",
+    "currencySymbol": "EGP"
   },
   "nav": {
     "home": "Home",
@@ -31,7 +32,8 @@
     "login": "Login",
     "register": "Register",
     "profile": "Profile",
-    "logout": "Logout"
+    "logout": "Logout",
+    "logoAlt": "Masar Tours"
   },
   "home": {
     "hero": {
@@ -104,6 +106,16 @@
       "reviews": "Reviews",
       "about": "About Us",
       "contact": "Contact"
+    },
+    "companyInfo": {
+      "headquarters": "Company Headquarters",
+      "slogan": "#One_Trip_Brings_Us_All_Closer",
+      "branches": {
+        "fayoum": {
+          "location": "Fayoum Branch",
+          "address": "Ramla Street, in front of Asmak Afandina restaurant"
+        }
+      }
     },
     "contact": "Contact Us",
     "workingHours": "Working Hours",
@@ -236,6 +248,27 @@
     },
     "requestSent": "Your booking request has been sent successfully"
   },
+  "trips": {
+    "hero": {
+      "title": "Explore Our Trips",
+      "subtitle": "Discover handcrafted journeys to the world's most extraordinary destinations"
+    }
+  },
+  "gallery": {
+    "hero": {
+      "title": "Travel Gallery",
+      "subtitle": "Immerse yourself in stunning destinations through our curated collection of travel photography"
+    },
+    "filter": {
+      "search": "Search",
+      "searchPlaceholder": "Search images...",
+      "location": "Location",
+      "allLocations": "All Locations",
+      "tag": "Tag",
+      "allTags": "All Tags",
+      "empty": "No images found matching your criteria."
+    }
+  },
   "reservations": {
     "title": "My Reservations",
     "subtitle": "Manage your travel bookings and itineraries",
@@ -310,7 +343,38 @@
         "phoneRequired": "Mobile number is required",
         "phoneInvalid": "Mobile number is invalid"
       }
-    }
+    },
+    "register": {
+      "joinCommunity": "Join Our Community",
+      "startJourney": "Start your journey with us today",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "emailAddress": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "passwordMismatch": "Passwords do not match",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "passwordRequired": "Password is required",
+      "validEmail": "Email is invalid",
+      "emailRequired": "Email is required",
+      "signInHere": "Already have an account? Sign in here",
+      "alreadyHaveAccount": "Already have an account?",
+      "createAccount": "Create Account",
+      "noAccount": "Don't have an account?",
+      "phoneNumber": "Mobile Number",
+      "phoneNumberRequired": "Mobile number is required",
+      "phoneNumberInvalid": "Mobile number is invalid",
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required",
+      "placeholders": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "email@example.com",
+        "phone": "01012345678",
+        "password": "••••••••"
+      }
+    },
+    "phone_already_registered": "WhatsApp number is already registered, please login to continue"
   },
   "ticket": {
     "subtitle": "Your Safari Adventure Ticket",

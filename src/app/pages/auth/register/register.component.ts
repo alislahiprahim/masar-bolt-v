@@ -50,7 +50,7 @@ import { removeEmptyFields } from '../../../utils/helper';
                       type="text"
                       formControlName="firstName"
                       class="input-field"
-                      placeholder="أحمد"
+                      [placeholder]="'auth.register.placeholders.firstName' | translate"
                       required />
                     @if (
                       registerForm.get('firstName')?.errors?.['required'] &&
@@ -74,7 +74,7 @@ import { removeEmptyFields } from '../../../utils/helper';
                       type="text"
                       formControlName="lastName"
                       class="input-field"
-                      placeholder="محمد"
+                      [placeholder]="'auth.register.placeholders.lastName' | translate"
                       required />
                     @if (
                       registerForm.get('lastName')?.errors?.['required'] &&
@@ -100,7 +100,7 @@ import { removeEmptyFields } from '../../../utils/helper';
                     type="email"
                     formControlName="email"
                     class="input-field"
-                    placeholder="البريد@الإلكتروني.com" />
+                    [placeholder]="'auth.register.placeholders.email' | translate" />
                   @if (
                     registerForm.get('email')?.errors?.['email'] &&
                     registerForm.get('email')?.touched
@@ -124,7 +124,7 @@ import { removeEmptyFields } from '../../../utils/helper';
                     type="tel"
                     formControlName="phoneNumber"
                     class="input-field"
-                    placeholder="01012345678"
+                    [placeholder]="'auth.register.placeholders.phone' | translate"
                     required />
                   @if (
                     registerForm.get('phoneNumber')?.errors?.['required'] &&
@@ -148,7 +148,7 @@ import { removeEmptyFields } from '../../../utils/helper';
                     type="password"
                     formControlName="password"
                     class="input-field"
-                    placeholder="••••••••"
+                    [placeholder]="'auth.register.placeholders.password' | translate"
                     required />
                   @if (
                     registerForm.get('password')?.errors?.['required'] &&
@@ -180,7 +180,7 @@ import { removeEmptyFields } from '../../../utils/helper';
                     type="password"
                     formControlName="confirmPassword"
                     class="input-field"
-                    placeholder="••••••••"
+                    [placeholder]="'auth.register.placeholders.password' | translate"
                     required />
                   @if (
                     registerForm.errors?.['mismatch'] &&
