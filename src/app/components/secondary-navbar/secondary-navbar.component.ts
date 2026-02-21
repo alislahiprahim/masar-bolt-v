@@ -40,7 +40,7 @@ import { faFacebookF, faInstagram, faTiktok } from '@fortawesome/free-brands-svg
 
               @if (showMobileNumbers) {
                 <div
-                  class="absolute top-full left-0 mt-1 w-48 bg-gray-800 rounded-lg shadow-lg py-2 z-50"
+                  class="absolute top-full left-0 text-left mt-1 w-48 bg-gray-800 rounded-lg shadow-lg py-2 z-50"
                   (clickOutside)="showMobileNumbers = false">
                   @for (number of contactNumbers; track number) {
                     <a

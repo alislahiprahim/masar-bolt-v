@@ -104,6 +104,12 @@
                     <div class="text-gray-600 break-words overflow-wrap-anywhere"
                         [innerHTML]="state.selectedTrip()!.notes | safeHTML"></div>
                 </div>
+
+                <!-- Reviews -->
+                <div class="bg-white rounded-xl shadow-sm p-6 mt-8">
+                    <app-review-list [tripId]="state.selectedTrip()!.id"
+                        [currentUser]="currentUser()"></app-review-list>
+                </div>
             </div>
 
             <!-- Booking Form -->

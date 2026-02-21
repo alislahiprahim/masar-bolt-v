@@ -1,0 +1,85 @@
+<div class="reviews-container">
+    <h3>Reviews ({{ totalReviews() }})</h3>
+
+    <div class="reviews-list" *ngIf="!loading(); else loader">
+        <div class="review-item" *ngFor="let review of reviews()">
+            <div class="review-header">
+                <div class="user-info">
+                    <img [src]="review.userAvatar || review.user?.profilePicture || 'assets/images/avatar-placeholder.png'"
+                        alt="User Avatar" class="avatar">
+                    <div class="user-details">
+                        <span class="username">
+                            {{ review.userDisplayName || (review.user?.firstName + ' ' + review.user?.lastName) }}
+                        </span>
+                        <span class="source-badge" *ngIf="review.source === 'SOCIAL'">
+                            <i class="pi pi-facebook" style="color: #1877F2;"></i> Social
+                        </span>
+                        <span class="verified-badge" *ngIf="review.source === 'SYSTEM'">
+                            <i class="pi pi-check-circle" style="color: green;"></i> Verified
+                        </span>
+                        <span class="date">{{ review.createdAt | date }}</span>
+                    </div>
+                </div>
+                <div class="rating">
+                    <ng-container *ngFor="let star of [1,2,3,4,5]">
+                        <i class="pi" [ngClass]="star <= review.rating ? 'pi-star-fill' : 'pi-star'"></i>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="review-content">
+                {{ review.content }}
+            </div>
+        </div>
+
+        <div *ngIf="reviews().length === 0" class="no-reviews">
+            No reviews yet. Be the first to review!
+        </div>
+    </div>
+
+    <ng-template #loader>
+        <div class="loader">Loading reviews...</div>
+    </ng-template>
+
+    <!-- Write Review Section -->
+    <div class="write-review-section">
+        <button class="btn-primary" (click)="toggleReviewForm()" *ngIf="!showReviewForm()">Write a Review</button>
+
+        <div class="review-form" *ngIf="showReviewForm()">
+            <h4>Write a Review</h4>
+            <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
+                <div class="form-group">
+                    <label>Rating</label>
+                    <div class="star-rating-input">
+                        <!-- Simple Star Input -->
+                        <select formControlName="rating">
+                            <option [value]="5">5 Stars</option>
+                            <option [value]="4">4 Stars</option>
+                            <option [value]="3">3 Stars</option>
+                            <option [value]="2">2 Stars</option>
+                            <option [value]="1">1 Star</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Review</label>
+                    <textarea formControlName="content" rows="4" placeholder="Share your experience..."></textarea>
+                    <small *ngIf="reviewForm.get('content')?.touched && reviewForm.get('content')?.invalid"
+                        class="error">
+                        Content is required (min 10 chars).
+                    </small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" (click)="toggleReviewForm()">Cancel</button>
+                    <button type="submit" class="btn-primary" [disabled]="reviewForm.invalid || submitting()">
+                        {{ submitting() ? 'Submitting...' : 'Submit Review' }}
+                    </button>
+                </div>
+
+                <div *ngIf="successMsg()" class="success-msg">{{ successMsg() }}</div>
+                <div *ngIf="errorMsg()" class="error-msg">{{ errorMsg() }}</div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -44,7 +44,7 @@ export class TripsService extends BaseApiService<Trip> {
   }
 
   getPopularTrips(dataKey: string = ''): Observable<Trip[]> {
-    return this.getFeaturedItems(6, 'featured');
+    return this.getFeaturedItems(3, 'featured');
   }
 
   protected getEntityName(): string {

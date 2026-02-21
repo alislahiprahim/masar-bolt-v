@@ -28,6 +28,8 @@ import { ImgUrlPipe } from '../../pipes/imgUrl.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ImageGalleryComponent } from '../../components/image-slider/image-slider.component';
 import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.component';
+import { ReviewListComponent } from '../../components/review-list/review-list.component';
+import { AuthStateService } from '../../state/auth.state';
 
 @Component({
   selector: 'app-trip-details',
@@ -39,7 +41,8 @@ import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.comp
     SafeHTMLPipe,
     ImageGalleryComponent,
     BreadcrumpComponent,
-    RouterLink
+    RouterLink,
+    ReviewListComponent
   ],
   templateUrl: './trip-details.component.html',
 })
@@ -62,10 +65,13 @@ export class TripDetailsComponent implements OnInit {
   protected faSpinner = faSpinner;
 
   private authService = inject(AuthService);
+  private authState = inject(AuthStateService);
   private route = inject(ActivatedRoute);
   protected router = inject(Router);
   private tripsService = inject(TripsService);
   protected state = inject(TripsStateService);
+
+  currentUser = this.authState.user;
 
   ngOnInit() {
     this.state.setLoading(true);
